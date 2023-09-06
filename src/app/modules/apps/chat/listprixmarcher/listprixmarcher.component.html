@@ -1,0 +1,346 @@
+
+
+
+
+  <app-spinnerlaod *ngIf="spinner" ></app-spinnerlaod>
+  <div *ngIf="ActiveCompte">
+    <div class="mb-lg-15 alert alert-success">
+      <div class="alert-text font-weight-bold">
+        Compte activer un mail a été envoyer
+      </div>
+    </div>
+  </div>
+<div class="col-xl-12" *ngIf="!spinner" style="padding: 10px 24px;">
+  <!-- begin::Header -->
+  <div class="card card-xxl-stretch mb-5 mb-xl-8">
+    <div class="card-header border-0 pt-5">
+      <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Prix du marcher</span>
+        <span class="text-muted mt-1 fw-bold fs-7"> {{UserTotals}} Prix</span>
+      </h3>
+      <div class="d-flex my-2">
+        <div class="d-flex align-items-center position-relative me-4">
+          <label style="margin-right: 7px;" for="">Semaine</label>
+          <select
+          placeholder="bedel"     
+          type="date"
+          style="height: 36px !important; border: 1px solid var(--kt-input-border-color) !important;
+          padding: 0.175rem 3rem 0.175rem 1rem !important;border-radius: 0.475rem;"
+          class="form-selects form-select-solid form-select-lgs fw-bold"
+          (input)="onSearchChange($event,'semaine')"
+          name="role">
+
+          <option  *ngFor="let item of ListeSemaine" value="{{item}}">{{item}}</option>
+          <option value="all">tout</option>
+        </select>
+        </div>
+      </div>
+  
+      <div class="d-flex my-2">
+        <div class="d-flex align-items-center position-relative me-4">
+          <label style="margin-right: 7px;" for="">Ville</label>
+          <select
+          placeholder="bedel"     
+          type="date"
+          style="height: 36px !important; border: 1px solid var(--kt-input-border-color) !important;
+          padding: 0.175rem 3rem 0.175rem 1rem !important;border-radius: 0.475rem;"
+          class="form-selects form-select-solid form-select-lgs fw-bold"
+          (input)="onSearchChange($event,'ville')"
+          name="role">
+          <option  *ngFor="let item of ListeVille" value="{{item}}">{{item}}</option>
+          <option value="all">tout</option>
+        </select>
+        </div>
+      </div>
+      <div class="d-flex my-2">
+        <div class="d-flex align-items-center position-relative me-4">
+          <label style="margin-right: 7px;" for="">Culture</label>
+          <select
+          placeholder="bedel"     
+          type="date"
+          style="height: 36px !important; border: 1px solid var(--kt-input-border-color) !important;
+          padding: 0.175rem 3rem 0.175rem 1rem !important;border-radius: 0.475rem;"
+          class="form-selects form-select-solid form-select-lgs fw-bold"
+          (input)="onSearchChange($event,'culture')"
+          name="role">
+          <option  *ngFor="let item of ListeCulture" value="{{item}}">{{item}}</option>
+          <option value="all">tout</option>
+        </select>
+        </div>
+      </div>
+        
+   <!-- <div class="d-flex my-2">
+      <div class="d-flex align-items-center position-relative me-4">
+        <button 
+        (click)="onSearchChange($event)"
+        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+        style="width: calc(8.5em + 4.1rem + 2px)!important;  color:white;  background-color: black !important;">
+        Rechercher 
+        </button>
+      </div>
+    </div>
+     -->
+
+      <div *ngIf="users.data.role==='admin'||users.data.role ==='adminfafa'"
+      class="card-toolbar"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      data-bs-trigger="hover"
+      title="ajouter un prix"
+     >
+      <a  routerLink="/apps/chat/addprixdumarcher"  class="btn btn-sm btn-light-primary">
+        <span
+          [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
+          class="svg-icon svg-icon-3"
+        ></span>
+        Nouveau prix
+      </a>
+    </div>
+  
+
+      
+      <!-- -->
+      <!-- -->
+      <!--
+            <div
+        class="card-toolbar"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        data-bs-trigger="hover"
+        title="Clicker pour ajouter un utilisateur"
+      >
+        <a  routerLink="/apps/chat/adduser"  class="btn btn-sm btn-light-primary">
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
+            class="svg-icon svg-icon-3"
+          ></span>
+          Nouveau utilisateur
+        </a>
+      </div>
+
+      -->
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body py-3">
+      <!-- begin::Table container -->
+
+      <div class="table-responsive">
+        <!-- begin::Table -->
+        <div *ngIf="Users.length===0&&!spinner" style="font-weight:700;margin-left: 42%;margin-top: 10%;font-size:medium; color:black " > aucun element</div>
+
+        <table
+        *ngIf="Users.length>0"  class="table rounded-corners table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"
+        >
+          <!-- begin::Table head -->
+          <thead>
+            <tr class="fw-bolder text-muted">
+              <th class="min-w-120px">Semaine</th>
+              <th class="min-w-150px">Culture</th>
+              <th class="min-w-140px">Type de produit</th>
+              <th class="min-w-120px">Ville</th>
+              <th class="min-w-120px">Prix en gros</th>
+              <th class="min-w-120px">Prix en detail</th>
+              
+            <!-- 
+              <th class="min-w-120px">Type du produit</th>    
+              <th class="min-w-120px">Unite</th>
+              <th class="min-w-120px">Region</th>
+              <th class="min-w-120px">Date d'ajout</th>
+            -->  
+            </tr>
+          </thead>
+          <!-- end::Table head -->
+          <!-- begin::Table body
+          <div *ngIf="UserTotals===0">
+            Aucune commande
+          </div>-->
+          <tbody>
+            <tr *ngFor="let user of Users  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">
+
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="d-flex justify-content-start flex-column">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">
+                      {{user.datesorti}}
+                    </a>
+                    <span  style="color:#5d5a5a !important" class="text-muted fw-bold  d-block fs-7">
+                        {{user.region}}
+                      </span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a
+                style="
+                width: 150px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                "
+                class="card-toolbar"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                data-bs-trigger="hover"
+                title="{{user.libelle}}"
+
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.libelle}}
+                </a>
+              <!-- end::Table head -->
+
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div  class="d-flex flex-stack mb-2">
+                    <a
+
+                    class="card-toolbar"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-trigger="hover"
+                    title="{{user.email}}"
+                    class="text-dark fw-bolder text-hover-primary fs-6">{{user.categorieprod}}</a>
+                  </div>
+                  <!-- begin::Table body
+                  <div class="progress h-6px w-100">
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      [style.width]="'50%'"
+                    ></div>
+                  </div>-->
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.ville}}</a>
+                  </div>
+                  <!-- begin::Table body
+                  <div class="progress h-6px w-100">
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      [style.width]="'50%'"
+                    ></div>
+                  </div>-->
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.prixgros}} FCFA </a>
+                  </div>
+
+                  <!-- begin::Table body
+                  <div class="progress h-6px w-100">
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      [style.width]="'50%'"
+                    ></div>
+                  </div>-->
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a
+                    style="
+                    width: 80px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    "
+                    class="card-toolbar"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-trigger="hover"
+                    title="{{user.prixdetail}}"
+
+
+                    class="text-dark fw-bolder text-hover-primary fs-6">{{user.prixdetail}} FCFA</a>
+                  </div>
+
+                  <!-- begin::Table body
+                  <div class="progress h-6px w-100">
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      [style.width]="'50%'"
+                    ></div>
+                  </div>-->
+                </div>
+              </td>
+             <!--<td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a
+                    style="
+                    width: 80px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    "
+                    class="card-toolbar"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-trigger="hover"
+                    title="{{user.ville}}"
+
+
+                    class="text-dark fw-bolder text-hover-primary fs-6">{{user.ville}}</a>
+                  </div>
+
+                   begin::Table body
+                  <div class="progress h-6px w-100">
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      [style.width]="'50%'"
+                    ></div>
+                  </div>
+                </div>
+              </td>--> 
+              <!--
+                <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.region}}</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.created_at}}</a>
+                  </div>
+                </div>
+              </td>
+
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.datesorti}}</a>
+                  </div>
+                </div>
+              </td>
+              -->
+            </tr>
+          </tbody>
+          <!-- end::Table body -->
+        </table>
+        <div>
+          <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+        </div>
+        <!-- end::Table -->
+      </div>
+      <!-- end::Table container -->
+    </div>
+    <!-- begin::Body -->
+    </div>
+
+</div>
+

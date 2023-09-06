@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class AuthModel {\n  setAuth(auth) {\n    this.token = auth.token;\n    this.status = auth.status;\n    this.message = auth.message;\n    this.data = auth.data;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

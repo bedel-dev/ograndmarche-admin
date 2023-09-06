@@ -1,0 +1,647 @@
+
+
+
+<div class="col-xl-12" style="padding: 10px 24px;">
+  <!-- begin::Header -->
+  <div class="card card-xxl-stretch mb-5 mb-xl-8">
+    <div class="card-header border-0 pt-5">
+      <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Courses</span>
+        <span class="text-muted mt-1 fw-bold fs-7"> {{UserTotals}} Course (s)</span>
+      </h3>
+      <div class="d-flex my-2">
+        <div class="d-flex align-items-center position-relative me-4">
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/general/gen021.svg'"
+            class="svg-icon svg-icon-3 position-absolute ms-3"
+          ></span>
+          <input
+          style="width: 500px !important;"
+            type="text"
+            id="kt_filter_search"
+            class="form-control form-control-white form-control-sm ps-9"
+            placeholder="Entrer une description"
+            name="search"
+            ng-model="search"
+            (input)="onSearchChange($event)"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+
+    <div class="card-body py-3">
+      <!-- begin::Table container -->
+      <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <li ngbNavItem>
+          <a ngbNavLink>Course E-commerce</a>
+          <ng-template ngbNavContent>
+            <div class="card-body py-3">
+              <!-- begin::Table container -->
+              <div class="table-responsive">
+                <!-- begin::Table -->
+                <div *ngIf="UserTotals===0&&!spinner" style="font-weight:700;margin-left: 42%;margin-top: 10%;font-size:medium; color:black " > aucun element</div>
+                <app-spinnerlaod *ngIf="spinner" ></app-spinnerlaod>
+        
+                <table *ngIf="UserTotals>0&&!spinner"
+                  class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"
+                >
+                  <!-- begin::Table head -->
+                  <thead>
+                    <tr class="fw-bolder text-muted">
+                      <th class="w-25px">
+                        <div
+                          class="form-check form-check-sm form-check-custom form-check-solid">
+                        </div>
+                      </th>
+                      <th class="min-w-140px">transporteur</th>
+                      <th class="min-w-120px">Depart</th>
+                      <th class="min-w-120px">Destination</th>
+                      <th class="min-w-120px">Client</th>
+                      <th class="min-w-120px">Commande</th>
+                      <th class="min-w-120px">Quantité</th>
+                      <th class="min-w-120px">Statut</th>
+                      <th class="min-w-120px">Montant course</th>
+                      <th class="min-w-120px">Montant commande</th>
+                      <th class="min-w-120px">Date creation</th>
+                      <th  *ngIf="users.data.role==='admin'" class="min-w-100px text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <!-- end::Table head -->
+                  <!-- begin::Table body -->
+                  <tbody>
+                    <tr *ngFor="let user of Users  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">
+                      <td *ngIf="user.typecommande =='ecommerce'">
+                        <div
+                          class="
+                            form-check form-check-sm form-check-custom form-check-solid
+                          "
+                        >
+                        <!-- end::Table head
+                          <input
+                            class="form-check-input widget-9-check"
+                            type="checkbox"
+                            value="1"
+                          />-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'">
+                        <a
+                          routerLink="/apps/chat/update-vente/{{user.id}}"
+                          class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                        >
+                        {{user.transporteur}}
+                        </a>
+                      <!-- end::Table head -->
+                        <span class="text-muted fw-bold text-muted d-block fs-7">
+                          {{user.prodloc}}
+                        </span>
+        
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'"class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a class="text-dark fw-bolder text-hover-primary fs-6">{{user.depart}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.destination}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.nameClient}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6"># {{user.numero_commande}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.quantite}} Produits (s)</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a *ngIf="user.statut==='en attente de réception'"
+                            class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                             style="width: calc(1.5em + 4.1rem + 2px)
+                             !important;  color:white;  background-color: #521491 !important;">
+                             {{user.statut}} </a>
+                             <a *ngIf="user.statut==='en cours de livraison'"
+                             class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                              style="width: calc(1.5em + 4.1rem + 2px)
+                              !important;  color:white;  background-color: #148B91 !important;">
+                              {{user.statut}} </a>
+                             <a *ngIf="user.statut==='initier'"
+                             class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                              style="width: calc(1.5em + 4.1rem + 2px)
+                              !important;  color:white;  background-color: #07842D !important;">
+                              {{user.statut}} </a>
+                             <a *ngIf="user.statut==='accepter'"
+                             class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                              style="width: calc(1.5em + 4.1rem + 2px)
+                              !important;  color:white;  background-color: #0AA50F !important;">
+                              {{user.statut}} </a>
+                              <a *ngIf="user.statut==='annuler'"
+                              class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                               style="width: calc(1.5em + 4.1rem + 2px)
+                               !important;  color:white;  background-color: #DC1616 !important;">
+                               {{user.statut}} </a>
+                               <a *ngIf="user.statut==='terminer'"
+                               class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                style="width: calc(1.5em + 4.1rem + 2px)
+                                !important;  color:white;  background-color: #88AD3F !important;">
+                                {{user.statut}} </a>
+                                <a *ngIf="user.statut==='enlever'"
+                                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                 style="width: calc(1.5em + 4.1rem + 2px)
+                                 !important;  color:white;  background-color: #E9C613A1 !important;">
+                                 {{user.statut}} </a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.montant | number:'1.0-0'}} Fr</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.montantlivraison | number:'1.0-0'}} Fr</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ecommerce'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.created_at}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="users.data.role==='admin'&&user.typecommande =='ecommerce'">
+                        <div class="d-flex justify-content-end flex-shrink-0">
+                          <a  (click)="open(contents,user)"
+                          class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                           style="width: calc(1.5em + 4.1rem + 2px)
+                           !important;  color:white;  background-color: #855D07 !important;">
+                           Suivre </a>
+                          <a
+                            (click)="DeleteCourse(user.id)"
+                            class="
+                              btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                            "
+                          >
+                            <span
+                              [inlineSVG]="
+                                './assets/media/icons/duotune/general/gen027.svg'
+                              "
+                              class="svg-icon svg-icon-3"
+                            ></span>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <!-- end::Table body -->
+                </table>
+                <div>
+                  <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+                </div>
+                <!-- end::Table -->
+              </div>
+              <!-- end::Table container -->
+            </div>
+          </ng-template>
+        </li>
+        <li ngbNavItem>
+          <a ngbNavLink>Course PPAI</a>
+          <ng-template ngbNavContent>
+            <div class="card-body py-3">
+              <!-- begin::Table container -->
+              <div class="table-responsive">
+                <!-- begin::Table -->
+                <div *ngIf="UserTotals===0&&!spinner" style="font-weight:700;margin-left: 42%;margin-top: 10%;font-size:medium; color:black " > aucun element</div>
+                <app-spinnerlaod *ngIf="spinner" ></app-spinnerlaod>
+        
+                <table *ngIf="UserTotals>0&&!spinner"
+                  class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"
+                >
+                  <!-- begin::Table head -->
+                  <thead>
+                    <tr class="fw-bolder text-muted">
+                      <th class="w-25px">
+                        <div
+                          class="form-check form-check-sm form-check-custom form-check-solid">
+                        </div>
+                      </th>
+                      <th class="min-w-140px">transporteur</th>
+                      <th class="min-w-120px">Depart</th>
+                      <th class="min-w-120px">Destination</th>
+                      <th class="min-w-120px">Client</th>
+                      <th class="min-w-120px">Quantité</th>
+                      <th class="min-w-120px">Statut</th>
+                      <th class="min-w-120px">Montant course</th>
+                      <th class="min-w-120px">Date creation</th>
+                      <th  *ngIf="users.data.role==='admin'" class="min-w-100px text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <!-- end::Table head -->
+                  <!-- begin::Table body -->
+                  <tbody>
+                    <tr *ngFor="let user of Users  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">
+                      <td *ngIf="user.typecommande =='ppai'" >
+                        <div
+                          class="
+                            form-check form-check-sm form-check-custom form-check-solid
+                          "
+                        >
+                        <!-- end::Table head
+                          <input
+                            class="form-check-input widget-9-check"
+                            type="checkbox"
+                            value="1"
+                          />-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ppai'">
+                        <a
+                          routerLink="/apps/chat/update-vente/{{user.id}}"
+                          class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                        >
+                        {{user.transporteur}}{{user.typecommande}}
+                        </a>
+                      <!-- end::Table head -->
+                        <span class="text-muted fw-bold text-muted d-block fs-7">
+                          {{user.prodloc}}
+                        </span>
+        
+                      </td >
+                      <td *ngIf="user.typecommande =='ppai'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a class="text-dark fw-bolder text-hover-primary fs-6">{{user.depart}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ppai'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.destination}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ppai'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.nameClient}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+
+                      <td *ngIf="user.typecommande =='ppai'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.quantite}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ppai'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a *ngIf="user.statut==='accepter'"
+                            class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                             style="width: calc(1.5em + 4.1rem + 2px)
+                             !important;  color:white;  background-color: #521491 !important;">
+                             acceptée </a>
+                             <a *ngIf="user.statut==='embarquement'"
+                             class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                              style="width: calc(3.5em + 4.1rem + 2px)
+                              !important;  color:white;  background-color: #148B91 !important;">
+                              {{user.statut}} </a>
+                             <a *ngIf="user.statut==='initier'"
+                             class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                              style="width: calc(1.5em + 4.1rem + 2px)
+                              !important;  color:white;  background-color: #758407 !important;">
+                              initiée </a>
+                             <a *ngIf="user.statut==='en cours de livraison'"
+                             class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                              style="width: calc(1.5em + 4.1rem + 2px)
+                              !important;  color:white;  background-color: #0AA50F !important;">
+                              {{user.statut}} </a>
+                              <a *ngIf="user.statut==='livrer'"
+                              class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                               style="width: calc(1.5em + 4.1rem + 2px)
+                               !important;  color:white;  background-color: #DC1616 !important;">
+                               livrée </a>
+                               <a *ngIf="user.statut==='arriver'"
+                               class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                style="width: calc(1.5em + 4.1rem + 2px)
+                                !important;  color:white;  background-color: #88AD3F !important;">
+                                arrivée </a>
+                                <a *ngIf="user.statut==='enlever'"
+                                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                 style="width: calc(1.5em + 4.1rem + 2px)
+                                 !important;  color:white;  background-color: #E9C613A1 !important;">
+                                 embarquement </a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ppai'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.montant | number:'1.0-0'}} Fr</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td *ngIf="user.typecommande =='ppai'" class="text-end">
+                        <div class="d-flex flex-column w-100 me-2">
+                          <div class="d-flex flex-stack mb-2">
+                            <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.created_at}}</a>
+                          </div>
+                          <!-- begin::Table body
+                          <div class="progress h-6px w-100">
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              [style.width]="'50%'"
+                            ></div>
+                          </div>-->
+                        </div>
+                      </td>
+                      <td  *ngIf="users.data.role==='admin'&&user.typecommande =='ppai'">
+                        <div class="d-flex justify-content-end flex-shrink-0">
+                          <a  (click)="open(contents,user)"
+                          class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                           style="width: calc(1.5em + 4.1rem + 2px)
+                           !important;  color:white;  background-color: #855D07 !important;">
+                           Suivre </a>
+                          <a
+                            (click)="DeleteCourse(user.id)"
+                            class="
+                              btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                            "
+                          >
+                            <span
+                              [inlineSVG]="
+                                './assets/media/icons/duotune/general/gen027.svg'
+                              "
+                              class="svg-icon svg-icon-3"
+                            ></span>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <!-- end::Table body -->
+                </table>
+                <div>
+                  <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+                </div>
+                <!-- end::Table -->
+              </div>
+              <!-- end::Table container -->
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+      <!-- end::Table container -->
+    </div>
+    <!-- begin::Body -->
+    </div>
+
+  </div>
+
+<ng-template #contents let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Suivre la livraison</h4>
+      <button type="button" #closebtn class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    
+    <div class="multistep">
+      <div class="multistep-header" style="margin-left: 17%;" >
+        <ul *ngIf="modalContent.typecommande =='ecommerce'" class="form-heading">
+          <li style="right: 13%;"
+          [ngClass]="modalContent.statut === 'initier' ? 'completed' : 'active'
+          && modalContent.statut === 'accepter' ? 'completed' : 'active'
+          && modalContent.statut === 'enlever' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'terminer' ? 'completed' : 'active'"
+          >
+            <span class="stepno">1</span>
+            <span class="steptitle">Initiée </span>
+          </li>
+
+
+          <li style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'accepter' ? 'completed' : 'active'
+          && modalContent.statut === 'enlever' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'terminer' ? 'completed' : 'active'
+          " >
+            <span class="stepno">2</span>
+            <span class="steptitle">Accepteé</span>
+          </li>
+          <li  style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'enlever' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'terminer' ? 'completed' : 'active'" >
+            <span class="stepno">3</span>
+            <span class="steptitle">enlévement</span>
+          </li>
+          <li  style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'terminer' ? 'completed' : 'active'" >
+            <span class="stepno">4</span>
+            <span class="steptitle">Livraison en cours</span>
+          </li>
+          <li  style="right: 15% !important;"
+          [ngClass]="modalContent.statut === 'terminer' ? 'completed' : 'active'" >
+            <span class="stepno">5</span>
+            <span class="steptitle">Terminer</span>
+          </li>
+        </ul>
+        <ul *ngIf="modalContent.typecommande =='ppai'" class="form-heading">
+          <li style="right: 13%;"
+          [ngClass]="modalContent.statut === 'initier' ? 'completed' : 'active'
+          && modalContent.statut === 'accepter' ? 'completed' : 'active'
+          && modalContent.statut === 'embarquement' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'arriver' ? 'completed' : 'active'"
+          >
+            <span class="stepno">1</span>
+            <span class="steptitle">Initiée </span>
+          </li>
+
+
+          <li style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'accepter' ? 'completed' : 'active'
+          && modalContent.statut === 'embarquement' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'arriver' ? 'completed' : 'active'
+          " >
+            <span class="stepno">2</span>
+            <span class="steptitle">Acceptée</span>
+          </li>
+          <li  style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'embarquement' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'arriver' ? 'completed' : 'active'" >
+            <span class="stepno">3</span>
+            <span class="steptitle">enlévement</span>
+          </li>
+          <li  style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'arriver' ? 'completed' : 'active'" >
+            <span class="stepno">4</span>
+            <span class="steptitle">Livraison en cours</span>
+          </li>
+          <li  style="right: 15% !important;"
+          [ngClass]="modalContent.statut === 'arriver' ? 'completed' : 'active'" >
+            <span class="stepno">5</span>
+            <span class="steptitle">Terminée</span>
+          </li>
+        </ul>
+    </div>
+</div>
+</div>
+</ng-template>

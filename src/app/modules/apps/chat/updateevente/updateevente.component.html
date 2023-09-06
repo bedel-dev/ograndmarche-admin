@@ -1,0 +1,285 @@
+<div class="card mb-5 mb-xl-10">
+  <div
+    class="card-header border-0 cursor-pointer"
+    role="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#kt_account_profile_details"
+    aria-expanded="true"
+    aria-controls="kt_account_profile_details"
+  >
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">Produit</h3>
+    </div>
+  </div>
+  <div id="kt_account_profile_details" class="collapse show">
+    <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
+      <div class="card-body border-top p-9">
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Image du produit</label>
+
+          <div class="col-lg-8">
+            <div class="col-lg-6 fv-row">
+              <input
+                type="file"
+                class="
+                  form-control form-control-lg form-control-solid
+                  mb-3 mb-lg-0
+                "
+                formControlName="image"
+                name="image"
+                id="image"
+                (change)="onFileChange($event)"
+              />
+              <div *ngIf="errorfeildfile" style="color:red" >
+                Ajouter une image
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Description</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+             id="exampleFormControlTextarea1"
+             rows="3"
+             type="text"
+             class="form-control form-control-lg form-control-solid"
+             placeholder="description"
+             name="description"
+             formControlName="description"
+             >
+
+            <div *ngIf="errorfeildDescription" style="color:red" >
+              Ajouter une description
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Quantité</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+             id="exampleFormControlTextarea1"
+             rows="3"
+             type="number"
+             class="form-control form-control-lg form-control-solid"
+             placeholder="Quantité"
+             name="quantite"
+             formControlName="quantite"
+             >
+            <div *ngIf="errorfeilquantite" style="color:red" >
+              Ajouter une quantité
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Montant</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+             id="exampleFormControlTextarea1"
+             rows="3"
+             type="number"
+             class="form-control form-control-lg form-control-solid"
+             placeholder="Montant"
+             name="montant"
+             formControlName="montant"
+             >
+
+            <div *ngIf="errorfeilmontant" style="color:red" >
+              Ajouter un montant
+            </div>
+          </div>
+        </div>
+<!--  -->
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label fw-bold fs-6"
+          ><span class="required">Type de vente</span></label>
+        <div class="col-lg-8 fv-row">
+          <select
+            class="form-select form-select-solid form-select-lg fw-bold"
+            id="typevente"
+            name="typevente"
+            formControlName="typevente">
+            <option value="Produit consommable">Produit consommable</option>
+            <option value="Intrant">Intrant</option>
+            <option value="Outils">Outils</option>
+          </select>
+          <div *ngIf="errorfeildpays" style="color:red" >
+            Ajouter un type de vente
+          </div>
+        </div>
+      </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6"
+            ><span class="required">Fournisseur</span></label>
+          <div class="col-lg-8 fv-row">
+            <select
+              class="form-select form-select-solid form-select-lg fw-bold"
+              id="producteur"
+              name="producteur"
+              formControlName="producteur">
+              <option *ngFor="let c of autorisation" value="{{c.id}}">{{c.name}}</option>
+            </select>
+            <div *ngIf="errorfeildpays" style="color:red" >
+              Ajouter un fournisseur
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6"
+            ><span class="required">Produit</span></label>
+          <div class="col-lg-8 fv-row">
+            <select
+              class="form-select form-select-solid form-select-lg fw-bold"
+              id="producteur"
+              name="produit"
+              formControlName="produit">
+              <option *ngFor="let c of User" value="{{c.id}}">{{c.label}}</option>
+            </select>
+            <div *ngIf="errorfeildpays" style="color:red" >
+              Ajouter un produit
+            </div>
+          </div>
+        </div>
+<!--
+<div class="container">
+  <h2>Filterable Dropdown</h2>
+  <p>Open the dropdown menu and type something in the input field to search for dropdown items:</p>
+  <p>Note that we have styled the input field to fit the dropdown items.</p>
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle"  type="button" data-toggle="dropdown">Dropdown Example
+    <span class="caret"></span></button>
+    <ul id="dropdown"  class="dropdown-menu">
+      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+      <li><a href="#">HTML</a></li>
+      <li><a href="#">CSS</a></li>
+      <li><a href="#">JavaScript</a></li>
+      <li><a href="#">jQuery</a></li>
+      <li><a href="#">Bootstrap</a></li>
+      <li><a href="#">Angular</a></li>
+    </ul>
+  </div>
+</div>-->
+        <br/>
+        <div *ngIf="stateinfo">
+          <div class="mb-lg-15 alert alert-danger">
+            <div class="alert-text font-weight-bold">
+              {{message}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="success">
+          <div class="mb-lg-15 alert alert-success">
+            <div class="alert-text font-weight-bold">
+              {{message}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="passewordgood">
+          <div class="mb-lg-15 alert alert-danger">
+            <div class="alert-text font-weight-bold">
+              Les mots de passe sont pas identiques
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end py-6 px-9">
+        <button alert-success
+          type="button"
+          class="btn btn-primary"
+          [disabled]="isLoading"
+          [disabled]="allreadyexiste"
+          (click)="saveSettings()"
+        >
+          <ng-container *ngIf="!isLoading">Enregistrer</ng-container>
+          <ng-container *ngIf="isLoading">
+            <span clas="indicator-progress" [style.display]="'block'">
+              Patientez...{{ " " }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div *ngIf="accesautorisation" class="card mb-5 mb-xl-10">
+  <div
+    class="card-header border-0 cursor-pointer"
+    role="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#kt_account_notifications"
+    aria-expanded="true"
+    aria-controls="kt_account_notifications"
+  >
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">Autorisations</h3>
+    </div>
+  </div>
+  <div id="kt_account_notifications" class="collapse show">
+    <form [formGroup]="AddAutorisationForm" (ngSubmit)="Saveautorisation()" class="form">
+      <div class="card-body border-top px-9 pt-3 pb-4">
+        <div class="table-responsive">
+          <table
+            class="table table-row-dashed border-gray-300 align-middle gy-6"
+          >
+            <tbody class="fs-6 fw-bold">
+              <tr *ngFor="let item of autorisation" >
+                <td class="min-w-250px fs-4 fw-bolder">{{item.libelle}}</td>
+                <td class="w-125px">
+                  <div class="form-check form-check-solid">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="kt_settings_notification_email"
+                      value=""
+                      formControlName="autorisation"
+                      (change)="choixAutorisation(item)"
+                    />
+                  </div>
+                </td>
+            </tbody>
+          </table>
+          <div *ngIf="sussesauto">
+            <div class="mb-lg-15 alert alert-success">
+              <div class="alert-text font-weight-bold">
+                Autorisation enregistrer
+              </div>
+            </div>
+          </div>
+          <div *ngIf="autorisationempty">
+            <div class="mb-lg-15 alert alert-danger">
+              <div class="alert-text font-weight-bold">
+                Choisissez une autorisation
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end py-6 px-9">
+          <button type="button" class="btn btn-primary" (click)="Saveautorisation()">
+          <ng-container *ngIf="!isLoading">Enregistrer les autorisations</ng-container>
+          <ng-container *ngIf="isLoading">
+            <span class="indicator-progress" [style.display]="'block'">
+              Patientez svp...{{ " " }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+

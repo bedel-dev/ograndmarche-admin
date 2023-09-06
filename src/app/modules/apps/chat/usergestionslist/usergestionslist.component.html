@@ -1,0 +1,257 @@
+
+
+<div class="col-xl-12" style="padding: 10px 24px;">
+<!-- begin::Header -->
+<app-spinnerlaod *ngIf="spinner" ></app-spinnerlaod>
+
+<div *ngIf="!spinner" class="card card-xxl-stretch mb-5 mb-xl-8">
+  <div class="card-header border-0 pt-5" style="padding: 0 1.1rem!important;" >
+    <h3 class="card-title align-items-start flex-column">
+      <span class="card-label fw-bolder fs-3 mb-1">Utilisateurs</span>
+      <span class="text-muted mt-1 fw-bold fs-7"> {{UserTotals}} membres</span>
+    </h3>
+    <div class="d-flex my-2">
+      <div class="d-flex align-items-center position-relative me-4">
+        <span
+          [inlineSVG]="'./assets/media/icons/duotune/general/gen021.svg'"
+          class="svg-icon svg-icon-3 position-absolute ms-3"
+        ></span>
+        <input
+        style="width: 500px !important;"
+          type="text"
+          id="kt_filter_search"
+          class="form-control form-control-white form-control-sm ps-9"
+          placeholder="Entrer un nom"
+          name="search"
+          ng-model="search"
+          (input)="onSearchChange($event)"
+        />
+      </div>
+    </div>
+    <div class="d-flex my-2">
+      <div class="d-flex align-items-center position-relative me-4">
+        <select
+        style="height: 36px !important; border: 1px solid var(--kt-input-border-color) !important;
+        padding: 0.175rem 3rem 0.175rem 1rem !important;"
+        class="form-select form-select-solid form-select-lgs fw-bold"
+        (input)="onSearchChange($event)"
+        name="role">
+        <option  disabled  selected value="null">Filtrer par role</option>
+        <option value="gpublic">Grand public</option>
+        <option value="all">Tous</option>
+        <option value="fournisseur">Fournisseur</option>
+        <option value="Transporteur">Transporteur</option>
+        <option value="Intrant">Vendeur Intrant</option>
+        <option value="conseiller">Conseiller</option>
+        <option value="Producteur">Producteur </option>
+        <option value="Delegue">Delegue </option>
+        <option value="Grossiste">Grossiste</option>
+      </select>
+      </div>
+    </div>
+    <div
+      class="card-toolbar"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      data-bs-trigger="hover"
+      title="Clicker pour ajouter un utilisateur"
+    >
+      <a    routerLink="/apps/chat/adduser"   class="btn btn-sm btn-light-primary">
+        <span
+          [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
+          class="svg-icon svg-icon-3"
+        ></span>
+        Nouveau utilisateur
+      </a>
+    </div>
+
+  </div>
+  <!-- end::Header      routerLink="/apps/chat/adduser"   -->
+  <!-- begin::Body -->
+  <div class="card-body py-3">
+    <!-- begin::Table container -->
+    <div class="table-responsive">
+      <!-- begin::Table -->
+      <table
+        class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"
+      >
+        <!-- begin::Table head -->
+        <thead>
+          <tr class="fw-bolder text-muted">
+            <th class="w-25px">
+              <div
+                class="
+                  form-check form-check-sm form-check-custom form-check-solid
+                "
+              >
+                      <!-- begin::Table head
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value="1"
+                  data-kt-check="true"
+                  data-kt-check-target=".widget-9-check"
+                />-->
+              </div>
+            </th>
+            <th class="min-w-150px">Nom & prenom</th>
+            <th class="min-w-140px">Contact</th>
+              <!--
+            <th class="min-w-120px">Username</th>
+               -->
+            <th class="min-w-120px">Localité</th>
+            <th class="min-w-120px">Date creation</th>
+            <th class="min-w-100px text-end">Actions</th>
+          </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+          <tr *ngFor="let user of Users  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">
+            <td>
+              <div
+                class="
+                  form-check form-check-sm form-check-custom form-check-solid
+                "
+              >
+              <!-- end::Table head
+                <input
+                  class="form-check-input widget-9-check"
+                  type="checkbox"
+                  value="1"
+                />-->
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="symbol symbol-45px me-5">
+                 <!-- <img src="./assets/media/avatars/300-14.jpg" alt="" />-->
+                  <img src="{{profilurl}}/{{user.urlprofile}}" alt="{{user.urlprofile}}" />
+                </div>
+                <div class="d-flex justify-content-start flex-column">
+                  <a  style="text-transform: uppercase; " routerLink="/apps/chat/update-user/{{user.id}}" class="text-dark fw-bolder text-hover-primary fs-6">
+                    {{user.name}}
+                  </a>
+                  <span class="text-muted fw-bold text-muted d-block fs-7">
+                    {{user.role}}
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <a
+                routerLink="/apps/chat/update-user/{{user.id}}"
+                class="text-dark fw-bolder text-hover-primary d-block fs-6"
+              >
+              {{user.contact}}
+              </a>
+            <!-- end::Table head -->
+              <span class="text-muted fw-bold text-muted d-block fs-7">
+                Côte d'Ivoire
+              </span>
+
+            </td>
+                          <!--
+            <td class="text-end">
+              <div class="d-flex flex-column w-100 me-2">
+                <div class="d-flex flex-stack mb-2">
+                  <a routerLink="/apps/chat/update-user/{{user.id}}" class="text-dark fw-bolder text-hover-primary fs-6">{{user.username}}</a>
+                </div>
+                 begin::Table body
+                <div class="progress h-6px w-100">
+                  <div
+                    class="progress-bar bg-primary"
+                    role="progressbar"
+                    [style.width]="'50%'"
+                  ></div>
+                </div>
+              </div>
+            </td>
+
+               -->
+
+            <td class="text-end">
+              <div class="d-flex flex-column w-100 me-2">
+                <div class="d-flex flex-stack mb-2">
+                  <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.locality =="null" ?"  ":user.locality}}</a>
+                </div>
+                <!-- begin::Table body
+                <div class="progress h-6px w-100"> user.prodloc ==null ?"  ":user.prodloc
+                  <div
+                    class="progress-bar bg-primary"
+                    role="progressbar"
+                    [style.width]="'50%'"
+                  ></div>
+                </div>-->
+              </div>
+            </td>
+            <td class="text-end">
+              <div class="d-flex flex-column w-100 me-2">
+                <div class="d-flex flex-stack mb-2">
+                  <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.created_at}}</a>
+                </div>
+                <!-- begin::Table body
+                <div class="progress h-6px w-100">
+                  <div
+                    class="progress-bar bg-primary"
+                    role="progressbar"
+                    [style.width]="'50%'"
+                  ></div>
+                </div>-->
+              </div>
+            </td>
+            <td>
+              <div class="d-flex justify-content-end flex-shrink-0">
+                <a routerLink="/apps/chat/add-vente/{{user.contact}}"  *ngIf="user.role!=='Transporteur'&&user.role!=='gpublic'&&user.role!=='Livreur'&&user.role!=='conseiller'&&user.role!=='Delegue'&&user.role!=='Grossiste'"    style="width: calc(1.5em + 4.1rem + 2px) !important;color: var(--kt-text-muted);  background-color: var(--kt-light) !important;"
+
+                class="
+                  btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                  me-1
+                "
+              >
+              ajout vente
+              </a>
+
+                <a
+                  routerLink="/apps/chat/update-user/{{user.id}}"
+                  class="
+                    btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                    me-1
+                  "
+                >
+                  <span
+                    [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                    class="svg-icon svg-icon-3"
+                  ></span>
+                </a>
+                <a
+                  (click)="deleteUSer(user.id)"
+                  class="
+                    btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                  "
+                >
+                  <span
+                    [inlineSVG]="
+                      './assets/media/icons/duotune/general/gen027.svg'
+                    "
+                    class="svg-icon svg-icon-3"
+                  ></span>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <!-- end::Table body -->
+      </table>
+      <div>
+        <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+      </div>
+      <!-- end::Table -->
+    </div>
+    <!-- end::Table container -->
+  </div>
+  <!-- begin::Body -->
+  </div>
+
+</div>
+

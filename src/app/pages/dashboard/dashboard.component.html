@@ -1,0 +1,58 @@
+
+
+<!--begin::Row-->
+<div *ngIf="UserConnected.data.role =='admin'||UserConnected.data.role =='Producteur'||UserConnected.data.role =='Fournisseur'" class="row g-5 g-xl-10 mb-15s mb-xl-2">
+  <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+    <app-cards-widget17 [AmoutGlobalTransaction]="AmoutGlobal" [rembourser]="ttrembourser" [NoNrembourser]="ttNonrembourser"  cssClass="h-md-50 mb-5 mb-xl-10" ></app-cards-widget17>
+  </div>
+  <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+    <app-cards-widget20  cssClass="h-md-50 mb-5 mb-xl-10w"  width="{{pourcentRechargements}}" percent="{{pourcentRechargements}}"  nbrElement = "{{TotalRechargements}}"  description="Commandes totales" color="#F1416C"img="./assets/media/patterns/vector-1.png"></app-cards-widget20>  
+  </div> 
+
+  <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+    <app-cards-widget20 cssClass="h-md-50 mb-5 mb-xl-10" width="{{pourcentAchatcarte}}" 
+    percent="{{pourcentAchatcarte}}" nbrElement = "{{TotalAchatcarte}}" 
+    description="Commandes terminées" color="#5e6278" img="./assets/media/patterns/vector-2.png"></app-cards-widget20>
+  </div>
+
+   <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+    <app-cards-widget20 cssClass="h-md-50 mb-5 mb-xl-10" width="{{pourcenttransaction}}" 
+    percent="{{pourcenttransaction}}" nbrElement = "{{Totaltransaction}}" 
+    description="Commande en cours" color="#1E2B77" img="./assets/media/patterns/vector-2.png"></app-cards-widget20>
+  </div>
+
+</div>
+
+<div *ngIf="UserConnected.data.role =='admin'||UserConnected.data.role =='Transporteur'" class="row g-5 g-xl-10 mb-15s mb-xl-2">
+
+  <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+    <app-cards-widget20  cssClass="h-md-50 mb-5 mb-xl-10w"  width="{{pourcentCourse}}" percent="{{pourcentCourse}}"  nbrElement = "{{TotalCourse}}"  description="Courses totales" color="#F1416C"img="./assets/media/patterns/vector-1.png"></app-cards-widget20>  
+  </div> 
+
+  <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+    <app-cards-widget20 cssClass="h-md-50 mb-5 mb-xl-10" width="{{pourcentCourseTerminer}}" 
+    percent="{{pourcentCourseTerminer}}" nbrElement = "{{TotalCousreterminer}}" 
+    description="Courses terminées" color="#5e6278" img="./assets/media/patterns/vector-2.png"></app-cards-widget20>
+  </div>
+
+   <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+    <app-cards-widget20 cssClass="h-md-50 mb-5 mb-xl-10" width="{{pourcenCourseEncours}}" 
+    percent="{{pourcenCourseEncours}}" nbrElement = "{{TotalCourseEcours}}" 
+    description="Courses en cours" color="#1E2B77" img="./assets/media/patterns/vector-2.png"></app-cards-widget20>
+  </div>
+
+</div>
+
+
+
+
+
+ <!--<div class="row gx-5 gx-xl-10" style="margin-bottom: 0px !important;">
+  <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+    <app-cards-widget20 cssClass="h-md-50 mb-5 mb-xl-10" width="{{pourcenttransaction}}" 
+    percent="{{pourcenttransaction}}" nbrElement = "{{Totaltransaction}}" 
+    description="Commande en cours" color="#1E2B77" img="./assets/media/patterns/vector-2.png"></app-cards-widget20>
+  </div>
+ </div>-->
+
+

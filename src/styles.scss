@@ -1,0 +1,121 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./assets/sass/style.scss";
+// Replace above style with this css file to enable RTL styles
+@import './assets/sass/plugins.scss';
+// @import "./assets/css/style.rtl.css";
+@import "./assets/sass/style.angular.scss";
+
+/* Pagination */
+
+pagination-template .ngx-pagination li.current {
+  border-radius: 8px;
+  color: #fff;
+  border: 0;
+  background-color: var(--kt-primary);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 15px 20px!important;
+  margin: 0;
+  position: relative;
+  margin-left: 15px;
+  // display: block;
+  line-height: 1.25;
+}
+pagination-template .ngx-pagination li a {
+  border-radius: 8px;
+  color: #18181D;
+  border: 0;
+  background-color: #F0F2F3;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 15px 20px!important;
+  margin: 0;
+  position: relative;
+  margin-left: 15px;
+  display: block;
+  line-height: 1.25;
+}
+template .ngx-pagination li.pagination-previous span, pagination-template .ngx-pagination li a {
+  border-radius: 8px;
+  color: #18181D;
+  border: 0;
+  background-color: #F0F2F3;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 15px 20px!important;
+  margin: 0;
+  position: relative;
+  margin-left: 15px;
+  display: block;
+  line-height: 1.25;
+}
+
+input#phone{
+  background-color: transparent !important;
+  border: none;
+  // width: 205%;    
+}
+
+input:-internal-autofill-selected {
+  background-color: rgb(232, 240, 254) !important;
+  background-image: none !important;
+  color: -internal-light-dark-color(black, white) !important;
+}
+
+.bg{
+  background-image:url(assets/media/logos/bg.jpeg);
+  //background: repeat;
+}
+//(min-width: 992px
+
+@media (min-width: 992px){
+  .modal-lg, .modal-xl {
+    --bs-modal-width: 2000px;
+  }
+}
+
+
+// css tableau 
+
+table.rounded-corners{
+  width:100%;
+  border-radius:5px;
+  background:transparent;
+}
+.rounded-corners tr{
+  border-radius:5px;
+}
+.rounded-corners th,td{
+  padding:5px;
+}
+.rounded-corners th {
+  background-color: #795548!important;
+  color: white !important;
+}
+.rounded-corners th{
+  text-align:left;
+  background:blue;
+  color: #fff;
+  padding-left: 1rem !important;
+}
+.rounded-corners th:nth-child(1) {
+  border-radius: 5px 0px 0px 0px;
+}
+
+.rounded-corners tbody tr:nth-child(odd) {
+  background-color: #d8dd4d;
+  color: white !important;
+}
+
+.rounded-corners th:nth-last-child(1) {
+  border-radius: 0px 5px 0px 0px;
+}
+
+
+.table.rounded-corners.gs-0 td:first-child {
+  padding-left: 1rem;
+}
+

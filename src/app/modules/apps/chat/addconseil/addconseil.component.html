@@ -1,0 +1,198 @@
+<div class="card mb-5 mb-xl-10">
+    <div
+      class="card-header border-0 cursor-pointer"
+      role="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#kt_account_profile_details"
+      aria-expanded="true"
+      aria-controls="kt_account_profile_details"
+    >
+      <div class="card-title m-0">
+        <h3 class="fw-bolder m-0">Conseil</h3>
+      </div>
+    </div>
+    <div id="kt_account_profile_details" class="collapse show">
+      <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
+        <div class="card-body border-top p-9">
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6"
+              >Produit</label>
+            <div class="col-lg-8">
+              <div class="row">
+                <div class="col-lg-6 fv-row">
+                    <select
+                    class="form-select form-select-solid form-select-lg fw-bold"
+                    id="producteur"
+                    name="produit"
+                    formControlName="produit">
+                    <option disabled  value="null">Selectionnez un produit </option>
+                    <option *ngFor="let c of User" value="{{c.id}}">{{c.label}}</option>
+                  </select>
+                  <div *ngIf="errorfeildprod" style="color:red" >
+                    Ajouter un produit
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="row mb-6">
+          <span class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Description</span>
+          <div class="col-lg-8">
+            <div class="row">
+              <div class="col-lg-6 fv-row">
+                  <textarea
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                  type="text"
+                  class="form-control form-control-lg form-control-solid"
+                  placeholder="Description"
+                  name="description"
+                  formControlName="description"
+                  ></textarea>
+                <div *ngIf="errorfeildescription" style="color:red" >
+                  entrez une description
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+            <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6"
+                  >Format du fichier</label>
+                <div class="col-lg-8">
+                  <div class="row">
+                    <div class="col-lg-6 fv-row">
+                        <select
+                        class="form-select form-select-solid form-select-lg fw-bold"
+                        id="typeProduit"
+                        name="typeProduit"
+                        (change)="onChangeValue($event)"
+                        formControlName="typeProduit">
+                        <option disabled value="null"> Selectionnez un type </option>
+                        <option  value="video lien"> Lien video youtube </option>
+                        <option  value="pdf lien"> Lien pdf </option>
+                        <option  value="pdf"> Fichier PDF </option>
+
+                      </select>
+                      <div *ngIf="errorfeildpays" style="color:red" >
+                        choisissez un type de conseil
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+
+            <div  *ngIf="linkvideo" class="row mb-6">
+                <span class="col-lg-4 col-form-label required fw-bold fs-6"
+                  >Ajouter un fichier</span>
+                <div class="col-lg-8">
+                  <div class="row">
+                    <div class="col-lg-6 fv-row">
+                        <input
+                        id="exampleFormControlTextarea1"
+                        rows="3"
+                        type="text"
+                        class="form-control form-control-lg form-control-solid"
+                        placeholder="lien video (youtube)"
+                        name="videolink"
+                        formControlName="videolink"
+                        >
+                      <div *ngIf="errorfeildlinkvideo" style="color:red" >
+                        choisissez un lien youtube
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div *ngIf="linkpdf" class="row mb-6">
+                <span class="col-lg-4 col-form-label required fw-bold fs-6"
+                  >Ajouter un fichier</span>
+                <div class="col-lg-8">
+                  <div class="row">
+                    <div class="col-lg-6 fv-row">
+                        <input
+                        id="exampleFormControlTextarea1"
+                        rows="3"
+                        type="text"
+                        class="form-control form-control-lg form-control-solid"
+                        placeholder="lien pdf"
+                        name="email"
+                        formControlName="pdflink"
+                        >
+                      <div *ngIf="errorfeildlinkpdf" style="color:red" >
+                        choisissez un lien
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          <div *ngIf="filevideopdf" class="row mb-6">
+            <label class="col-lg-4 col-form-label fw-bold fs-6">Ajouter un fichier</label>
+            <div class="col-lg-8">
+              <div class="col-lg-6 fv-row">
+                <input
+                  type="file"
+                  class="
+                    form-control form-control-lg form-control-solid
+                    mb-3 mb-lg-0"
+                  formControlName="image"
+                  name="image"
+                  id="image"
+                  (change)="onFileChange($event)"
+                />
+                <div *ngIf="errorfeildfile" style="color:red" >
+                  Ajouter un fichier  pdf
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+  <!--  -->
+        <br/>
+          <div *ngIf="stateinfo">
+            <div class="mb-lg-15 alert alert-danger">
+              <div class="alert-text font-weight-bold">
+                {{message}}
+              </div>
+            </div>
+          </div>
+          <div *ngIf="success">
+            <div class="mb-lg-15 alert alert-success">
+              <div class="alert-text font-weight-bold">
+                {{message}}
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer d-flex justify-content-end py-6 px-9">
+          <button alert-success
+            type="button"
+            class="btn btn-primary"
+            [disabled]="isLoading"
+            [disabled]="allreadyexiste"
+            (click)="saveSettings()"
+          >
+            <ng-container *ngIf="!isLoading">Enregistrer</ng-container>
+            <ng-container *ngIf="isLoading">
+              <span clas="indicator-progress" [style.display]="'block'">
+                Patientez...{{ " " }}
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+            </ng-container>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+

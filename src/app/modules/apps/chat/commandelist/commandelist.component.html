@@ -1,0 +1,852 @@
+
+
+    <div  *ngIf="ActiveCompte&&message==='commande confirmer'" class="mb-lg-15 alert alert-success">
+      <div class="alert-text font-weight-bold">
+        {{message}}
+      </div>
+    </div>
+    <div  *ngIf="ActiveCompte&&message==='commande annuler'" class="mb-lg-15 alert alert-danger">
+      <div class="alert-text font-weight-bold">
+        {{message}}
+      </div>
+    </div>
+<div *ngIf="userconnected.data.role ==='admin'" class="col-xl-12" style="padding: 10px 24px;">
+  <!-- begin::Header -->
+  <div class="card card-xxl-stretch mb-5 mb-xl-8">
+    <div class="card-header border-0 pt-5">
+      <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Commande</span>
+        <span class="text-muted mt-1 fw-bold fs-7"> {{UserTotals}} commande (s)</span>
+      </h3>
+      <div class="d-flex my-2">
+        <div class="d-flex align-items-center position-relative me-4">
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/general/gen021.svg'"
+            class="svg-icon svg-icon-3 position-absolute ms-3"
+          ></span>
+          <input
+          style="width: 500px !important;"
+            type="text"
+            id="kt_filter_search"
+            class="form-control form-control-white form-control-sm ps-9"
+            placeholder="Entrer un numero de commande"
+            name="search"
+            ng-model="search"
+            (input)="onSearchChange($event)"
+          />
+        </div>
+      </div>
+      <!--
+        <div
+        class="card-toolbar"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        data-bs-trigger="hover"
+        title="Clicker pour ajouter un produit"
+      >
+        <a  routerLink="/apps/chat/add-produit"  class="btn btn-sm btn-light-primary">
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
+            class="svg-icon svg-icon-3"
+          ></span>
+          Nouveau produit
+        </a>
+      </div>
+      -->
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div  class="card-body py-3">
+      <!-- begin::Table container -->
+      <div  class="table-responsive">
+        <!-- begin::Table -->
+        <div *ngIf="UserTotals===0&&!spinner" style="font-weight:700;margin-left: 42%;margin-top: 10%;font-size:medium; color:black " > aucun element</div>
+        <app-spinnerlaod *ngIf="spinner" ></app-spinnerlaod>
+
+        <table *ngIf="UserTotals>0&&!spinner"
+          class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"
+        >
+          <!-- begin::Table head -->
+          <thead>
+            <tr class="fw-bolder text-muted">
+              <th class="w-25px">
+                <div
+                  class="
+                    form-check form-check-sm form-check-custom form-check-solid"
+                >
+                </div>
+              </th>
+              <th class="min-w-150px">N˚Commande</th>
+              <th class="min-w-140px">Quantité</th>
+              <th class="min-w-120px">livraison</th>
+              <th class="min-w-120px">Statut</th>
+              <th class="min-w-120px">Montant de la commande</th>
+              <th class="min-w-120px">Client</th>
+              <th class="min-w-120px">Numero client</th>
+              <th class="min-w-120px">Localité client</th>
+              <th class="min-w-120px">Lieu de livraison</th>
+              <th class="min-w-120px">Date ajout</th>
+              <th class="min-w-100px text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of Users  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">
+              <td>
+                <div
+                  class="
+                    form-check form-check-sm form-check-custom form-check-solid
+                  "
+                >
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-45px me-5">
+                    <div  class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                      # {{user.numero_commande}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a
+
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}} produits (s)
+                </a>
+              </td>
+              <td>
+                <a
+
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.montantlivraison | number:'1.0-0'}} Fr
+                </a>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a *ngIf="user.statut==='en préparation'"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                     style="width: calc(1.5em + 6.1rem + 2px)
+                     !important;  color:white;  background-color: #076184 !important;">
+                     {{user.statut}} </a>
+                    <a *ngIf="user.statut==='en attente'"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                     style="width: calc(1.5em + 4.1rem + 2px)
+                     !important;  color:white;  background-color: #758407 !important;">
+                     {{user.statut}} </a>
+                     <a *ngIf="user.statut==='accepter'"
+                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                      style="width: calc(1.5em + 4.1rem + 2px)
+                      !important;  color:white;  background-color: #0AA50F !important;">
+                      {{user.statut}} </a>
+                      <a *ngIf="user.statut==='annuler'"
+                      class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                       style="width: calc(1.5em + 4.1rem + 2px)
+                       !important;  color:white;  background-color: #DC1616 !important;">
+                         annulée </a>
+                       <a *ngIf="user.statut==='enlever'"
+                       class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                        style="width: calc(1.5em + 4.1rem + 2px)
+                        !important;  color:white;  background-color: #DCCF16 !important;">
+                        enlevée </a>
+                        <a *ngIf="user.statut==='livraison en cours'"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                         style="width: calc(1.5em + 7.1rem + 2px)
+                         !important;  color:white;  background-color: #16DC8A !important;">
+                         {{user.statut}} </a>
+                         <a *ngIf="user.statut==='livrer'"
+                         class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                          style="width: calc(1.5em + 4.1rem + 2px)
+                          !important;  color:white;  background-color: #755A7E !important;">
+                          livrée </a>
+                          <a *ngIf="user.statut==='Livré'"
+                          class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                           style="width: calc(1.5em + 4.1rem + 2px)
+                           !important;  color:white;  background-color: #755A7E !important;">
+                           livrée </a>
+                          <a *ngIf="user.statut==='livraison'"
+                          class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                           style="width: calc(1.5em + 4.1rem + 2px)
+                           !important;  color:white;  background-color: #2C3632 !important;">
+                           {{user.statut}}</a>        
+                  </div>
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.montant | number:'1.0-0'}} Fr</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-ends">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.client}}</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-ends">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.numero}}</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-ends">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.locality}}</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-ends">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.lieuLivraison}}</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-ends">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.created_at}}</a>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex justify-content-end flex-shrink-0">
+                  <a href="javascript:void(0)" (click)="open(content, user)"
+                  class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                   style="width: calc(1.5em + 4.1rem + 2px)
+                   !important; background-color: #daada6 !important;">
+                     Detail </a>
+                     <div ngbDropdown>
+                      <button *ngIf="isLoading" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                        <ng-container>
+                          <span clas="indicator-progress" [style.display]="'block'">
+                            <span
+                              class="spinner-border spinner-border-sm align-middle ms-2"
+                            ></span>
+                          </span>
+                        </ng-container>
+                      </button>
+                      <button *ngIf="!isLoading" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" id="gfg"
+                              ngbDropdownToggle> <i class="fa fa-bars" aria-hidden="true"></i>
+                            </button>
+                      <div ngbDropdownMenu="gfg">
+                        <button   *ngIf="user.statut ==='accepter'" href="javascript:void(0)" (click)="openLivraison(contents, user)" ngbDropdownItem>faire la livraison</button>
+                        <button   (click)="DeleteCommande(user.id)" ngbDropdownItem>Supprimer la commande </button>
+                        <button *ngIf="user.statut ==='livraison en cours'
+                        ||user.statut==='en préparation'
+                        ||user.statut==='enlever'
+                        ||user.statut==='livrer'"
+                         routerLink="/apps/chat/list-courses/{{user.id}}" ngbDropdownItem>Suivre la course </button>
+                      </div>
+                    </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <!-- end::Table body -->
+        </table>
+        <div>
+          <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+        </div>
+        <!-- end::Table -->
+      </div>
+      <!-- end::Table container -->
+      <br/>
+      <div *ngIf="CanDeleted">
+        <div class="mb-lg-15 alert alert-danger">
+          <div class="alert-text font-weight-bold">
+            Vous n'avez pas le droit
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <!-- begin::Body -->
+
+
+</div>
+
+<div *ngIf="userconnected.data.role ==='fournisseur'||userconnected.data.role ==='Producteur'" class="col-xl-12" style="padding: 10px 24px;">
+  <!-- begin::Header -->
+  <div class="card card-xxl-stretch mb-5 mb-xl-8">
+    <div class="card-header border-0 pt-5">
+      <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Commande</span>
+        <span class="text-muted mt-1 fw-bold fs-7"> {{CommandeProd.length}} commande (s)</span>
+      </h3>
+      <div class="d-flex my-2">
+        <div class="d-flex align-items-center position-relative me-4">
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/general/gen021.svg'"
+            class="svg-icon svg-icon-3 position-absolute ms-3"
+          ></span>
+          <input
+          style="width: 500px !important;"
+            type="text"
+            id="kt_filter_search"
+            class="form-control form-control-white form-control-sm ps-9"
+            placeholder="Entrer un numero de commande"
+            name="search"
+            ng-model="search"
+            (input)="onSearchChangeDetailCommande($event)"
+          />
+        </div>
+      </div>
+      <!--
+        <div
+        class="card-toolbar"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        data-bs-trigger="hover"
+        title="Clicker pour ajouter un produit"
+      >
+        <a  routerLink="/apps/chat/add-produit"  class="btn btn-sm btn-light-primary">
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
+            class="svg-icon svg-icon-3"
+          ></span>
+          Nouveau produit
+        </a>
+      </div>
+      -->
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div  class="card-body py-3">
+      <!-- begin::Table container -->
+      <div  class="table-responsive">
+        <!-- begin::Table -->
+        <div *ngIf="CommandeProd.length===0&&!spinner" style="font-weight:700;margin-left: 42%;margin-top: 10%;font-size:medium; color:black " > aucun element</div>
+        <app-spinnerlaod *ngIf="spinner" ></app-spinnerlaod>
+        <div *ngIf="updateCommandeDetail &&message==='commande confirmer'" class="mb-lg-15 alert alert-success">
+          <div class="alert-text font-weight-bold">
+            {{message}}
+          </div>
+        </div>
+        <div  *ngIf="updateCommandeDetail&&message==='commande annuler'" class="mb-lg-15 alert alert-danger">
+          <div class="alert-text font-weight-bold">
+            {{message}}
+          </div>
+        </div>
+        <table *ngIf="CommandeProd.length>0"
+          class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"
+        >
+          <!-- begin::Table head -->
+          <thead>
+            <tr class="fw-bolder text-muted">
+              <th class="w-25px">
+                <div
+                  class="
+                    form-check form-check-sm form-check-custom form-check-solid"
+                >
+                </div>
+              </th>
+              <th class="min-w-150px">Produit (s)</th>
+              <th class="min-w-140px">Montant</th>
+              <th class="min-w-140px">Quantité</th>
+              <th class="min-w-140px">Lieu d'enlevement</th>
+              <th class="min-w-140px">Date</th>
+              <th class="min-w-100px text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let user of CommandeProd  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">
+              <td>
+                <div
+                  class="
+                    form-check form-check-sm form-check-custom form-check-solid
+                  "
+                >
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-45px me-5">
+                    <div  class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                     {{user.titre}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a
+
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.prixunitaire | number:'1.0-0' }} Fr
+                </a>
+              </td>
+              <td>
+                <a
+                *ngIf="user.typeVente ==='Produit consommable'"
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}} Kilo (s)
+                </a>
+                <a
+                *ngIf="user.cate ==='animal'"
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}}
+                </a>
+                <a
+                *ngIf="user.typeVente ==='Intrant'"
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}}
+                </a>
+                <a
+                *ngIf="user.typeVente ==='Outils'"
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}}
+                </a>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-45px me-5">
+                    <div
+
+                    class="card-toolbar"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-trigger="hover"
+                    title="{{user.enlevement}}"
+                    class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                    {{user.enlevement}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.created_at}}
+                </a>
+              </td>
+              <td>
+                <div class="d-flex justify-content-end flex-shrink-0">
+                  <a *ngIf="user.state==='en attente'"
+                  class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                   style="width: calc(1.5em + 4.1rem + 2px)
+                   !important;  color:white;  background-color: #758407 !important;">
+                   {{user.state}} </a>
+                   <a *ngIf="user.state==='accepter'"
+                   class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                    style="width: calc(1.5em + 4.1rem + 2px)
+                    !important;  color:white;  background-color: #0AA50F !important;">
+                    {{user.state}} </a>
+                    <a *ngIf="user.state==='annuler'"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                     style="width: calc(1.5em + 4.1rem + 2px)
+                     !important;  color:white;  background-color: #DC1616 !important;">
+                     {{user.state}} </a>
+                     <a *ngIf="user.state==='enlever'"
+                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                      style="width: calc(1.5em + 4.1rem + 2px)
+                      !important;  color:white;  background-color: #DCCF16 !important;">
+                      {{user.state}} </a>
+                      <a *ngIf="user.state==='livraison en cours'"
+                      class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                       style="width: calc(1.5em + 7.1rem + 2px)
+                       !important;  color:white;  background-color: #16DC8A !important;">
+                       {{user.state}} </a>
+                       <a *ngIf="user.state==='Livré'"
+                       class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                        style="width: calc(1.5em + 4.1rem + 2px)
+                        !important;  color:white;  background-color: #755A7E !important;">
+                        {{user.state}} </a>
+                        <a *ngIf="user.state==='livraison'"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                         style="width: calc(1.5em + 4.1rem + 2px)
+                         !important;  color:white;  background-color: #342C36 !important;">
+                         {{user.state}} </a>
+                     <div ngbDropdown>
+                      <button *ngIf="isLoading" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                        <ng-container>
+                          <span clas="indicator-progress" [style.display]="'block'">
+                            <span
+                              class="spinner-border spinner-border-sm align-middle ms-2"
+                            ></span>
+                          </span>
+                        </ng-container>
+                      </button>
+                      <button *ngIf="!isLoading" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" id="gfg"
+                              ngbDropdownToggle> <i class="fa fa-bars" aria-hidden="true"></i>
+                            </button>
+                      <div ngbDropdownMenu="gfg">
+                        <button   *ngIf="user.state==='accepter'"  ngbDropdownItem>Aucune  option</button>
+                        <button   *ngIf="user.state!=='accepter'&&user.state!=='livrer'" (click)="UpdateCommande(user,'accepter')" ngbDropdownItem>Accepter la commande</button>
+                      </div>
+                    </div>
+                </div>
+              </td>
+            </tr>
+
+
+          </tbody>
+          <!-- end::Table body -->
+        </table>
+        <div>
+          <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+        </div>
+        <!-- end::Table -->
+      </div>
+      <!-- end::Table container -->
+      <br/>
+      <div *ngIf="CanDeleted">
+        <div class="mb-lg-15 alert alert-danger">
+          <div class="alert-text font-weight-bold">
+            Vous n'avez pas le droit
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <!-- begin::Body -->
+</div>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Detail de la commande</h4>
+        <button type="button" #closebtn class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive">
+        <!-- begin::Table -->
+        <div *ngIf="updateCommandeDetail &&message==='commande confirmer'" class="mb-lg-15 alert alert-success">
+          <div class="alert-text font-weight-bold">
+            {{message}}
+          </div>
+        </div>
+        <div  *ngIf="updateCommandeDetail&&message==='commande annuler'" class="mb-lg-15 alert alert-danger">
+          <div class="alert-text font-weight-bold">
+            {{message}}
+          </div>
+        </div>
+
+        <div *ngIf="CommadeTotals===0&&!spinnerModale" style="font-weight:700;margin-left: 42%;margin-top: 10%;font-size:medium; color:black " > aucun element</div>
+
+        <div *ngIf="spinnerModale">
+          <div style="padding: 20% 38% 11% 40%;" >
+            <div class="spinner-grow text-muted"></div>
+                    <div class="spinner-grow text-primary"></div>
+                    <div class="spinner-grow text-success"></div>
+                    <div class="spinner-grow text-info"></div>
+                    <div class="spinner-grow text-warning"></div>
+                    <div class="spinner-grow text-danger"></div>
+            </div>
+        </div>
+        <table *ngIf="CommadeTotals>0&&!spinnerModale" class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+          <!-- begin::Table head -->
+          <thead>
+            <tr class="fw-bolder text-muted">
+              <th class="w-25px">
+                <div
+                  class="
+                    form-check form-check-sm form-check-custom form-check-solid
+                  "
+                >
+                </div>
+              </th>
+              <th class="min-w-150px">Produit (s)</th>
+              <th class="min-w-140px">Montant</th>
+              <th class="min-w-140px">Quantité</th>
+              <th class="min-w-140px">Fournisseur</th>
+              <th class="min-w-140px">Contact fournisseur</th>
+              <th class="min-w-140px">Statut</th>
+             <!-- <th class="min-w-140px">Lieu d'enlevement</th>
+              
+               <th class="min-w-100px text-end">Actions</th>
+              -->
+
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr *ngFor="let user of CommandeProd  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">
+              <td>
+                <div
+                  class="
+                    form-check form-check-sm form-check-custom form-check-solid
+                  "
+                >
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-45px me-5">
+                    <div  class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                     {{user.titre}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a
+
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.prixunitaire | number:'1.0-0' }} Fr
+                </a>
+              </td>
+              <td>
+                <a
+                *ngIf="user.typeVente ==='Produit consommable'"
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}} Kilo (s)
+                </a>
+                <a
+                *ngIf="user.cate ==='animal'"
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}}
+                </a>
+                <a
+                *ngIf="user.typeVente ==='Intrant'"
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}}
+                </a>
+                <a
+                *ngIf="user.typeVente ==='Outils'"
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.quantite}}
+                </a>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-45px me-5">
+                    <div
+                    class="card-toolbar"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-trigger="hover"
+                    title="{{user.vendeur}}"
+                    class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                    {{user.vendeur}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td >
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-45px me-5">
+                    <div
+                    style="width: 50px; margin: 17px;"
+                    class="card-toolbar"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-trigger="hover"
+                    title="{{user.numerovendeur}}"
+                    class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                    {{user.numerovendeur}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-45px me-5">
+                    <a *ngIf="user.state==='en attente'"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                     style="width: calc(1.5em + 4.1rem + 2px)
+                     !important;  color:white;  background-color: #758407 !important;">
+                     {{user.state}} </a>
+                     <a *ngIf="user.state==='accepter'"
+                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                      style="width: calc(1.5em + 4.1rem + 2px)
+                      !important;  color:white;  background-color: #0AA50F !important;">
+                      {{user.state}} </a>
+                      <a *ngIf="user.state==='annuler'"
+                      class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                       style="width: calc(1.5em + 4.1rem + 2px)
+                       !important;  color:white;  background-color: #DC1616 !important;">
+                       {{user.state}} </a>
+                       <a *ngIf="user.state==='enlever'"
+                       class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                        style="width: calc(1.5em + 4.1rem + 2px)
+                        !important;  color:white;  background-color: #DCCF16 !important;">
+                        {{user.state}} </a>
+                        <a *ngIf="user.state==='livraison en cours'"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                         style="width: calc(1.5em + 7.1rem + 2px)
+                         !important;  color:white;  background-color: #16DC8A !important;">
+                         {{user.state}} </a>
+                         <a *ngIf="user.state==='Livré'||user.state==='livrée'"
+                         class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                          style="width: calc(1.5em + 4.1rem + 2px)
+                          !important;  color:white;  background-color: #755A7E !important;">
+                          {{user.state}} </a>
+                          <a *ngIf="user.state==='Livrer'"  
+                          class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                           style="width: calc(1.5em + 4.1rem + 2px)
+                           !important;  color:white;  background-color: #755A7E !important;">
+                           Livrée</a>
+                          <a *ngIf="user.state==='livraison'"
+                          class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                           style="width: calc(1.5em + 4.1rem + 2px)
+                           !important;  color:white;  background-color: #342C36 !important;">
+                           {{user.state}} </a>
+                           <a *ngIf="user.state==='en préparation'"
+                           class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                            style="width: calc(1.5em + 4.1rem + 22px)
+                            !important;  color:white;  background-color: #36302C !important;">
+                            {{user.state}} </a>     
+                  </div>
+                </div>  
+              </td>                                                      
+             <!-- <td>
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-45px me-5">
+                    <div
+
+                    class="card-toolbar"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-trigger="hover"
+                    title="{{user.enlevement}}"
+                    class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                    {{user.enlevement}}
+                    </div>
+                  </div>
+                </div>
+              </td>
+               -->
+              <td>
+                <div class="d-flex justify-content-end flex-shrink-0">                     
+                     <div ngbDropdown>
+                      <button *ngIf="isLoadingsecond" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                        <ng-container>
+                          <span clas="indicator-progress" [style.display]="'block'">
+                            <span
+                              class="spinner-border spinner-border-sm align-middle ms-2"
+                            ></span>
+                          </span>
+                        </ng-container>
+                      </button>
+                      <button *ngIf="!isLoadingsecond" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" id="gfg"
+                              ngbDropdownToggle> <i class="fa fa-bars" aria-hidden="true"></i>
+                            </button>
+                      <div *ngIf="user.state!=='Livré'" ngbDropdownMenu="gfg">
+                        <button   *ngIf="user.state!=='Livré'&&user.state!=='accepter'&&user.state!=='en préparation'" (click)="UpdateCommandeforPrduct(user,'accepter')" ngbDropdownItem>Accepter la commande</button>
+                        <button   *ngIf="user.state!=='annuler'"  (click)="UpdateCommandeforPrduct(user,'annuler')" ngbDropdownItem>Annuler la commande</button>
+                      </div>
+                    </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <!-- end::Table body ||user.cate!=='animal'-->
+        </table>
+        <div>
+          <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+        </div>
+        <!-- end::Table -->
+      </div>
+    </div>
+    <div class="modal-footer">
+        <button style="display: none;" type="button" class="btn btn-outline-dark"
+            (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+<ng-template #contents let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Faire une livraison</h4>
+      <button type="button" #closebtn class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
+      <div class="fv-row mb-8">
+        <label class="form-label fs-6 fw-bolder text-dark">Transporteur</label>
+        <select
+        (change)="SuiviSold($event)"
+        class="form-select form-select-solid form-select-lg fw-bold"
+        id="trans"
+        name="trans"
+        formControlName="trans">
+        <option value="null" disabled="true" [selected]="true">selectionnez un transporteur</option>
+        <option *ngFor="let c of Transporteur" value="{{c.id}}">{{c.name}} - ({{c.contact}})</option>
+       </select>
+       <div *ngIf="todoLivraison" style="color:red;">Ce livreur n'a pas de compte Lidar</div>
+       <div *ngIf="todoLivraisonComptefaible" style="color:red;">Le solde de ce livreur est inferieur au solde de la commande</div>
+       <div *ngIf="livreurselect" style="color:red;">Choisissez un livreur</div>
+       <div *ngIf="livreurlibre" style="color:red;">aucun livreur libre</div>
+       
+      </div>
+      <div class="fv-row mb-8">
+        <label class="form-label fs-6 fw-bolder text-dark">Lieu d'enlevement du colis</label>
+        <input
+        id="exampleFormControlTextarea1"
+        rows="3"
+        type="text"
+        class="form-control form-control-lg form-control-solid"
+        placeholder="Lieu d'enlevement du colis"
+        name="enlevement"
+        formControlName="enlevement"
+        [disabled]="true"
+        [attr.disabled]="true"
+      >
+      </div>
+      <div class="fv-row mb-8">
+        <label class="form-label fs-6 fw-bolder text-dark">Lieu du dechargement du colis</label>
+        <input
+        id="exampleFormControlTextarea1"
+        rows="3"
+        type="text"
+        class="form-control form-control-lg form-control-solid"
+        placeholder="Lieu du dechargement du colis"
+        name="dechargement"
+        formControlName="dechargement"
+        [disabled]="true"
+        [attr.disabled]="true"
+      >
+      </div>
+      <div class="fv-row mb-8">
+        <label class="form-label fs-6 fw-bolder text-dark">Montant de la livraison</label>
+        <input
+        id="exampleFormControlTextarea1"
+        rows="3"
+        type="text"
+        class="form-control form-control-lg form-control-solid"
+        placeholder="Montant"
+        name="montant"
+        formControlName="montant"
+        [disabled]="true"
+        [attr.disabled]="true"
+      >
+      </div>
+    </form>
+    <div  *ngIf="sendcourses" class="mb-lg-15 alert alert-success">
+      <div class="alert-text font-weight-bold">
+        {{message}}
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button  *ngIf="!laodaddcourses" type="button" class="btn btn-primary"
+          (click)="saveSettings()">Enregistrer la course
+        </button>
+          <button *ngIf="laodaddcourses" class="btn btn-primary">
+            <ng-container>
+              <span clas="indicator-progress" [style.display]="'block'">
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+            </ng-container>
+          </button>
+  </div>
+</ng-template>

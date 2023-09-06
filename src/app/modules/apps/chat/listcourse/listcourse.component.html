@@ -1,0 +1,349 @@
+<div class="col-xl-12" style="padding: 10px 24px;">
+  <!-- begin::Header -->
+  <div class="card card-xxl-stretch mb-5 mb-xl-8">
+    <div class="card-header border-0 pt-5">
+      <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Course</span>
+        <span class="text-muted mt-1 fw-bold fs-7"> {{UserTotals}} Course (s)</span>
+      </h3>
+      <div class="d-flex my-2">
+        <div class="d-flex align-items-center position-relative me-4">
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/general/gen021.svg'"
+            class="svg-icon svg-icon-3 position-absolute ms-3"
+          ></span>
+          <input
+          style="width: 500px !important;"
+            type="text"
+            id="kt_filter_search"
+            class="form-control form-control-white form-control-sm ps-9"
+            placeholder="Entrer un label"
+            name="search"
+            ng-model="search"
+            (input)="onSearchChange($event)"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body py-3">
+      <!-- begin::Table container -->
+      <div class="table-responsive">
+        <!-- begin::Table -->
+        <div *ngIf="UserTotals===0&&!spinner" style="font-weight:700;margin-left: 42%;margin-top: 10%;font-size:medium; color:black " > aucun element</div>
+        <app-spinnerlaod *ngIf="spinner" ></app-spinnerlaod>
+
+        <table *ngIf="UserTotals>0&&!spinner"
+          class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"
+        >
+          <!-- begin::Table head -->
+          <thead>
+            <tr class="fw-bolder text-muted">
+              <th class="min-w-120px">Depart</th>
+              <th class="min-w-120px">Destination</th>
+              <th *ngIf="userconnected.data.role =='admin'"class="min-w-120px"> Flotte</th>
+              <th class="min-w-120px">Client</th>
+              <th class="min-w-120px">Quantité</th>
+              <th class="min-w-120px">Statut</th>
+              <th class="min-w-120px">Montant course</th>
+              <th class="min-w-120px">Avance</th>
+              <th class="min-w-120px">Statut de paiement</th>
+              <th class="min-w-120px">Date creation</th>
+              <th class="min-w-100px text-end">Actions</th>
+            </tr>
+          </thead>
+          <!-- end::Table head -->
+          <!-- begin::Table body -->
+          <tbody>
+            <tr *ngFor="let user of Users  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">  
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a class="text-dark fw-bolder text-hover-primary fs-6">{{user.depart}}</a>
+                  </div>
+                </div>
+              </td>
+              <td  class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.destination}}</a>
+                  </div>
+                </div>
+              </td>
+              <td *ngIf="userconnected.data.role =='admin'" class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.transporteur}}</a>
+                  </div>
+                </div>
+              </td>
+              <td  class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.nameClient}}</a>
+                  </div>
+                </div>
+              </td>
+              <td  class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.quantite}} (Kg)</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a *ngIf="user.statut==='en attente de réception'"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                     style="width: calc(1.5em + 4.1rem + 2px)
+                     !important;  color:white;  background-color: #521491 !important;">
+                     {{user.statut}} </a>
+                     <a *ngIf="user.statut==='en cours de livraison'"
+                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                      style="width: calc(6.8em + 4.1rem + 2px)
+                      !important;  color:white;  background-color: #148B91 !important;">
+                      {{user.statut}} </a>
+                     <a *ngIf="user.statut==='initier'"
+                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                      style="width: calc(1.5em + 4.1rem + 2px)
+                      !important;  color:white;  background-color: #072284 !important;">
+                      initiée </a>
+                     <a *ngIf="user.statut==='accepter'"
+                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                      style="width: calc(1.5em + 4.1rem + 2px)
+                      !important;  color:white;  background-color: #0AA50F !important;">
+                      acceptée </a>
+                      <a *ngIf="user.statut==='annuler'"
+                      class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                       style="width: calc(1.5em + 4.1rem + 2px)
+                       !important;  color:white;  background-color: #DC1616 !important;">
+                       annulée </a>
+                       <a *ngIf="user.statut==='terminer'"
+                       class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                        style="width: calc(1.5em + 4.1rem + 2px)
+                        !important;  color:white;  background-color: #88AD3F !important;">
+                        terminée </a>
+                        <a *ngIf="user.statut==='embarquement'"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                         style="width: calc(6.5em + 5rem + 4px)
+                         !important;  color:white;  background-color: #706c58a1 !important;">
+                         embarquée</a>
+
+                         <a *ngIf="user.statut==='enlever'"
+                         class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                          style="width: calc(1.5em + 4.1rem + 2px)
+                          !important;  color:white;  background-color: #E9C613A1 !important;">
+                          {{user.statut}} </a>
+
+                         <a *ngIf="user.statut==='arriver'"
+                         class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                          style="width: calc(1.5em + 4.1rem + 2px)
+                          !important;  color:white;  background-color: #814c0ba1 !important;">
+                          livrée </a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.montanttt}} Fr</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.avance}} Fr</a>
+                  </div>
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">
+                    <a  class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                    style="width: calc(1.5em + 4.1rem + 2px)
+                    !important;  color:white;  background-color: #4d8c99 !important;">{{user.statutpaiement}}</a>
+                  </div>
+                </div>
+              </td>
+              <td  class="text-end">
+                <div class="d-flex flex-column w-100 me-2">
+                  <div class="d-flex flex-stack mb-2">  
+                    <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.created_at}}</a>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex justify-content-end flex-shrink-0">
+                  <a  (click)="OpenModal(contents,user)"
+                  class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                   style="width: calc(1.5em + 4.1rem + 2px)
+                   !important;  color:white;  background-color: #855D07 !important;">
+                   Suivre 
+                  </a>
+                  <div class="d-flex justify-content-end flex-shrink-0">
+                    <div ngbDropdown>
+                     <button class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" id="gfg"            
+                             ngbDropdownToggle> <i class="fa fa-bars" aria-hidden="true"></i>
+                           </button>
+                     <div ngbDropdownMenu="gfg">
+                       <button *ngIf="user.statut == 'initier'"  href="javascript:void(0)" (click)="OpenModal2(content, user)" ngbDropdownItem>Accepter</button>
+                       <button *ngIf="user.statut == 'accepter'" (click)="saveUpdatecourse('embarquement',user,'partiel')"  ngbDropdownItem>Embarquer</button>
+                       <button *ngIf="user.statut == 'embarquement'" (click)="saveUpdatecourse('en cours de livraison',user,'partiel')" ngbDropdownItem>Depart</button>
+                       <button *ngIf="user.statut == 'en cours de livraison'" (click)="saveUpdatecourse('arriver',user,'payé')" ngbDropdownItem>Arrivé</button>
+
+                      </div>
+                   </div>
+               </div>
+                </div>
+
+              </td>
+            </tr>
+          </tbody>
+          <!-- end::Table body -->
+        </table>
+        <div>
+          <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+        </div>
+        <!-- end::Table -->
+      </div>
+      <!-- end::Table container -->
+    </div>
+    <!-- begin::Body -->
+    </div>
+</div>
+<ng-template #contents let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Suivre la livraison</h4>
+      <button type="button" #closebtn class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="multistep">
+      <div class="multistep-header"  style="margin-left: 17%;" >
+        <ul *ngIf="modalContent.typecommande =='ecommerce'" class="form-heading">
+          <li style="right: 13%;"
+          [ngClass]="modalContent.statut === 'initier' ? 'completed' : 'active'
+          && modalContent.statut === 'accepter' ? 'completed' : 'active'
+          && modalContent.statut === 'enlever' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'terminer' ? 'completed' : 'active'"
+          >
+            <span class="stepno">1</span>
+            <span class="steptitle">Initiée </span>
+          </li>
+
+
+          <li style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'accepter' ? 'completed' : 'active'
+          && modalContent.statut === 'enlever' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'terminer' ? 'completed' : 'active'
+          " >
+            <span class="stepno">2</span>
+            <span class="steptitle">Accepteé</span>
+          </li>
+          <li  style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'enlever' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'terminer' ? 'completed' : 'active'" >
+            <span class="stepno">3</span>
+            <span class="steptitle">enlévement</span>
+          </li>
+          <li  style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'terminer' ? 'completed' : 'active'" >
+            <span class="stepno">4</span>
+            <span class="steptitle">Livraison en cours</span>
+          </li>
+          <li  style="right: 15% !important;"
+          [ngClass]="modalContent.statut === 'terminer' ? 'completed' : 'active'" >
+            <span class="stepno">5</span>
+            <span class="steptitle">Terminer</span>
+          </li>
+        </ul>
+        <ul *ngIf="modalContent.typecommande =='ppai'" class="form-heading">
+          <li style="right: 13%;"
+          [ngClass]="modalContent.statut === 'initier' ? 'completed' : 'active'
+          && modalContent.statut === 'accepter' ? 'completed' : 'active'
+          && modalContent.statut === 'embarquement' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'arriver' ? 'completed' : 'active'"
+          >
+            <span class="stepno">1</span>
+            <span class="steptitle">Initiée </span>
+          </li>
+
+
+          <li style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'accepter' ? 'completed' : 'active'
+          && modalContent.statut === 'embarquement' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'arriver' ? 'completed' : 'active'
+          " >
+            <span class="stepno">2</span>
+            <span class="steptitle">Acceptée</span>
+          </li>
+          <li  style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'embarquement' ? 'completed' : 'active'
+          && modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'arriver' ? 'completed' : 'active'" >
+            <span class="stepno">3</span>
+            <span class="steptitle">enlévement</span>
+          </li>
+          <li  style="right: 13% !important;"
+          [ngClass]="modalContent.statut === 'en cours de livraison' ? 'completed' : 'active'
+          && modalContent.statut === 'arriver' ? 'completed' : 'active'" >
+            <span class="stepno">4</span>
+            <span class="steptitle">Livraison en cours</span>
+          </li>
+          <li  style="right: 15% !important;"
+          [ngClass]="modalContent.statut === 'arriver' ? 'completed' : 'active'" >
+            <span class="stepno">5</span>
+            <span class="steptitle">Terminée</span>
+          </li>
+        </ul>
+    </div>
+</div>
+</div>
+</ng-template>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Ajouter un chauffeur</h4>
+      <button type="button" #closebtn class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveDrive()">
+      <div class="card-body border-top p-9">  
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Chauffeur</label>
+          <div class="col-lg-8 fv-row">
+             <select
+             class="form-control form-control-lg form-control-solid"
+             formControlName="vehicule">
+              <option value="null">Selectionnez un chauffeur</option>
+              <option *ngFor="let item of vehicule"  value={{item.nomprenom}}-{{item.contact}}-{{item.id}}>{{item.nomprenom}} - ({{item.contact}}) - ({{item.namevehicule}})</option>
+             </select>
+            <div *ngIf="errorfeildCooporate" style="color:red" >
+              Choisissez un chauffeur
+            </div>
+            <div *ngIf="vehicule.length==0" style="color:red" >
+              {{msg}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end py-6 px-9">
+        <button alert-success
+          type="button"
+          class="btn btn-primary"
+          (click)="saveDrive()">
+          <ng-container>Enregistrer</ng-container>
+        </button>
+      </div>
+    </form>
+</div>
+</ng-template>
+
