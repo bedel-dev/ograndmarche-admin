@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     //this.GetAllUsers()
   this.UserConnected = this.userService.GetUserData()
   this.UserConnected = JSON.parse(this.UserConnected);
-  console.log("user =>",this.UserConnected);
+  //console.log("user =>",this.UserConnected);
   this.GetAllCommand(); 
   this.GetAllCourse();
   }

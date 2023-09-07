@@ -8,12 +8,22 @@
 //   public static admainMail: string = "bedel.coulibaly@lidar.ci"
 // }
 
+// export class GlobalConstants {
+//     public static apiURL: string = "https://2pai.demoapi.lidar-platform.com/v1.0/ppai";
+//     public static api_auth: string = "https://2pai.demoauthapi.lidar-platform.com/v1.0/users";
+//     public static host: string = "https://2pai.demoapi.lidar-platform.com/";
+//     public static imagurl: string = this.host+"/img/produit_image/";
+//     public static api_auth_host: string = "https://2pai.demoauthapi.lidar-platform.com/v1.0/";
+//     public static admainMail: string = "bedel.coulibaly@lidar.ci"
+//     public static linkfrontInscription: string = "https://administration.d1nd9qyk4l7n3n.amplifyapp.com/auth/createuser"
+// }
 export class GlobalConstants {
-    public static apiURL: string = "https://2pai.demoapi.lidar-platform.com/v1.0/ppai";
-    public static api_auth: string = "https://2pai.demoauthapi.lidar-platform.com/v1.0/users";
-    public static host: string = "https://2pai.demoapi.lidar-platform.com/";
+    public static apiURL: string = "https://ograndmarche-api-rec-ppai.azurewebsites.net/app_ppai";
+    public static api_auth: string = "https://ograndmarche-api-rec.azurewebsites.net/app_auth/users";
+    public static host: string = "https://ograndmarche-api-rec-ppai.azurewebsites.net/app_ppai/webroot/";
+
     public static imagurl: string = this.host+"/img/produit_image/";
-    public static api_auth_host: string = "https://2pai.demoauthapi.lidar-platform.com/v1.0/";
+    public static api_auth_host: string = "https://ograndmarche-api-rec.azurewebsites.net/app_auth/";
     public static admainMail: string = "bedel.coulibaly@lidar.ci"
-    public static linkfrontInscription: string = "https://administration.d1nd9qyk4l7n3n.amplifyapp.com/auth/createuser"
+    public static linkfrontInscription: string = "https://delightful-river-0b9656703.3.azurestaticapps.net/auth/createuser"
 }
