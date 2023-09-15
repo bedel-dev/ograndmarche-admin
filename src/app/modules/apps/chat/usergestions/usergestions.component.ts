@@ -278,7 +278,7 @@ changeCity($event: Event) {
 
     this.userService.AddUser(this.f,this.namefile).subscribe((rep:any)=>{
 
-
+      console.log("rep :",rep);
       if(rep.response.code=="402"){
       this.cdr.detectChanges();
       this.isLoading$.next(false);

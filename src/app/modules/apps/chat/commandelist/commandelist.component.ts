@@ -472,14 +472,14 @@ SuiviSold(data:any){
       })
     })
   }
-  demandeFournisseur:any[]=[]
+  demandefournisseur:any[]=[]
   getAllDemandefournisseur(){
-    this.demandeFournisseur = [];
-    this.userService.GetAlldemandeFournisseur().subscribe((res:any) =>{
+    this.demandefournisseur = [];
+    this.userService.GetAlldemandefournisseur().subscribe((res:any) =>{
       res.data.forEach((course:any) => {
-        this.demandeFournisseur.push(course);
+        this.demandefournisseur.push(course);
       })
-     // console.log("reponse demande :",this.demandeFournisseur)
+     // console.log("reponse demande :",this.demandefournisseur)
       this.changeDetector.detectChanges();
     })
   }
@@ -492,7 +492,7 @@ SuiviSold(data:any){
         if(r.role ==="Transporteur"){
           console.log(r.engin)
          // this.Transporteur.push(r)
-         //console.log("reponse demande :",this.demandeFournisseur)
+         //console.log("reponse demande :",this.demandefournisseur)
           
          cousertransporteur = this.Course.filter((item:any)=>{
             return item.transporteuridentifiant === r.id.toString()
@@ -500,13 +500,13 @@ SuiviSold(data:any){
 
          if(cousertransporteur.length === 0){ 
          // if(r.engin=="moto"){
-          this.demandeFournisseur.forEach((data:any)=>{
+          this.demandefournisseur.forEach((data:any)=>{
             if(data.id.toString() === r.engin.toString()){
              // console.log("data : ", data)
               r.engin = data.typeVente.toString()  
             }
           })
-        // var ds = this.demandeFournisseur.filter((item:any)=>{
+        // var ds = this.demandefournisseur.filter((item:any)=>{
         //   console.log("item :",item.id.toString(),r.engin.toString())
 
         //     return item.id.toString() ===r.engin.toString()
@@ -522,7 +522,7 @@ SuiviSold(data:any){
            //console.log("rrrrrrrr :",cousertransporteur.length - t.length)
           if((cousertransporteur.length - t.length==0)){
             //if(r.engin=="moto"){
-           var dem =    this.demandeFournisseur.filter((item:any)=>{
+           var dem =    this.demandefournisseur.filter((item:any)=>{
                 return item.statut ==="terminer"||item.statut ==="arriver"
               })
               console.log("terminer")

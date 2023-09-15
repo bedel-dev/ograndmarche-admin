@@ -212,7 +212,7 @@ Getuserlidar(data:any){
   return this.http.post("https://stageapi.lidar-platform.com/v1.4/beneficiaires/retrieveBeneficiaireByPhonenumber.json",body,{headers:headers});    
 }
 
-    AddUser(datauser:any,img:any){
+AddUser(datauser:any,img:any){
   const headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -232,8 +232,8 @@ Getuserlidar(data:any){
   "locality":datauser.loc.value,
   "user_type":"AGENCE",
   "username":"null",
-  // "password":datauser.pass1.value,
-  "password":"123",
+  "password":datauser.pass1.value,
+  //"password":"123",
   "role":datauser.role.value,
   "CoustumerID":4,
   "localisation":datauser.localisation.value,
@@ -245,7 +245,7 @@ return this.http.post(GlobalConstants.api_auth+'/add.json',body,{headers: header
 }
 
 
-AddUserFournisseur(datauser:any,img:any){
+AddUserfournisseur(datauser:any,img:any){
   const headers = new HttpHeaders({
     'Content-Type': 'application/json',
      'Authorization': `Bearer ${"localStorage.getItem('token')"}`
@@ -565,7 +565,7 @@ const body =JSON.stringify(user);
 return this.http.post(GlobalConstants.api_auth+'/edituser/'+userID+'.json',body,{headers: headers})
 }
 
-UpdateStateFournisseur(idFournisseur:any){
+UpdateStatefournisseur(idfournisseur:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
   const user = JSON.parse(hauth!)
    const headers = new HttpHeaders({
@@ -577,13 +577,13 @@ var users = {
   "statut_demande":"accepter"
 }
 const body =JSON.stringify(users);
-var test = this.http.post(GlobalConstants.apiURL+'/demandefournisseur/updateDemandeFournisseur/'+idFournisseur+'.json',body,{headers: headers})
+var test = this.http.post(GlobalConstants.apiURL+'/demandefournisseur/updateDemandefournisseur/'+idfournisseur+'.json',body,{headers: headers})
 //console.log(test  )
 
 return test
 }
 
-UpdateStateRefuserFournisseur(idFournisseur:any){
+UpdateStateRefuserfournisseur(idfournisseur:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
   const user = JSON.parse(hauth!)
    const headers = new HttpHeaders({
@@ -595,7 +595,7 @@ var users = {
   "statut_demande":"refuser"
 }
 const body =JSON.stringify(users);
-var test = this.http.post(GlobalConstants.apiURL+'/demandefournisseur/updateDemandeFournisseur/'+idFournisseur+'.json',body,{headers: headers})
+var test = this.http.post(GlobalConstants.apiURL+'/demandefournisseur/updateDemandefournisseur/'+idfournisseur+'.json',body,{headers: headers})
 //console.log(test  )
 
 return test
@@ -809,7 +809,7 @@ DeleteUser(IDuser:any){
   return this.http.post(GlobalConstants.api_auth_host+"users/deleteuser/"+IDuser+".json",{},{headers: headers})
 }
 
-DeleteFournisseur(IDfournisseur:any){
+Deletefournisseur(IDfournisseur:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
   const user = JSON.parse(hauth!)
    const headers = new HttpHeaders({
@@ -1008,14 +1008,14 @@ return this.http.post(GlobalConstants.api_auth_host+"userautorisations/editautor
 }
 
 
-GetAlldemandeFournisseur(){
+GetAlldemandefournisseur(){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
   const user = JSON.parse(hauth!)
    const headers = new HttpHeaders({
     'Authorization': `Bearer ${"user.token"}`,
   //  'Content-Type': 'multipart/form-data'
 })
-return this.http.get(GlobalConstants.apiURL+"/demandefournisseur/listDemandeFournisseur.json?espace=ecommerce",{headers: headers})
+return this.http.get(GlobalConstants.apiURL+"/demandefournisseur/listDemandefournisseur.json?espace=ecommerce",{headers: headers})
 }
 GetAllprixMarcher(){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)

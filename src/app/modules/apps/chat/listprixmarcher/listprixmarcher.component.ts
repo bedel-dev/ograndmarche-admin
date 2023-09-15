@@ -152,11 +152,11 @@ ListeVille: string[] = [];
   //   const url= window.URL.createObjectURL(blob);
   //   window.open(url);
   // }
-  deleteDelete(FournisseurID:any){
+  deleteDelete(fournisseurID:any){
       this.spinner = true
       this.changeDetector.detectChanges();
-      console.log(FournisseurID)
-      this.userService.DeleteFournisseur(FournisseurID).subscribe((res:any)=>{
+      console.log(fournisseurID)
+      this.userService.Deletefournisseur(fournisseurID).subscribe((res:any)=>{
         console.log("reponse: " ,res)
         if(res.response.result===true){
           this.Users = [];
@@ -178,7 +178,7 @@ ListeVille: string[] = [];
     this.Users = []
 
     var u:any[]= [];
-    this.userService.GetAlldemandeFournisseur().subscribe((res:any) =>{
+    this.userService.GetAlldemandefournisseur().subscribe((res:any) =>{
       for(const item of res.data){
         //console.log(item.urlprofile,this.profilurl)
         item.nom = item.nom+" "+item.prenom
@@ -215,7 +215,7 @@ ListeVille: string[] = [];
 
       }
     },error=>{},()=>{
-      this.userService.UpdateStateFournisseur(data.id).subscribe((rep:any)=>{
+      this.userService.UpdateStatefournisseur(data.id).subscribe((rep:any)=>{
       //  console.log(rep.response);
       },error=>{
 

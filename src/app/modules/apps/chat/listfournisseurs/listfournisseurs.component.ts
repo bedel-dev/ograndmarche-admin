@@ -27,7 +27,7 @@ export class ListfournisseursComponent implements OnInit {
   initiateUser:any = []
   getAllU(){
     var u:any[]= [];
-    this.userService.GetAlldemandeFournisseur().subscribe((res:any) =>{
+    this.userService.GetAlldemandefournisseur().subscribe((res:any) =>{
       for(const item of res.data){
         this.initiateUser.push(item)
         item.nom = item.nom+" "+item.prenom
@@ -124,11 +124,11 @@ export class ListfournisseursComponent implements OnInit {
   //   const url= window.URL.createObjectURL(blob);
   //   window.open(url);
   // }
-  deleteDelete(FournisseurID:any){
+  deleteDelete(fournisseurID:any){
       this.spinner = true
       this.changeDetector.detectChanges();
-      console.log(FournisseurID)
-      this.userService.DeleteFournisseur(FournisseurID).subscribe((res:any)=>{
+      console.log(fournisseurID)
+      this.userService.Deletefournisseur(fournisseurID).subscribe((res:any)=>{
         console.log("reponse: " ,res)
         if(res.response.result===true){
           this.Users = [];
@@ -150,7 +150,7 @@ export class ListfournisseursComponent implements OnInit {
     this.Users = []
 
     var u:any[]= [];
-    this.userService.GetAlldemandeFournisseur().subscribe((res:any) =>{
+    this.userService.GetAlldemandefournisseur().subscribe((res:any) =>{
       for(const item of res.data){
         //console.log(item.urlprofile,this.profilurl)
         item.nom = item.nom+" "+item.prenom
@@ -187,7 +187,7 @@ export class ListfournisseursComponent implements OnInit {
 
       }
     },error=>{},()=>{
-      this.userService.UpdateStateFournisseur(data.id).subscribe((rep:any)=>{
+      this.userService.UpdateStatefournisseur(data.id).subscribe((rep:any)=>{
       //  console.log(rep.response);
       },error=>{
 
@@ -198,7 +198,7 @@ export class ListfournisseursComponent implements OnInit {
       }, 2000);
       this.Users = [];
       this.getAllU()
-      this.listeFournisseur =true
+      this.listefournisseur =true
       this.spinner = false;
       this.changeDetector.detectChanges()
       })
@@ -222,7 +222,7 @@ export class ListfournisseursComponent implements OnInit {
 
       }
     },error=>{},()=>{
-      this.userService.UpdateStateRefuserFournisseur(data.id).subscribe((rep:any)=>{
+      this.userService.UpdateStateRefuserfournisseur(data.id).subscribe((rep:any)=>{
       //  console.log(rep.response);
       },error=>{
 
@@ -233,21 +233,21 @@ export class ListfournisseursComponent implements OnInit {
       }, 2000);
       this.Users = [];
       this.getAllU()
-      this.listeFournisseur =true
+      this.listefournisseur =true
       this.spinner = false;
       this.changeDetector.detectChanges()
       })
 
     })
   }
-  listeFournisseur:boolean= true;
+  listefournisseur:boolean= true;
   fournisseurselected:any
   changeView(fournisseur:any){
     this.fournisseurselected = fournisseur  
-    this.listeFournisseur =  !this.listeFournisseur;
+    this.listefournisseur =  !this.listefournisseur;
     this.changeDetector.detectChanges();
    
-    if(!this.listeFournisseur){
+    if(!this.listefournisseur){
       console.log(this.fournisseurselected)
       this.changeDetector.detectChanges();
     }

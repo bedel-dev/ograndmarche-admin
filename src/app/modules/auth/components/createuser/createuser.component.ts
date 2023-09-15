@@ -44,7 +44,7 @@ export class CreateuserComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAutorisation()
-    this.getAllFournisseur()
+    this.getAllfournisseur()
   }
 
   showChangeEmailForm: boolean = false;
@@ -84,20 +84,20 @@ export class CreateuserComponent implements OnInit {
    // console.log(this.autorisation)
   }
 
-  AllFournisseur:any[]=[]
-  getAllFournisseur(){
-    this.userService.GetAlldemandeFournisseur().subscribe((res:any)=>{
+  Allfournisseur:any[]=[]
+  getAllfournisseur(){
+    this.userService.GetAlldemandefournisseur().subscribe((res:any)=>{
       console.log(res)
 
       res.data.forEach((element: any) => {
 
         if(element.statut_demande == "accepter"){
-          this.AllFournisseur.push(element);
+          this.Allfournisseur.push(element);
           this.cdr.detectChanges()
         }
 
       });
-      console.log(this.AllFournisseur)
+      console.log(this.Allfournisseur)
     })
   }
   onFileChange(event:any) {
@@ -230,7 +230,7 @@ export class CreateuserComponent implements OnInit {
     {
       this.isLoading$.next(true);
       this.cdr.detectChanges()
-      var filterfournisseur = this.AllFournisseur.filter(item => {
+      var filterfournisseur = this.Allfournisseur.filter(item => {
         return item.numero == this.f.phone.value && item.statut_demande =="accepter"
       })
       this.namefile = "avatar.png"
@@ -242,7 +242,7 @@ export class CreateuserComponent implements OnInit {
             newuser.pass1 = this.f.pass1.value
             newuser.username = this.f.username.value
             console.log("new user: " , newuser)
-    this.userService.AddUserFournisseur(newuser,this.namefile).subscribe((rep:any)=>{
+    this.userService.AddUserfournisseur(newuser,this.namefile).subscribe((rep:any)=>{
       console.log("rep: ",rep)
       if(rep.response.code=="402"){
       this.cdr.detectChanges();

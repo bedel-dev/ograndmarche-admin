@@ -52,7 +52,7 @@ export class AddfournisseurComponent implements OnInit {
   User:any;
   saveAutorisation: boolean = false;
   GetUser(userId: string){
-    this.userServices.GetAlldemandeFournisseur().subscribe((res:any)=>{
+    this.userServices.GetAlldemandefournisseur().subscribe((res:any)=>{
 
 
        this.User = res.data.filter((item: any) => {
@@ -337,7 +337,7 @@ export class AddfournisseurComponent implements OnInit {
      //this.authService.logout()
    },
    ()=>{
-    this.UpdateStatutFournisseur()
+    this.UpdateStatutfournisseur()
      setTimeout(() => {
        this.success = false
        this.stateinfo = false
@@ -349,8 +349,8 @@ export class AddfournisseurComponent implements OnInit {
 
  }
 
- UpdateStatutFournisseur(){
-  this.userService.UpdateStateFournisseur(this.User[0].id).subscribe((rep:any)=>{
+ UpdateStatutfournisseur(){
+  this.userService.UpdateStatefournisseur(this.User[0].id).subscribe((rep:any)=>{
     console.log(rep.response);
   })
 
