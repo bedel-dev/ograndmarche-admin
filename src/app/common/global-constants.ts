@@ -21,7 +21,7 @@ export class GlobalConstants {
     public static apiURL: string = "https://ograndmarche-api-rec-ppai.azurewebsites.net/app_ppai";
     public static api_auth: string = "https://ograndmarche-api-rec.azurewebsites.net/app_auth/users";
     public static host: string = "https://ograndmarche-api-rec-ppai.azurewebsites.net/app_ppai/webroot/";
-
+    public  static lidarppai: string = "https://lidar-api-rec.azurewebsites.net"
     public static imagurl: string = this.host+"/img/produit_image/";
     public static api_auth_host: string = "https://ograndmarche-api-rec.azurewebsites.net/app_auth/";
     public static admainMail: string = "bedel.coulibaly@lidar.ci"

@@ -195,7 +195,7 @@ GetCommandeByuser(){
     "carte_id": data 
   }
   const body =JSON.stringify(user);
-  return this.http.post("https://stageapi.lidar-platform.com/v1.4/operations/solde.json",body,{headers:headers});  
+  return this.http.post(GlobalConstants.lidarppai+"/v1.4/operations/solde.json",body,{headers:headers});  
 }
 Getuserlidar(data:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
@@ -209,7 +209,7 @@ Getuserlidar(data:any){
   }
   const body =JSON.stringify(user);
 
-  return this.http.post("https://stageapi.lidar-platform.com/v1.4/beneficiaires/retrieveBeneficiaireByPhonenumber.json",body,{headers:headers});    
+  return this.http.post(GlobalConstants.lidarppai+"/v1.4/beneficiaires/retrieveBeneficiaireByPhonenumber.json",body,{headers:headers});    
 }
 
 AddUser(datauser:any,img:any){
