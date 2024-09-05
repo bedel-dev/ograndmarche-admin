@@ -18,12 +18,15 @@
 //     public static linkfrontInscription: string = "https://administration.d1nd9qyk4l7n3n.amplifyapp.com/auth/createuser"
 // }
 export class GlobalConstants {
-    public static apiURL: string = "https://ograndmarche-api-rec-ppai.azurewebsites.net/app_ppai";
-    public static api_auth: string = "https://ograndmarche-api-rec.azurewebsites.net/app_auth/users";
-    public static host: string = "https://ograndmarche-api-rec-ppai.azurewebsites.net/app_ppai/webroot/";
-    public  static lidarppai: string = "https://lidar-api-rec.azurewebsites.net"
+    public static apiURL: string = "https://ogrand-marchez-api-ppai.azurewebsites.net/app_ppai";
+    public static api_auth: string = "https://ogrand-marchez-api-auth.azurewebsites.net/app_auth/users";
+    public static host: string = "https://ogrand-marchez-api-ppai.azurewebsites.net/app_ppai/webroot/";
+    public  static lidarppai: string = "https://lidar-api-prod.azurewebsites.net"
     public static imagurl: string = this.host+"/img/produit_image/";
-    public static api_auth_host: string = "https://ograndmarche-api-rec.azurewebsites.net/app_auth/";
+    public static api_auth_host: string = "https://ogrand-marchez-api-auth.azurewebsites.net/app_auth/";
     public static admainMail: string = "bedel.coulibaly@lidar.ci"
-    public static linkfrontInscription: string = "https://delightful-river-0b9656703.3.azurestaticapps.net/auth/createuser"
+    public static linkfrontInscription: string = "https://nice-coast-0b846f203.5.azurestaticapps.net/auth/createuser"
 }
+
+
+
