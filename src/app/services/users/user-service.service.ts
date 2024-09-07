@@ -1015,7 +1015,7 @@ GetAlldemandefournisseur(){
     'Authorization': `Bearer ${"user.token"}`,
   //  'Content-Type': 'multipart/form-data'
 })
-return this.http.get(GlobalConstants.apiURL+"/demandefournisseur/listDemandefournisseur.json?espace=ecommerce",{headers: headers})
+return this.http.get(GlobalConstants.apiURL+"/demandefournisseur/list.json?espace=ecommerce",{headers: headers})
 }
 GetAllprixMarcher(){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
