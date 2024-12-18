@@ -28,4 +28,4 @@ export class GlobalConstants {
     public static linkfrontInscription: string = "https://delightful-river-0b9656703.3.azurestaticapps.net/auth/createuser"
 }
 
-        
+            
