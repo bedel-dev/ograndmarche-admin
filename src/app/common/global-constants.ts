@@ -25,7 +25,7 @@ export class GlobalConstants {
     public static imagurl: string = this.host+"/img/produit_image/";
     public static api_auth_host: string = "https://ograndmarche-api-rec.azurewebsites.net/app_auth/";
     public static admainMail: string = "bedel.coulibaly@lidar.ci"
-    public static linkfrontInscription: string = "https://delightful-river-0b9656703.3.azurestaticapps.net/auth/createuser"
+    public static linkfrontInscription: string = "https://admin-rec.ograndmarche.com/#/auth/createuser"
 }
 
             
