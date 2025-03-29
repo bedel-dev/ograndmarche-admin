@@ -231,7 +231,9 @@ export class CreateuserComponent implements OnInit {
       this.isLoading$.next(true);
       this.cdr.detectChanges()
       var filterfournisseur = this.Allfournisseur.filter(item => {
-        return item.numero == this.f.phone.value && item.statut_demande =="accepter"
+        var n =  item.numero.split(" ")[1];
+        //console.log("split",n);
+        return n == this.f.phone.value && item.statut_demande =="accepter"
       })
       this.namefile = "avatar.png"
      // console.log("fiel :",this.f)
