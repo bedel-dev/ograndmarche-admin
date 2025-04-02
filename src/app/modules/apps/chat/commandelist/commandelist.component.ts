@@ -856,7 +856,7 @@ state:any
       this.isLoading = true
     //    this.spinnerModale = true
     this.changeDetector.detectChanges();
-    console.log("data dans update :", data)
+    //console.log("data dans update :", data)
     this.userService.SendMailComfirme(data,state,"only").subscribe((re:any)=>{
       console.log(re)
       if(re.response.result==true){
@@ -865,7 +865,8 @@ state:any
 
 
       }
-    },error=>{},()=>{
+    },error=>{},
+    ()=>{
       this.userService.UpdateStateCommandeDetail(data.id,state).subscribe((rep:any)=>{
       //  this.Users = []
       //  console.log(rep.response);
@@ -882,15 +883,15 @@ state:any
       }
       this.GetAllCommandedetails(data)
       })
-
     })
   }
   isLoadingsecond:boolean
   UpdateCommandeforPrduct(data:any,state:string){
+    console.log("je suis ici");
       this.isLoadingsecond = true
     //    this.spinnerModale = true
     this.changeDetector.detectChanges();
-    console.log("commande", this.modalContent)
+    console.log("data dans update UpdateCommandeforPrduct:", data)
     this.userService.SendMailComfirme(data,state,"only").subscribe((re:any)=>{
       console.log(re)
       if(re.response.result==true){
@@ -918,7 +919,7 @@ state:any
       this.isLoadingsecond = false;
       this.changeDetector.detectChanges();  
     })
-}
+  }
   GetAllCommandedetails(cID:any) {
     console.log("data dans GetAllCommandedetails :", cID)
 
@@ -944,13 +945,15 @@ state:any
         console.log(element)
         this.UserCommande.forEach((user:any)=>{
           //  console.log()
-                  if(cID.userId.toString()==user.id.toString()){
-                    element.client = user.name
-                    element.numero = user.contact
-                    element.locality = user.locality
-                    element.email = user.email
-                    element.userId = user.id
-
+                  if(cID.userId != null){
+                    if(cID.userId.toString()==user.id.toString()){
+                      element.client = user.name
+                      element.numero = user.contact
+                      element.locality = user.locality
+                      element.email = user.email
+                      element.userId = user.id
+  
+                    }
                   }
             if(element.Idvendeur.toString()==user.id.toString()){
               element.vendeur = user.name
@@ -1002,7 +1005,7 @@ state:any
 
     //  console.log(test)
     },error =>{
-
+      console.log(error)
     },
     ()=>{
     //  this.updateCommandeDetail=true
@@ -1015,6 +1018,7 @@ state:any
       })
       cID.numero_commande = com[0].numero_commande
       cID.lieuLivraison = com[0].lieuLivraison
+      cID.email = com[0].email
       console.log("testxxx : ",com[0])
       this.CommadeTotals = this.CommandeProd.length
       this.spinnerModale = false
@@ -1029,7 +1033,7 @@ state:any
       if(commandeTotale == prduitaccepte.length){
         console.log(' je peux faire la mise a jour de la commande globle avec state accepter')
         this.AccepteDemandeGlobal(cID,"accepter")
-        this.modalContent.statut = "accepter";
+        //this.modalContent['statut'] = "accepter";
       }
       else if(commandeTotale < prduitaccepte.length ||commandeTotale > prduitaccepte.length){
         var prduitannuler =  newcommandeproduit.filter((dc:any)=>{
@@ -1038,7 +1042,7 @@ state:any
         if(prduitannuler.length==commandeTotale){
           console.log('je peux faire la mise a jour de la commande globle avec state annuler')
               this.AccepteDemandeGlobal(cID,"annuler")
-              this.modalContent.statut = "annuler";
+              //this.modalContent['statut'] = "annuler";
         }else{
           console.log("je suis dans 1")
           this.updateCommandeDetail = true
@@ -1072,11 +1076,8 @@ state:any
         }
         
         this.changeDetector.detectChanges()
-        
-
-
       }
-
+      window.location.reload();
       // this.modalContent = item
       // this.modalService.open(content, { centered: true, size: "lg", windowClass: 'andro_quick-view-modal p-0'});
     })

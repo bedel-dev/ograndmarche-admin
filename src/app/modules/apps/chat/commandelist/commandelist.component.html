@@ -387,7 +387,7 @@
               </td>
               <td>
                 <a
-                *ngIf="user.typeVente ==='Produit consommable'"
+                *ngIf="user.typeVente ==='Produit consommable'||user.typeVente ==='engrais'"
                   class="text-dark fw-bolder text-hover-primary d-block fs-6"
                 >
                 {{user.quantite}} Kilo (s)
@@ -601,7 +601,7 @@
               </td>
               <td>
                 <a
-                *ngIf="user.typeVente ==='Produit consommable'"
+                *ngIf="user.typeVente ==='Produit consommable' || user.typeVente ==='engrais'"
                   class="text-dark fw-bolder text-hover-primary d-block fs-6"
                 >
                 {{user.quantite}} Kilo (s)

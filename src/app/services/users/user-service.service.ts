@@ -1122,7 +1122,7 @@ var datas = {
 }
 //users_fournisseur.linkcreate = GlobalConstants.linkfrontInscription
 console.log("data mail: ",data)
-console.log("datas mail: ",datas)
+console.log("users_fournisseur: ",users_fournisseur)
 
 const body =JSON.stringify(data);
 return this.http.post(GlobalConstants.api_auth_host+"users/sendmailConfirme.json",data,{headers: headers})
