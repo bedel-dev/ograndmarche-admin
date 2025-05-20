@@ -306,19 +306,19 @@
             </div>
             
 
-            <!-- Gestion des produits -->
+            <!-- Catégorie de Produits -->
       <div *ngIf="user.data.role ==='admin'||user.data.role ==='adminfafa'" class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
         <span class="menu-link"><span class="menu-icon"><span class="svg-icon svg-icon-2"
               [inlineSVG]="'./assets/media/icons/duotune/ecommerce/ecm001.svg'"></span></span><span class="menu-title"
-            data-link="/apps/chat">Gestion des Produits</span><span class="menu-arrow"></span></span>
+            data-link="/apps/chat">Catégorie de Produits</span><span class="menu-arrow"></span></span>
         <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
           <div class="menu-item">
             <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/chat/add-produit"><span
-                class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Ajouter un produit</span></a>
+                class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Ajouter une categorie</span></a>
           </div>
           <div class="menu-item">
             <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/chat/list-produit"><span
-                class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Voir les produits</span></a>
+                class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Voir les categories</span></a>
           </div>
         </div>
       </div>
@@ -326,15 +326,15 @@
       <div *ngIf="user.data.role ==='admin'||user.data.role ==='Producteur'||user.data.role ==='fournisseur'" class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
         <span class="menu-link"><span class="menu-icon"><span class="svg-icon svg-icon-2"
               [inlineSVG]="'./assets/media/icons/duotune/ecommerce/ecm006.svg'"></span></span><span class="menu-title"
-            data-link="/apps/chat">Gestion des ventes</span><span class="menu-arrow"></span></span>
+            data-link="/apps/chat">Gestion du Stock de Produits</span><span class="menu-arrow"></span></span>
         <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
           <div *ngIf="user.data.role ==='admin'" class="menu-item">
             <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/chat/add-vente/newvente"><span
-                class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Ajouter une vente</span></a>
+                class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Ajouter un produit</span></a>
           </div>
           <div class="menu-item">
             <a class="menu-link without-sub" routerLinkActive="active" routerLink="/apps/chat/list-vente"><span
-                class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Voir les ventes</span></a>
+                class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Voir les produits</span></a>
           </div>
         </div>
       </div>

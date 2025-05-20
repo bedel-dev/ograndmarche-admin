@@ -15,7 +15,7 @@
     <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
       <div class="card-body border-top p-9">
         <div class="row mb-6">
-          <label class="col-lg-4 col-form-label fw-bold fs-6">Image du produit</label>
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Image</label>
 
           <div class="col-lg-8">
             <div class="col-lg-6 fv-row">
@@ -40,7 +40,7 @@
 
         </div>
         <div class="row mb-6">
-          <label class="col-lg-4 col-form-label required fw-bold fs-6">Label</label
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Nom categorie</label
           >
           <div class="col-lg-8 fv-row">
             <input
@@ -48,20 +48,20 @@
              rows="3"
              type="text"
              class="form-control form-control-lg form-control-solid"
-             placeholder="Label"
+             placeholder="Nom categorie"
              name="email"
              formControlName="email"
              >
 
             <div *ngIf="errorfeildDescription" style="color:red" >
-              Ajouter un label
+              Ajouter un nom categorie
             </div>
           </div>
         </div>
 <!--  -->
         <div class="row mb-6">
           <label class="col-lg-4 col-form-label fw-bold fs-6"
-            ><span class="required">Categorie</span></label>
+            ><span class="required">Sous-categorie</span></label>
           <div class="col-lg-8 fv-row">
             <select
               class="form-select form-select-solid form-select-lg fw-bold"

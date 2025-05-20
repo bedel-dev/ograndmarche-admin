@@ -30,6 +30,7 @@ export class UpdateeventeComponent implements OnInit,OnDestroy {
       quantite: new FormControl(),
       loc:new FormControl(),
       montant:new FormControl(),
+      commercial_name: new FormControl(),
 
     })
     this.AddAutorisationForm = new FormGroup({
@@ -73,7 +74,18 @@ export class UpdateeventeComponent implements OnInit,OnDestroy {
 
       return  repp.id.toString()==rep.response.data.idProduit
       })
+
+      if(rep.response.data.description.toString().includes("<=:=>")){
+        var splitdescription = rep.response.data.description.toString().split("<=:=>");
+        rep.response.data.description = splitdescription[0]
+        rep.response.data.produits = splitdescription[1]
+        console.log("itemr :",splitdescription)
+      }
       this.namefile = rep.response.data.urlImageVente
+
+
+      
+      this.AddUserForm.controls['commercial_name'].setValue(rep.response.data.produits, {onlySelf: true});
       this.AddUserForm.controls['description'].setValue(rep.response.data.description, {onlySelf: true});
       this.AddUserForm.controls['quantite'].setValue(rep.response.data.quantite, {onlySelf: true});
       this.AddUserForm.controls['montant'].setValue(rep.response.data.prix, {onlySelf: true});

@@ -50,17 +50,18 @@ export class ListeventeComponent implements OnInit {
          console.log("prod",this.User);
         this.User.forEach((res:any)=>{
           if(item.idProduit==res.id.toString()){
-            item.cate = res.categorie
-            item.produits =res.label
+            //item.cate = res.categorie
+            item.cate = res.label
+            item.produits = res.label
           }
         })
 
        // console.log(this.categorieProduit)
-        this.categorieProduit.forEach((cat:any)=>{
-          if(item.cate==cat.id.toString()){
-            item.cate  = cat.label
-          }
-        })
+        // this.categorieProduit.forEach((cat:any)=>{
+        //   if(item.cate==cat.id.toString()){
+        //     item.cate  = cat.label
+        //   }
+        // })
         var tmptime = item.created_at.split('T')
         item.created_at = tmptime[0]
         //  console.log(item['created_at'])
@@ -74,7 +75,16 @@ export class ListeventeComponent implements OnInit {
         if(item.typeVente == "engrais"){
           item.typeVente = "Engrais"
         }
-        console.log("item :",item.typeVente)
+
+        if(item.description.toString().includes("<=:=>")){
+          var splitdescription = item.description.toString().split("<=:=>");
+          item.description = splitdescription[0]
+          item.produits = splitdescription[1]
+          console.log("itemr :",splitdescription)
+        }
+
+
+        console.log("item :",item.description.toString().split("<=:=>")[1])
 
         // var datecreateprod = new Date(item['created_at']);
         //    datecreateprod.setDate(datecreateprod.getDate() + parseInt(item.delai))

@@ -6,8 +6,8 @@
   <div class="card card-xxl-stretch mb-5 mb-xl-8">
     <div class="card-header border-0 pt-5">
       <h3 class="card-title align-items-start flex-column">
-        <span class="card-label fw-bolder fs-3 mb-1">Produit</span>
-        <span class="text-muted mt-1 fw-bold fs-7"> {{UserTotals}} produit (s)</span>
+        <span class="card-label fw-bolder fs-3 mb-1">Categorie</span>
+        <span class="text-muted mt-1 fw-bold fs-7"> {{UserTotals}} categorie (s)</span>
       </h3>
       <div class="d-flex my-2">
         <div class="d-flex align-items-center position-relative me-4">
@@ -32,14 +32,14 @@
         data-bs-toggle="tooltip"
         data-bs-placement="top"
         data-bs-trigger="hover"
-        title="Clicker pour ajouter un produit"
+        title="Clicker pour Ajouter une categorie"
       >
         <a  routerLink="/apps/chat/add-produit"  class="btn btn-sm btn-light-primary">
           <span
             [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
             class="svg-icon svg-icon-3"
           ></span>
-          Nouveau produit
+          Nouvelle categorie
         </a>
       </div>
 
@@ -76,7 +76,7 @@
               </th>
               <th class="min-w-150px"></th>
               <th class="min-w-140px">Label</th>
-              <th class="min-w-120px">categorie</th>
+              <th class="min-w-120px">sous-categorie</th>
               <th class="min-w-120px">Date ajout</th>
               <th class="min-w-100px text-end">Actions</th>
             </tr>

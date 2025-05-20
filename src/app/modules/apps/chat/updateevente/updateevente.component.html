@@ -40,6 +40,25 @@
 
         </div>
         <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Nom commercial </label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+             id="exampleFormControlTextarea1"
+             rows="3"
+             type="texte"
+             class="form-control form-control-lg form-control-solid"
+             placeholder="Nom commercial"
+             name="commercial_name"
+             formControlName="commercial_name"
+             >
+
+            <div *ngIf="errorfeilmontant" style="color:red" >
+              Ajouter un nom commercial
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6">
           <label class="col-lg-4 col-form-label required fw-bold fs-6">Description</label
           >
           <div class="col-lg-8 fv-row">
@@ -77,7 +96,7 @@
           </div>
         </div>
         <div class="row mb-6">
-          <label class="col-lg-4 col-form-label required fw-bold fs-6">Montant</label
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Prix de vente</label
           >
           <div class="col-lg-8 fv-row">
             <input
@@ -85,13 +104,13 @@
              rows="3"
              type="number"
              class="form-control form-control-lg form-control-solid"
-             placeholder="Montant"
+             placeholder="Prix de vente"
              name="montant"
              formControlName="montant"
              >
 
             <div *ngIf="errorfeilmontant" style="color:red" >
-              Ajouter un montant
+              Ajouter un prix de vente
             </div>
           </div>
         </div>
@@ -105,9 +124,14 @@
             id="typevente"
             name="typevente"
             formControlName="typevente">
-            <option value="Produit consommable">Produit consommable</option>
+            <!-- <option value="Produit consommable">Produit consommable</option>
             <option value="Intrant">Intrant</option>
-            <option value="Outils">Outils</option>
+            <option value="Outils">Outils</option> -->
+            <option value="null">Selectionnez un type de produit</option>
+            <option value="Produit consommable">Denrée alimentaire</option>
+            <option value="Intrant">Phyto</option>     
+            <option value="engrais">Engrais</option>
+            <option value="Outils">Machines et outils</option>
           </select>
           <div *ngIf="errorfeildpays" style="color:red" >
             Ajouter un type de vente
@@ -132,7 +156,7 @@
         </div>
         <div class="row mb-6">
           <label class="col-lg-4 col-form-label fw-bold fs-6"
-            ><span class="required">Produit</span></label>
+            ><span class="required">Categorie</span></label>
           <div class="col-lg-8 fv-row">
             <select
               class="form-select form-select-solid form-select-lg fw-bold"
@@ -142,7 +166,7 @@
               <option *ngFor="let c of User" value="{{c.id}}">{{c.label}}</option>
             </select>
             <div *ngIf="errorfeildpays" style="color:red" >
-              Ajouter un produit
+              Ajouter une categorie
             </div>
           </div>
         </div>

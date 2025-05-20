@@ -8,40 +8,41 @@
     aria-controls="kt_account_profile_details"
   >
     <div class="card-title m-0">
-      <h3 class="fw-bolder m-0">Produit</h3>
+      <h3 *ngIf="addscategorie == false" class="fw-bolder m-0">Categorie</h3>
+      <h3 *ngIf="addscategorie == true" class="fw-bolder m-0">Sous-categorie</h3>
     </div>
   </div>
-  <div id="kt_account_profile_details" class="collapse show">
+  <div *ngIf="addscategorie == false"  id="kt_account_profile_details" class="collapse show">
     <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
       <div class="card-body border-top p-9">
         <div class="row mb-6">
-          <label class="col-lg-4 col-form-label required fw-bold fs-6">Nom commercial du Produit</label>
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Nom categorie</label>
           <div class="col-lg-8 fv-row">
             <input
              id="exampleFormControlTextarea1"
              rows="3"
              type="text"
              class="form-control form-control-lg form-control-solid"
-             placeholder="Nom commercial du Produit"
+             placeholder="Nom categorie"
              name="email"
              formControlName="email"
              >    
             <div *ngIf="errorfeildDescription" style="color:red" >
-              Ajouter le nom du produit 
+              Ajouter le nom de la categorie 
             </div>
           </div>
         </div>
 
         <div class="row mb-6">
           <label class="col-lg-4 col-form-label fw-bold fs-6"
-            ><span class="required">Categorie</span></label>
+            ><span class="required">Sous-categorie</span></label>
           <div class="col-lg-8 fv-row">
             <select
               class="form-select form-select-solid form-select-lg fw-bold"
               id="localisation"
               name="localisation"
               formControlName="localisation">
-              <option disabled value="null"> Selectionnez une categorie </option>
+              <option disabled value="null"> Selectionnez une sous-categorie </option>
               <option *ngFor="let c of Vente" value="{{c.id}}">{{c.label}}</option>
             </select>
             <div *ngIf="errorfeildpays" style="color:red" >
@@ -51,8 +52,7 @@
         </div>
 
         <div class="row mb-6">
-          <label class="col-lg-4 col-form-label fw-bold fs-6">Image du produit</label>
-
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Image</label>
           <div class="col-lg-8">
             <div class="col-lg-6 fv-row">
               <input
@@ -70,12 +70,22 @@
                 Ajouter une image
               </div>
             </div>
-
           </div>
-
-
         </div>
-
+        <div class="row mb-6">
+          <!-- <label class="col-lg-4 col-form-label fw-bold fs-6">Image du produit</label> -->
+          <div class="col-lg-8">
+            <div class="col-lg-6 fv-row">
+              <button alert-success
+                type="button"
+                class="btn btn-primary"
+                (click)="addSousCategorie()"
+              >
+                <ng-container >Ajouter une sous-categorie</ng-container>
+              </button>
+            </div>
+          </div>
+        </div>
 <!--  -->
 
 
@@ -128,6 +138,142 @@
           [disabled]="isLoading"
           [disabled]="allreadyexiste"
           (click)="saveSettings()"
+        >
+          <ng-container *ngIf="!isLoading">Enregistrer</ng-container>
+          <ng-container *ngIf="isLoading">
+            <span clas="indicator-progress" [style.display]="'block'">
+              Patientez...{{ " " }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div id="kt_account_profile_details_"  *ngIf="addscategorie" class="collapse show">
+    <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
+      <div class="card-body border-top p-9">
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6">Nom sous-categorie</label>
+          <div class="col-lg-8 fv-row">
+            <input
+             id="exampleFormControlTextarea1"
+             rows="3"
+             type="text"
+             class="form-control form-control-lg form-control-solid"
+             placeholder="Nom sous-categorie"
+             name="email"
+             formControlName="email"
+             >    
+            <div *ngIf="errorfeildDescription" style="color:red" >
+              Ajouter le nom de la sous categorie 
+            </div>
+          </div>
+        </div>
+  
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6"
+            ><span class="required">Type</span></label>
+          <div class="col-lg-8 fv-row">
+            <select
+              class="form-select form-select-solid form-select-lg fw-bold"
+              id="localisation"
+              name="localisation"
+              formControlName="localisation">
+              <option disabled value="null"> Selectionnez un type </option>
+              <option value="Produit consommable">Produit consommable</option>
+              <option value="Intrant">Intrant</option>
+              <option value="Outils">Outils</option>
+            </select>
+            <div *ngIf="errorfeildpays" style="color:red" >
+              Ajouter un type
+            </div>
+          </div>
+        </div>
+  
+        <!-- <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Image</label>
+          <div class="col-lg-8">
+            <div class="col-lg-6 fv-row">
+              <input
+                type="file"
+                class="
+                  form-control form-control-lg form-control-solid
+                  mb-3 mb-lg-0
+                "
+                formControlName="image"
+                name="image"
+                id="image"
+                (change)="onFileChange($event)"
+              />
+              <div *ngIf="errorfeildfile" style="color:red" >
+                Ajouter une image
+              </div>
+            </div>
+          </div>
+        </div> -->
+  <!--  -->
+  
+  
+  <!--
+  <div class="container">
+  <h2>Filterable Dropdown</h2>
+  <p>Open the dropdown menu and type something in the input field to search for dropdown items:</p>
+  <p>Note that we have styled the input field to fit the dropdown items.</p>
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle"  type="button" data-toggle="dropdown">Dropdown Example
+    <span class="caret"></span></button>
+    <ul id="dropdown"  class="dropdown-menu">
+      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+      <li><a href="#">HTML</a></li>
+      <li><a href="#">CSS</a></li>
+      <li><a href="#">JavaScript</a></li>
+      <li><a href="#">jQuery</a></li>
+      <li><a href="#">Bootstrap</a></li>
+      <li><a href="#">Angular</a></li>
+    </ul>
+  </div>
+  </div>-->
+        <br/>
+        <div *ngIf="stateinfo">
+          <div class="mb-lg-15 alert alert-danger">
+            <div class="alert-text font-weight-bold">
+              {{message}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="success">
+          <div class="mb-lg-15 alert alert-success">
+            <div class="alert-text font-weight-bold">
+              {{message}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="passewordgood">
+          <div class="mb-lg-15 alert alert-danger">
+            <div class="alert-text font-weight-bold">
+              Les mots de passe sont pas identiques
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end py-6 px-9">
+        <button alert-success
+        style="margin-right: 10px;"
+        type="button"
+        class="btn btn-secondary"
+        (click)="addSousCategorie()"
+      >
+        <ng-container >retour</ng-container>
+      </button>
+        <button alert-success
+          type="button"
+          class="btn btn-primary"
+          [disabled]="isLoading"
+          [disabled]="allreadyexiste"
+          (click)="saveSettingsSous()"
         >
           <ng-container *ngIf="!isLoading">Enregistrer</ng-container>
           <ng-container *ngIf="isLoading">

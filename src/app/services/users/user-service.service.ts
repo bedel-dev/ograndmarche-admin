@@ -428,7 +428,7 @@ AddVente(datauser:any,img:any){
     "idUser": datauser.producteur.value,
     "idProduit": datauser.produit.value,
     "typeVente": datauser.typevente.value,
-    "description": datauser.description.value,
+    "description": datauser.description.value+" <=:=> "+datauser.commercial_name.value,
     "prix": parseInt(datauser.montant.value),
     "quantite":  parseInt(datauser.quantite.value),
     "urlImageVente": img,
@@ -459,7 +459,7 @@ UpdateVente(datauser:any,img:any,idvent:any){
     "idUser": datauser.producteur.value,
     "idProduit": datauser.produit.value,
     "typeVente": datauser.typevente.value,
-    "description": datauser.description.value,
+    "description": datauser.description.value+" <=:=> "+datauser.commercial_name.value,
     "prix": parseInt(datauser.montant.value),
     "quantite":  parseInt(datauser.quantite.value),
     "urlImageVente": img,
@@ -1045,6 +1045,21 @@ GetAllCategorie(){
   //  'Content-Type': 'multipart/form-data'
 })
 return this.http.get(GlobalConstants.apiURL+"/categorieproduits/getAllgorieproduit.json",{headers: headers})
+}
+
+
+addCategorie(data:any){
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+  const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+    'Authorization': `Bearer ${user.token}`,
+  //  'Content-Type': 'multipart/form-data'
+})
+var datas = {
+    "label":data.email.value,
+    "type_produit":data.localisation.value,
+  }
+return this.http.post(GlobalConstants.apiURL+"/categorieproduits/addcategorieproduit.json",datas,{headers: headers})
 }
 
 

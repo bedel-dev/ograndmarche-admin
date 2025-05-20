@@ -30,7 +30,8 @@ export class AddventeComponent implements OnInit {
       loc:new FormControl(),
       montant:new FormControl(),
       enlevement:new FormControl(),
-      unitmessure:new FormControl()
+      unitmessure:new FormControl(),
+      commercial_name: new FormControl(),
 
     })
     this.AddAutorisationForm = new FormGroup({

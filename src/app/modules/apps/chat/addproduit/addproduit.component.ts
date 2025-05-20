@@ -181,6 +181,12 @@ export class AddproduitComponent implements OnInit {
  errorfeilddelai = false;
  errorfeilmontant = false;
 
+  addscategorie:boolean = false;
+  addSousCategorie(){
+    this.addscategorie = !this.addscategorie;
+  }
+
+
 
  saveSettings() {
 
@@ -292,6 +298,121 @@ export class AddproduitComponent implements OnInit {
  }
 
  }
+
+
+ saveSettingsSous() {
+
+  //console.log("vente :"+this.f.loc.value)
+ this.isLoading$.next(true);
+ var statework = true;
+//  if(this.namefile == ""){
+//    statework= false
+//    this.errorfeildfile = true
+//    this.isLoading$.next(false);
+//  }else{
+//    statework= true
+//    this.errorfeildfile = false
+
+//  }
+
+ if(this.f.localisation.value == null){
+  statework= false
+  this.errorfeildpays = true
+  this.isLoading$.next(false);
+}else{
+  this.errorfeildpays = false
+  statework= true
+}
+
+ if(this.f.email.value == null){
+   statework= false
+   this.errorfeildDescription = true
+   this.isLoading$.next(false);
+ }else{
+   this.errorfeildDescription = false
+   statework= true
+ }
+ this.cdr.detectChanges();
+if(!this.errorfeildfile
+ &&!this.errorfeildpays
+ &&!this.errorfeildDescription)
+ {
+
+ this.userService.addCategorie(this.f).subscribe((rep:any)=>{
+  console.log(rep)
+   if(rep.response.code=="402"){
+   this.cdr.detectChanges();
+   this.isLoading$.next(false);
+   this.message = "information deja enregistré changez le nom"
+   this.stateinfo = true
+ // this.allreadyexiste = true;
+   this.cdr.detectChanges();
+   }else if(rep.response.code=="200"){
+
+//  this.userService.UplaodIamge(this.file).subscribe((res)=>{
+//    console.log(res)
+//  })
+    //this.userved = rep.response.data.id;
+     //console.log(this.userved)
+    // this.accesautorisation= true;
+     this.isLoading$.next(false);
+     this.message = "Produit enregistré"
+     this.success = true
+     this.allreadyexiste = true;
+     this.router.navigate(['/apps/chat/list-produit']);
+    //  var n = rep.response.data.name.split(" ");
+    //  var nom = n[0]
+    //  var prenom = n[1]
+    //  this.AddUserForm.controls['email'].setValue(rep.response.data.email, {onlySelf: true})
+    //  this.AddUserForm.controls['email'].disable();
+    //  this.AddUserForm.controls['phone'].setValue(rep.response.data.contact, {onlySelf: true});
+    //  this.AddUserForm.controls['phone'].disable();
+    //  this.AddUserForm.controls['username'].setValue(rep.response.data.username, {onlySelf: true});
+    //  this.AddUserForm.controls['username'].disable();
+    //  this.AddUserForm.controls['localisation'].setValue(rep.response.data.localisation, {onlySelf: true});
+    //  this.AddUserForm.controls['localisation'].disable();
+    //  this.AddUserForm.controls['role'].setValue(rep.response.data.role, {onlySelf: true});
+    //  this.AddUserForm.controls['role'].disable();
+    //  this.AddUserForm.controls['pass1'].setValue('********************', {onlySelf: true});
+    //  this.AddUserForm.controls['pass1'].disable();
+    //  this.AddUserForm.controls['pass2'].setValue('********************', {onlySelf: true});
+    //  this.AddUserForm.controls['pass2'].disable();
+    //  this.AddUserForm.controls['nom'].setValue(nom, {onlySelf: true});
+    //  this.AddUserForm.controls['nom'].disable();
+    //  this.AddUserForm.controls['prenom'].setValue(prenom, {onlySelf: true});
+    //  this.AddUserForm.controls['prenom'].disable();
+    //  this.AddUserForm.controls['image'].disable();
+    //  this.cdr.detectChanges();
+   }
+   else{
+     //console.log(rep.response.message)
+     this.message = "errer lors de l'enregistrément"
+     this.stateinfo = true
+     this.isLoading$.next(false);
+     this.cdr.detectChanges();
+   }
+ },
+ error=>{
+   this.message = "errer lors de l'enregistrément"
+   this.stateinfo = true
+   this.isLoading$.next(false);
+   //this.authService.logout()
+ },
+ ()=>{
+
+   setTimeout(() => {
+     this.success = false
+     this.stateinfo = false
+     this.cdr.detectChanges();
+   }, 2500);
+ })
+
+}
+
+}
+
+
+
  autorisationListe:any[]=[]
  autorisationempty = false
  sussesauto = false
