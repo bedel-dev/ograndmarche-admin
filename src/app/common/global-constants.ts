@@ -24,7 +24,7 @@ export class GlobalConstants {
     public  static lidarppai: string = "https://lidar-api-prod.azurewebsites.net"
     public static imagurl: string = this.host+"/img/produit_image/";
     public static api_auth_host: string = "https://ogrand-marchez-api-auth.azurewebsites.net/app_auth/";
-    public static admainMail: string = "bedel.coulibaly@lidar.ci"
+    public static admainMail: string = "serviceclient@lidar.ci"
     public static linkfrontInscription: string = "https://nice-coast-0b846f203.5.azurestaticapps.net/auth/createuser"
 }
 
