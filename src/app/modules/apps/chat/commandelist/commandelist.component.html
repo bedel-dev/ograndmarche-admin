@@ -793,7 +793,7 @@
         id="trans"
         name="trans"
         formControlName="trans">
-        <option value="null" disabled="true" [selected]="true">selectionnez un transporteur</option>
+        <option value="null" disabled="true" [selected]="true">selectionnezz un transporteur</option>
         <option *ngFor="let c of Transporteur" value="{{c.id}}">{{c.name}} - ({{c.contact}})</option>
        </select>
        <div *ngIf="todoLivraison" style="color:red;">Ce livreur n'a pas de compte Lidar</div>
