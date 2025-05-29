@@ -40,12 +40,12 @@ export class CommandelistComponent implements OnInit {
   openLivraison(content: any, item: any) {
    var localenlevement:any[]=[]; 
    var n = 1;
-   
+   console.log("take");
    this.ProduitCommande.forEach((element)=>{
     if(item.id.toString()==element.idcommande){
 
       this.v.forEach((vente:any)=>{
-        console.log("iitems",item,element,vente);
+        //console.log("iitems",item,element,vente);
         if(element.Idvendeur == vente.idUser &&element.idvente ==vente.id.toString() ){
           localenlevement.push(" enlevement ("+n+") => "+vente.enlevement)
           n = n+1;
@@ -60,6 +60,32 @@ export class CommandelistComponent implements OnInit {
   this.modalContentLivre = item
   this.modalService.open(content, { centered: true, size: "lg", windowClass: 'andro_quick-view-modal p-0'});
   }
+
+  openLivraison2(content: any, item: any) {
+    var localenlevement:any[]=[]; 
+    var n = 1;
+    console.log(this.ProduitCommande);
+    console.log(item);
+    this.ProduitCommande.forEach((element)=>{
+      console.log("ici",item.id.toString()==element.idcommande);
+     if(item.id.toString()==element.idcommande){
+      console.log("ici");
+       this.v.forEach((vente:any)=>{
+         console.log("iitems",item,element,vente);
+         if(element.Idvendeur == vente.idUser &&element.idvente ==vente.id.toString() ){
+           localenlevement.push(" enlevement ("+n+") => "+vente.enlevement)
+           n = n+1;
+           console.log("localenlevement =>",localenlevement)
+         }
+       })
+     }
+    })
+   this.AddUserForm.controls['enlevement'].setValue(localenlevement, {onlySelf: true});
+   this.AddUserForm.controls['dechargement'].setValue(item.lieuLivraison, {onlySelf: true});
+   this.AddUserForm.controls['montant'].setValue(item.montantlivraison+" fr", {onlySelf: true});
+   this.modalContentLivre = item
+   this.modalService.open(content, { centered: true, size: "lg", windowClass: 'andro_quick-view-modal p-0'});
+   }
   form = new FormGroup({
     trans: new FormControl(null, Validators.required),
     montant:new FormControl({value: null, disabled: true}, Validators.required),
@@ -166,6 +192,7 @@ export class CommandelistComponent implements OnInit {
           console.log("coursecommande :",element)
 
           this.CommandeProd.push(element)
+          console.log("CommandeProd :",this.CommandeProd)
           this.InitialeVarDetaiCommande.push(element)
         }
       });
@@ -245,11 +272,16 @@ SuiviSold(data:any){
           var amount = parseInt(this.modalContentLivre.montant) + parseInt(this.modalContentLivre.montantlivraison);
           console.log("amount g => ",amount);
           if(result.solde<=amount){
-            
+            console.log("is possible to attribute")
             this.todoLivraisonComptefaible = true;
+            // this.changeDetector.detectChanges();
           }else{
             console.log(result.solde)
+            console.log("is not possible to attribute")
+            this.todoLivraisonComptefaible = false;
+            // this.changeDetector.detectChanges();
           }
+          console.log("todoLivraisonComptefaible => ",this.todoLivraisonComptefaible);
         }
       });
     }
@@ -489,14 +521,17 @@ SuiviSold(data:any){
     this.userService.GetAlluser().subscribe((res:any) =>{
       res.data.forEach((r:any)=>{
         this.UserCommande.push(r)
+        console.log("")
+        //console.log("transporteur :",r.name)
         if(r.role ==="Transporteur"){
-          console.log(r.engin)
+          console.log("transporteurs: ",r.name)
          // this.Transporteur.push(r)
          //console.log("reponse demande :",this.demandefournisseur)
           
          cousertransporteur = this.Course.filter((item:any)=>{
             return item.transporteuridentifiant === r.id.toString()
          })
+         console.log("cousertransporteur :",cousertransporteur)
 
          if(cousertransporteur.length === 0){ 
          // if(r.engin=="moto"){
@@ -612,6 +647,8 @@ SuiviSold(data:any){
         element.numero_commande =item.numero_commande
       //  element.vendeurId =item.vendeurId
         this.CommandeProd.push(element)
+
+        console.log("CommandeProd",this.CommandeProd)
       });
       this.changeDetector.detectChanges()
 
@@ -998,11 +1035,11 @@ state:any
             this.InitialeVarDetaiCommande.push(element)
           }
         }
-        console.log("dataof : ",this.CommandeProd)
+        
 
       });
       this.changeDetector.detectChanges()
-
+      console.log("dataof : ",this.CommandeProd)
     //  console.log(test)
     },error =>{
       console.log(error)

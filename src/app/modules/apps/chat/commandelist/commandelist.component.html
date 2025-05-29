@@ -352,6 +352,7 @@
               <th class="min-w-150px">Produit (s)</th>
               <th class="min-w-140px">Montant</th>
               <th class="min-w-140px">Quantité</th>
+              <th class="min-w-140px">Montant livraison</th>
               <th class="min-w-140px">Lieu d'enlevement</th>
               <th class="min-w-140px">Date</th>
               <th class="min-w-100px text-end">Actions</th>
@@ -409,6 +410,14 @@
                   class="text-dark fw-bolder text-hover-primary d-block fs-6"
                 >
                 {{user.quantite}}
+                </a>
+              </td>
+              <td>
+                <a
+
+                  class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                >
+                {{user.montantlivraison | number:'1.0-0' }} Fr
                 </a>
               </td>
               <td>
@@ -485,8 +494,15 @@
                               ngbDropdownToggle> <i class="fa fa-bars" aria-hidden="true"></i>
                             </button>
                       <div ngbDropdownMenu="gfg">
-                        <button   *ngIf="user.state==='accepter'"  ngbDropdownItem>Aucune  option</button>
+                        <!-- <button   *ngIf="user.state==='accepter'"  ngbDropdownItem>Aucune  option</button> -->
+                        <button   *ngIf="user.state ==='accepter'" (click)="openLivraison2(contentss, user)" ngbDropdownItem>faires la livraison</button>
+
                         <button   *ngIf="user.state!=='accepter'&&user.state!=='livrer'" (click)="UpdateCommande(user,'accepter')" ngbDropdownItem>Accepter la commande</button>
+                        <button *ngIf="user.state ==='livraison en cours'
+                        ||user.statut==='en préparation'
+                        ||user.statut==='enlever'
+                        ||user.statut==='livrer'"
+                         routerLink="/apps/chat/list-courses/{{user.id}}" ngbDropdownItem>Suivre la course </button>
                       </div>
                     </div>
                 </div>
@@ -828,6 +844,95 @@
         [attr.disabled]="true"
       >
       </div>
+    </form>
+    <div  *ngIf="sendcourses" class="mb-lg-15 alert alert-success">
+      <div class="alert-text font-weight-bold">
+        {{message}}
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button  *ngIf="!laodaddcourses" type="button" class="btn btn-primary"
+          (click)="saveSettings()">Enregistrer la course
+        </button>
+          <button *ngIf="laodaddcourses" class="btn btn-primary">
+            <ng-container>
+              <span clas="indicator-progress" [style.display]="'block'">
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+            </ng-container>
+          </button>
+  </div>
+</ng-template>
+
+<ng-template #contentss let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Faire une livraison</h4>
+      <button type="button" #closebtn class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
+      <div class="fv-row mb-8">
+        <label class="form-label fs-6 fw-bolder text-dark">Transporteur</label>
+        <select
+        (change)="SuiviSold($event)"
+        class="form-select form-select-solid form-select-lg fw-bold"
+        id="trans"
+        name="trans"
+        formControlName="trans">
+        <option value="null" disabled="true" [selected]="true">selectionnez un transporteur</option>
+        <option *ngFor="let c of Transporteur" value="{{c.id}}">{{c.name}} - ({{c.contact}})</option>
+       </select>
+       <div *ngIf="todoLivraison" style="color:red;">Ce livreur n'a pas de compte Lidar</div>
+       <div *ngIf="todoLivraisonComptefaible" style="color:red;">Le solde de ce livreur est inferieur au solde de la commande</div>
+       <div *ngIf="livreurselect" style="color:red;">Choisissez un livreur</div>
+       <div *ngIf="livreurlibre" style="color:red;">aucun livreur libre</div>
+       
+      </div>
+      <!-- <div class="fv-row mb-8">
+        <label class="form-label fs-6 fw-bolder text-dark">Lieu d'enlevement du colis</label>
+        <input
+        id="exampleFormControlTextarea1"
+        rows="3"
+        type="text"
+        class="form-control form-control-lg form-control-solid"
+        placeholder="Lieu d'enlevement du colis"
+        name="enlevement"
+        formControlName="enlevement"
+        [disabled]="true"
+        [attr.disabled]="true"
+      >
+      </div> -->
+      <!-- <div class="fv-row mb-8">
+        <label class="form-label fs-6 fw-bolder text-dark">Lieu du dechargement du colis</label>
+        <input
+        id="exampleFormControlTextarea1"
+        rows="3"
+        type="text"
+        class="form-control form-control-lg form-control-solid"
+        placeholder="Lieu du dechargement du colis"
+        name="dechargement"
+        formControlName="dechargement"
+        [disabled]="true"
+        [attr.disabled]="true"
+      >
+      </div> -->
+      <!-- <div class="fv-row mb-8">
+        <label class="form-label fs-6 fw-bolder text-dark">Montant de la livraison</label>
+        <input
+        id="exampleFormControlTextarea1"
+        rows="3"
+        type="text"
+        class="form-control form-control-lg form-control-solid"
+        placeholder="Montant"
+        name="montant"
+        formControlName="montant"
+        [disabled]="true"
+        [attr.disabled]="true"
+      >
+      </div> -->
     </form>
     <div  *ngIf="sendcourses" class="mb-lg-15 alert alert-success">
       <div class="alert-text font-weight-bold">
