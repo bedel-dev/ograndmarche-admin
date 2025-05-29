@@ -274,11 +274,11 @@ SuiviSold(data:any){
           if(result.solde<=amount){
             console.log("is possible to attribute")
             this.todoLivraisonComptefaible = true;
-            // this.changeDetector.detectChanges();
+            this.changeDetector.detectChanges();
           }else{
             console.log(result.solde)
             console.log("is not possible to attribute")
-            this.todoLivraisonComptefaible = false;
+            //this.todoLivraisonComptefaible = false;
             // this.changeDetector.detectChanges();
           }
           console.log("todoLivraisonComptefaible => ",this.todoLivraisonComptefaible);
