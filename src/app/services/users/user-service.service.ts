@@ -197,6 +197,21 @@ GetCommandeByuser(){
   const body =JSON.stringify(user);
   return this.http.post(GlobalConstants.lidarppai+"/v1.4/operations/solde.json",body,{headers:headers});  
 }
+
+ControlesoleGTP(data:any){
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+ // const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+   // 'Authorization': `Bearer ${user.token}`,
+  })
+  var user = {
+    "accompteID": data 
+  }
+  const body =JSON.stringify(user);
+  return this.http.post(GlobalConstants.hostapigetway+"/gtp/checkbalance.json",body,{headers:headers});  
+}
+
 Getuserlidar(data:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
   //const user = JSON.parse(hauth!)
@@ -488,7 +503,8 @@ UpdateProduitVente(datauser:any,img:any,idprod:any){
 var t = {
   "label":datauser.email.value,
   "categorie": datauser.localisation.value,
-  "urlimage": img
+  "urlimage": img,
+  "idcat":datauser.idcat.value
 }
 console.log(t)
 const body =JSON.stringify(t);
@@ -1138,6 +1154,28 @@ var datas = {
 //users_fournisseur.linkcreate = GlobalConstants.linkfrontInscription
 console.log("data mail: ",data)
 console.log("users_fournisseur: ",users_fournisseur)
+
+const body =JSON.stringify(data);
+return this.http.post(GlobalConstants.api_auth_host+"users/sendmailConfirme.json",data,{headers: headers})
+}
+
+
+SendMailComfirmeSMS(contact:any){
+
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+  const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+    'Authorization': `Bearer ${user.token}`,
+  //  'Content-Type': 'multipart/form-data'
+})
+
+var data = {
+    "contact":contact,
+    "type":"sms_alert"
+}
+//users_fournisseur.linkcreate = GlobalConstants.linkfrontInscription
+console.log("data mail: ",data)
+console.log("contact: ",contact)
 
 const body =JSON.stringify(data);
 return this.http.post(GlobalConstants.api_auth_host+"users/sendmailConfirme.json",data,{headers: headers})

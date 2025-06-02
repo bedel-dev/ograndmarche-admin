@@ -36,8 +36,13 @@ export class CommandelistComponent implements OnInit {
     console.log("commande :",item)
     this.GetCommandeProduit(content,item)
   }
+  
 
   openLivraison(content: any, item: any) {
+    
+    this.todoLivraisonComptefaible = false;
+    this.AddUserForm.controls['trans'].setValue("null", {onlySelf: true});
+
    var localenlevement:any[]=[]; 
    var n = 1;
    console.log("take");
@@ -237,26 +242,33 @@ export class CommandelistComponent implements OnInit {
 //modal.close('Save click')
 
 todoLivraison:boolean=false
-todoLivraisonComptefaible:boolean;
-
+todoLivraisonComptefaible:boolean = true;
+isLoadingSuivi: boolean = false;
+selectecTransporteurContact:any = null;
 SuiviSold(data:any){
   console.log(data.target.value)
   var transporteurselected = this.Transporteur.filter((d:any) => {
     return d.id.toString() == data.target.value
   })
+  this.isLoadingSuivi = true;
+  this.changeDetector.detectChanges();
   this.livreurselect  = false
   this.todoLivraison = false;
   this.todoLivraisonComptefaible = false;
+  console.log("transporteurselected :",this.isLoadingSuivi)
    //console.log("Trans :",transporteurselected[0].contact.split(" ")[0]+transporteurselected[0].contact.split(" ")[1])
    //console.log("commande :",this.modalContentLivre) 
    //verification s'il est dans lidar +2250758854116
    var contact = transporteurselected[0].contact.split(" ")[0]+transporteurselected[0].contact.split(" ")[1]
+   this.selectecTransporteurContact = contact.replace(/^\+/, '')
+   console.log("contact :",this.selectecTransporteurContact);
     //var contact = "+2250708742553"
     this.userService.Getuserlidar(contact).subscribe((data:any) => {
     console.log(data)
     if(data.code == 500){
       this.todoLivraison = true;
       this.changeDetector.detectChanges()
+      
       // setTimeout(() => {
       //   this.todoLivraison = false;
 
@@ -267,28 +279,50 @@ SuiviSold(data:any){
     }else if(data.code ==0){
       console.log("modale => ",this.modalContentLivre.montantlivraison);
       this.livreurselect  = false
-      this.userService.Controlesole(data.beneficiaire.beneficiaire_carte.carte_id).subscribe((result:any) => {
-        if(result.code ==0){
+      // this.userService.Controlesole(data.beneficiaire.beneficiaire_carte.carte_id).subscribe((result:any) => {
+      //   if(result.code ==0){
+      //     var amount = parseInt(this.modalContentLivre.montant) + parseInt(this.modalContentLivre.montantlivraison);
+      //     console.log("amount g => ",amount);
+      //     if(result.solde<=amount){
+      //       console.log("is not possible to attribute")
+      //       this.todoLivraisonComptefaible = true;
+      //       this.changeDetector.detectChanges();
+      //     }else{
+      //       console.log(result.solde)
+      //       console.log("is possible to attribute")
+      //       //this.todoLivraisonComptefaible = false;
+      //       // this.changeDetector.detectChanges();
+      //     }
+      //     console.log("todoLivraisonComptefaible => ",this.todoLivraisonComptefaible);
+      //   }
+      // });
+
+      this.userService.ControlesoleGTP(data.beneficiaire.beneficiaire_carte.carte.reference).subscribe((result:any) => {
+        console.log("result => ",result);
+        if(result.data){
           var amount = parseInt(this.modalContentLivre.montant) + parseInt(this.modalContentLivre.montantlivraison);
-          console.log("amount g => ",amount);
-          if(result.solde<=amount){
-            console.log("is possible to attribute")
+          console.log("amount total commande => ",amount);
+          console.log("solde => ",result.data.balance);
+          if(result.data.balance<=amount){
+            console.log("is not possible to attribute")
             this.todoLivraisonComptefaible = true;
             this.changeDetector.detectChanges();
           }else{
-            console.log(result.solde)
-            console.log("is not possible to attribute")
+            console.log(result.data.balance)
+            console.log("is possible to attribute")
             //this.todoLivraisonComptefaible = false;
             // this.changeDetector.detectChanges();
           }
+          
           console.log("todoLivraisonComptefaible => ",this.todoLivraisonComptefaible);
         }
+        this.isLoadingSuivi = false;
       });
     }
   },error=>{
 
   },()=>{
-
+    this.changeDetector.detectChanges();
   })
 
 }
@@ -303,7 +337,9 @@ SuiviSold(data:any){
       this.changeDetector.detectChanges();
 
     }
-
+    console.log("livreurselect => ",this.livreurselect);
+    console.log("todoLivraison => ",this.todoLivraison);
+    console.log("todoLivraisonComptefaible => ",this.todoLivraisonComptefaible);
 
     if(!this.livreurselect&&!this.todoLivraison&&!this.todoLivraisonComptefaible){
       this.laodaddcourses = true;
@@ -313,7 +349,9 @@ SuiviSold(data:any){
       },error=>{
 
       },()=>{
-
+        this.userService.SendMailComfirmeSMS(this.selectecTransporteurContact).subscribe((res:any)=>{
+          console.log("response sms ",res)
+        });
         this.Updatecommande(this.modalContentLivre,"livraison")
         this.modalContentLivre.statut = "livraison"
         // this.Users.forEach(element => {

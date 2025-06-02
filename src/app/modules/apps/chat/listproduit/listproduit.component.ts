@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { retry } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { UserServiceService } from 'src/app/services/users/user-service.service';
 
@@ -32,8 +33,9 @@ export class ListproduitComponent implements OnInit {
         //console.log(item.prodID,item.idBenef,vente.id.toString())
 
         this.Vente.forEach((vente:any) => {
+          //console.log("to test",item.categorie,vente.id.toString())
              if(item.categorie==vente.id.toString()){
-              item.cate = vente.label
+              item.cate = vente.type_produit
              }
          })
         this.User.forEach((res:any)=>{
@@ -92,6 +94,29 @@ export class ListproduitComponent implements OnInit {
       this.getAllU()
     })
   }
+
+  GetCategorie(data:any){
+    var ret = '';
+    if(data == 'Intrant'){
+      ret = 'Phyto'
+    }
+    if(data == 'engrais'){
+      ret = 'Engrais'
+    }
+    if(data == 'Outils'){
+      ret = 'Machines et outils'
+    }
+    if(data == 'Produit consommable'){
+      ret = 'Denrée alimentaire'
+    }
+    return ret;
+  }
+
+
+  // <option value="Produit consommable">Denrée alimentaire</option>
+  // <option value="Intrant">Phyto</option>
+  // <option value="engrais">Engrais</option>
+  // <option value="Outils">Machines et outils</option>
   GetAllUser(){
     this.userService.GetAllproduit().subscribe((user:any) =>{
       user.data.forEach((element:any) => {

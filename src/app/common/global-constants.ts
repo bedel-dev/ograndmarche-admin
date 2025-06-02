@@ -16,6 +16,7 @@
 //     public static api_auth_host: string = "https://2pai.demoauthapi.lidar-platform.com/v1.0/";
 //     public static admainMail: string = "serviceclient@lidar.ci"
 //     public static linkfrontInscription: string = "https://administration.d1nd9qyk4l7n3n.amplifyapp.com/auth/createuser"
+//     public static  hostapigetway = 'https://gateway.lidar-platform.com/api';
 // }
 export class GlobalConstants {
     public static apiURL: string = "https://ograndmarche-api-rec-ppai.azurewebsites.net/app_ppai";
@@ -26,6 +27,8 @@ export class GlobalConstants {
     public static api_auth_host: string = "https://ograndmarche-api-rec.azurewebsites.net/app_auth/";
     public static admainMail: string = "serviceclient@lidar.ci"
     public static linkfrontInscription: string = "https://admin-rec.ograndmarche.com/#/auth/createuser"
+    public static  hostapigetway = 'https://gateway.lidar-platform.com/api';
+
 }
 
             

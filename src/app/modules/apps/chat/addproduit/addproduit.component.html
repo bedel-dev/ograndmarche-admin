@@ -8,11 +8,11 @@
     aria-controls="kt_account_profile_details"
   >
     <div class="card-title m-0">
-      <h3 *ngIf="addscategorie == false" class="fw-bolder m-0">Categorie</h3>
-      <h3 *ngIf="addscategorie == true" class="fw-bolder m-0">Sous-categorie</h3>
+      <h3 *ngIf="addscategorie == true" class="fw-bolder m-0">Categorie</h3>
+      <h3 *ngIf="addscategorie == false" class="fw-bolder m-0">Sous-categorie</h3>
     </div>
   </div>
-  <div *ngIf="addscategorie == false"  id="kt_account_profile_details" class="collapse show">
+  <div *ngIf="addscategorie == true"  id="kt_account_profile_details" class="collapse show">
     <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
       <div class="card-body border-top p-9">
         <div class="row mb-6">
@@ -152,7 +152,7 @@
       </div>
     </form>
   </div>
-  <div id="kt_account_profile_details_"  *ngIf="addscategorie" class="collapse show">
+  <div id="kt_account_profile_details_"  *ngIf="addscategorie == false" class="collapse show">
     <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
       <div class="card-body border-top p-9">
         <div class="row mb-6">
@@ -175,17 +175,18 @@
   
         <div class="row mb-6">
           <label class="col-lg-4 col-form-label fw-bold fs-6"
-            ><span class="required">Type</span></label>
+            ><span class="required">Categorie</span></label>
           <div class="col-lg-8 fv-row">
             <select
               class="form-select form-select-solid form-select-lg fw-bold"
               id="localisation"
               name="localisation"
               formControlName="localisation">
-              <option disabled value="null"> Selectionnez un type </option>
-              <option value="Produit consommable">Produit consommable</option>
-              <option value="Intrant">Intrant</option>
-              <option value="Outils">Outils</option>
+              <option disabled value="null"> Selectionnez la categorie </option>
+              <option value="Produit consommable">Denrée alimentaire</option>
+              <option value="Intrant">Phyto</option>
+              <option value="engrais">Engrais</option>
+              <option value="Outils">Machines et outils</option>
             </select>
             <div *ngIf="errorfeildpays" style="color:red" >
               Ajouter un type
@@ -260,21 +261,23 @@
         </div>
       </div>
       <div class="card-footer d-flex justify-content-end py-6 px-9">
-        <button alert-success
+        <!-- <button alert-success
         style="margin-right: 10px;"
         type="button"
         class="btn btn-secondary"
         (click)="addSousCategorie()"
-      >
+        >
         <ng-container >retour</ng-container>
-      </button>
+      </button> -->
         <button alert-success
           type="button"
           class="btn btn-primary"
           [disabled]="isLoading"
           [disabled]="allreadyexiste"
-          (click)="saveSettingsSous()"
+          (click)="saveSettings()"
         >
+        <!-- (click)="saveSettingsSous()" -->
+        
           <ng-container *ngIf="!isLoading">Enregistrer</ng-container>
           <ng-container *ngIf="isLoading">
             <span clas="indicator-progress" [style.display]="'block'">

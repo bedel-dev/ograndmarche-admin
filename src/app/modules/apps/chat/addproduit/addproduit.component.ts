@@ -193,6 +193,7 @@ export class AddproduitComponent implements OnInit {
     //console.log("vente :"+this.f.loc.value)
    this.isLoading$.next(true);
    var statework = true;
+   this.namefile = '2.jpeg';
    if(this.namefile == ""){
      statework= false
      this.errorfeildfile = true
@@ -226,6 +227,8 @@ export class AddproduitComponent implements OnInit {
    &&!this.errorfeildDescription)
    {
 
+    
+
    this.userService.AddProduitVente(this.f,this.namefile).subscribe((rep:any)=>{
     console.log(rep)
      if(rep.response.code=="402"){
@@ -237,14 +240,14 @@ export class AddproduitComponent implements OnInit {
      this.cdr.detectChanges();
      }else if(rep.response.code=="200"){
 
-   this.userService.UplaodIamge(this.file).subscribe((res)=>{
-     console.log(res)
-   })
+  //  this.userService.UplaodIamge(this.file).subscribe((res)=>{
+  //    console.log(res)
+  //  })
       //this.userved = rep.response.data.id;
        //console.log(this.userved)
       // this.accesautorisation= true;
        this.isLoading$.next(false);
-       this.message = "Produit enregistré"
+       this.message = "enregistrement effectuer"
        this.success = true
        this.allreadyexiste = true;
        this.router.navigate(['/apps/chat/list-produit']);

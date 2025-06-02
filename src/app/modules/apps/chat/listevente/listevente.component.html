@@ -297,7 +297,8 @@
           <p>Description : {{venteSelected.description}}</p>
           <p>Prix : {{venteSelected.prix | number:'1.0-0'}} FCFA  <span *ngIf="venteSelected.mesure !== 'null'">/ {{venteSelected.mesure}}</span> <span *ngIf="venteSelected.mesure == 'null'">/ unité</span> </p>
           <p>Lieu d'enlevement : {{venteSelected.enlevement}}</p>
-          <p>Categorie : {{venteSelected.cate}}</p>
+          <p>Categorie : {{venteSelected.typeVente}}</p>
+          <p>Sous-categorie : {{venteSelected.cate}}</p>
           <p>Localité du producteur : {{venteSelected.prodloc}}</p>
           <p>Ajouter le : {{venteSelected.created_at}}</p>
         </div>

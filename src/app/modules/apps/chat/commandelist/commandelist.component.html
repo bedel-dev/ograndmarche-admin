@@ -793,14 +793,18 @@
         id="trans"
         name="trans"
         formControlName="trans">
-        <option value="null" disabled="true" [selected]="true">selectionnezz un transporteur</option>
+        <option value="null" disabled="true" [selected]="true">selectionnez un transporteur</option>
         <option *ngFor="let c of Transporteur" value="{{c.id}}">{{c.name}} - ({{c.contact}})</option>
        </select>
        <div *ngIf="todoLivraison" style="color:red;">Ce livreur n'a pas de compte Lidar</div>
        <div *ngIf="todoLivraisonComptefaible" style="color:red;">Le solde de ce livreur est inferieur au solde de la commande</div>
        <div *ngIf="livreurselect" style="color:red;">Choisissez un livreur</div>
        <div *ngIf="livreurlibre" style="color:red;">aucun livreur libre</div>
-       
+       <div *ngIf="isLoadingSuivi" style="width: 100px;">
+        <div class="spinner-border spinner-border-sm text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
       </div>
       <div class="fv-row mb-8">
         <label class="form-label fs-6 fw-bolder text-dark">Lieu d'enlevement du colis</label>
@@ -852,8 +856,8 @@
     </div>
   </div>
   <div class="modal-footer">
-      <button  *ngIf="!laodaddcourses" type="button" class="btn btn-primary"
-          (click)="saveSettings()">Enregistrer la course
+    <button  *ngIf="isLoadingSuivi==false&&f.trans.value != 'null' &&!laodaddcourses && !todoLivraisonComptefaible && !todoLivraison && !livreurlibre" type="button" class="btn btn-primary"
+      (click)="saveSettings()">Enregistrer la course
         </button>
           <button *ngIf="laodaddcourses" class="btn btn-primary">
             <ng-container>
@@ -889,7 +893,11 @@
        <div *ngIf="todoLivraisonComptefaible" style="color:red;">Le solde de ce livreur est inferieur au solde de la commande</div>
        <div *ngIf="livreurselect" style="color:red;">Choisissez un livreur</div>
        <div *ngIf="livreurlibre" style="color:red;">aucun livreur libre</div>
-       
+       <div *ngIf="isLoadingSuivi" style="width: 100px;">
+        <div class="spinner-border spinner-border-sm text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
       </div>
       <!-- <div class="fv-row mb-8">
         <label class="form-label fs-6 fw-bolder text-dark">Lieu d'enlevement du colis</label>
@@ -941,7 +949,7 @@
     </div>
   </div>
   <div class="modal-footer">
-      <button  *ngIf="!laodaddcourses" type="button" class="btn btn-primary"
+      <button  *ngIf="isLoadingSuivi==false&& f.trans.value != 'null' && !laodaddcourses && !todoLivraisonComptefaible && !todoLivraison && !livreurlibre" type="button" class="btn btn-primary"
           (click)="saveSettings()">Enregistrer la course
         </button>
           <button *ngIf="laodaddcourses" class="btn btn-primary">

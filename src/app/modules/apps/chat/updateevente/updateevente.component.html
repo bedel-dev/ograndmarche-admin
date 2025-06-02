@@ -15,7 +15,7 @@
     <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveSettings()">
       <div class="card-body border-top p-9">
         <div class="row mb-6">
-          <label class="col-lg-4 col-form-label fw-bold fs-6">Image du produit</label>
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Image du produit (2Mo max)</label>
 
           <div class="col-lg-8">
             <div class="col-lg-6 fv-row">
@@ -32,6 +32,10 @@
               />
               <div *ngIf="errorfeildfile" style="color:red" >
                 Ajouter une image
+              </div>
+
+              <div *ngIf="errorfeildfile_sise" style="color:red" >
+                Le fichier dépasse la taille maximale de 2 Mo.
               </div>
             </div>
 
@@ -117,7 +121,7 @@
 <!--  -->
       <div class="row mb-6">
         <label class="col-lg-4 col-form-label fw-bold fs-6"
-          ><span class="required">Type de vente</span></label>
+          ><span class="required">Categorie</span></label>
         <div class="col-lg-8 fv-row">
           <select
             class="form-select form-select-solid form-select-lg fw-bold"
@@ -127,14 +131,30 @@
             <!-- <option value="Produit consommable">Produit consommable</option>
             <option value="Intrant">Intrant</option>
             <option value="Outils">Outils</option> -->
-            <option value="null">Selectionnez un type de produit</option>
+            <option value="null">Selectionnez une categorie</option>
             <option value="Produit consommable">Denrée alimentaire</option>
             <option value="Intrant">Phyto</option>     
             <option value="engrais">Engrais</option>
             <option value="Outils">Machines et outils</option>
           </select>
           <div *ngIf="errorfeildpays" style="color:red" >
-            Ajouter un type de vente
+            Ajouter une categorie
+          </div>
+        </div>
+      </div>
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label fw-bold fs-6"
+          ><span class="required">Sous-categorie</span></label>
+        <div class="col-lg-8 fv-row">
+          <select
+            class="form-select form-select-solid form-select-lg fw-bold"
+            id="producteur"
+            name="produit"
+            formControlName="produit">
+            <option *ngFor="let c of User" value="{{c.id}}">{{c.label}}</option>
+          </select>
+          <div *ngIf="errorfeildpays" style="color:red" >
+            Ajouter une categorie
           </div>
         </div>
       </div>
@@ -154,22 +174,7 @@
             </div>
           </div>
         </div>
-        <div class="row mb-6">
-          <label class="col-lg-4 col-form-label fw-bold fs-6"
-            ><span class="required">Categorie</span></label>
-          <div class="col-lg-8 fv-row">
-            <select
-              class="form-select form-select-solid form-select-lg fw-bold"
-              id="producteur"
-              name="produit"
-              formControlName="produit">
-              <option *ngFor="let c of User" value="{{c.id}}">{{c.label}}</option>
-            </select>
-            <div *ngIf="errorfeildpays" style="color:red" >
-              Ajouter une categorie
-            </div>
-          </div>
-        </div>
+
 <!--
 <div class="container">
   <h2>Filterable Dropdown</h2>
