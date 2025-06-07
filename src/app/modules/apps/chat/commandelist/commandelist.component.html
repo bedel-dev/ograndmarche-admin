@@ -239,7 +239,7 @@
                             </button>
                       <div ngbDropdownMenu="gfg">
                         <button   *ngIf="user.statut ==='accepter'" href="javascript:void(0)" (click)="openLivraison(contents, user)" ngbDropdownItem>faire la livraison</button>
-                        <button   (click)="DeleteCommande(user.id)" ngbDropdownItem>Supprimer la commande </button>
+                        <!-- <button   (click)="DeleteCommande(user.id)" ngbDropdownItem>Supprimer la commande </button> -->
                         <button *ngIf="user.statut ==='livraison en cours'
                         ||user.statut==='en préparation'
                         ||user.statut==='enlever'
