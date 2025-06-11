@@ -1,4 +1,4 @@
-<div class="card mb-5 mb-xl-10">
+<div *ngIf="view == 'conseil1'" class="card mb-5 mb-xl-10">
     <div
       class="card-header border-0 cursor-pointer"
       role="button"
@@ -9,6 +9,25 @@
     >
       <div class="card-title m-0">
         <h3 class="fw-bolder m-0">Conseil</h3>
+      </div>
+
+      <div   class="card-title m-0">
+        <button
+        type="button"
+        class="btn btn-secondary"
+        style="background-color: blanchedalmond;"
+        (click)="changeView('conseil2')"
+      >
+      Creer une culture
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        style="background-color: rgb(82, 175, 11); margin-left: 10px; color: white;"
+        (click)="changeView('conseil3')"
+        >
+        Voir les cultures
+      </button>
       </div>
     </div>
     <div id="kt_account_profile_details" class="collapse show">
@@ -26,7 +45,7 @@
                     name="produit"
                     formControlName="produit">
                     <option disabled  value="null">Selectionnez un produit </option>
-                    <option *ngFor="let c of User" value="{{c.id}}">{{c.label}}</option>
+                    <option *ngFor="let c of User" value="{{c.id}}">{{c.libelle}}</option>
                   </select>
                   <div *ngIf="errorfeildprod" style="color:red" >
                     Ajouter une categorie
@@ -191,8 +210,309 @@
         </div>
       </form>
     </div>
+</div>
+
+<div *ngIf="view == 'conseil2'" class="card mb-5 mb-xl-10">
+  <div
+    class="card-header border-0 cursor-pointer"
+    role="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#kt_account_profile_details"
+    aria-expanded="true"
+    aria-controls="kt_account_profile_details"
+  >
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">Produit conseil</h3>
+    </div>
+
+    <div   class="card-title m-0">
+      <button
+      type="button"
+      class="btn btn-secondary"
+      style="background-color: blanchedalmond;"
+      (click)="changeView('conseil1')"
+    >
+    Retour
+    </button>
+    </div>
   </div>
+  <div id="kt_account_profile_details" class="collapse show">
+    <form novalidate="novalidate" [formGroup]="AddUserForm" (ngSubmit)="saveCulture()">
+      <div class="card-body border-top p-9">
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Nom de la culture</label>
+          <div class="col-lg-8">
+            <div class="row">
+              <div class="col-lg-6 fv-row">
+                  <input
+                  type="text"
+                  class="form-control form-control-lg form-control-solid"
+                  placeholder="Culture"
+                  id="producteur"
+                  name="produit"
+                  required="true"
+                  formControlName="culture">
+                <div *ngIf="errorfeildprod" style="color:red" >
+                  Ajouter une culture
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
 
 
 
+        <div  class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6">Ajouter une image</label>
+          <div class="col-lg-8">
+            <div class="col-lg-6 fv-row">
+              <input
+                type="file"
+                class="
+                  form-control form-control-lg form-control-solid
+                  mb-3 mb-lg-0"
+                formControlName="image"
+                name="image"
+                id="image"
+                (change)="onFileChange2($event)"
+              />
+              <div *ngIf="errorfeildfile" style="color:red" >
+                {{msg}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+<!--  -->
+      <br/>
+        <div *ngIf="stateinfo">
+          <div class="mb-lg-15 alert alert-danger">
+            <div class="alert-text font-weight-bold">
+              {{message}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="success">
+          <div class="mb-lg-15 alert alert-success">
+            <div class="alert-text font-weight-bold">
+              {{message}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer d-flex justify-content-end py-6 px-9">
+        <button alert-success
+          type="button"
+          class="btn btn-primary"
+          [disabled]="isLoading"
+          [disabled]="allreadyexiste"
+          (click)="saveCulture()"
+        >
+          <ng-container *ngIf="!isLoading">Enregistrer</ng-container>
+          <ng-container *ngIf="isLoading">
+            <span clas="indicator-progress" [style.display]="'block'">
+              Patientez...{{ " " }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div *ngIf="view == 'conseil3'" class="card mb-5 mb-xl-10">
+  <div
+    class="card-header border-0 cursor-pointer"
+    role="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#kt_account_profile_details"
+    aria-expanded="true"
+    aria-controls="kt_account_profile_details"
+  >
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">Produit conseil</h3>
+    </div>
+
+    <div   class="card-title m-0">
+      <button
+      type="button"
+      class="btn btn-secondary"
+      style="background-color: blanchedalmond;"
+      (click)="changeView('conseil1')"
+    >
+    Retour
+    </button>
+    </div>
+  </div>
+  <div id="kt_account_profile_details" class="collapse show">
+      <div class="card-body py-3">
+        <div class="table-responsive">
+          <!-- begin::Table -->
+           
+          <div *ngIf="User.length===0" style="font-weight:700;margin-left: 42%;margin-top: 10%;font-size:medium; color:black " > aucun element</div>
+
+          <table *ngIf="User.length>0"
+            class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4"
+          >
+            <!-- begin::Table head -->
+            <thead>
+              <tr class="fw-bolder text-muted">
+                <th class="w-25px">
+                  <div
+                    class="
+                      form-check form-check-sm form-check-custom form-check-solid
+                    "
+                  >
+                          <!-- begin::Table head
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value="1"
+                      data-kt-check="true"
+                      data-kt-check-target=".widget-9-check"
+                    />-->
+                  </div>
+                </th>
+                <th class="min-w-150px"></th>
+                <th class="min-w-140px">Produit</th>
+                <!-- <th class="min-w-120px">Description</th> -->
+                <!-- <th class="min-w-120px">type de conseil</th> -->
+                <th class="min-w-120px">Date creation</th>
+                <th *ngIf="users.data.role! =='admin'"class="min-w-120px">Action</th>
+              </tr>
+            </thead>
+            <!-- end::Table head -->
+            <!-- begin::Table body -->
+            <tbody>
+              <tr *ngFor="let user of User  | paginate: { itemsPerPage: 6, currentPage: page,totalItems:count}; let i=index">
+                <td>
+                  <div
+                    class="
+                      form-check form-check-sm form-check-custom form-check-solid
+                    "
+                  >
+                  <!-- end::Table head
+                    <input
+                      class="form-check-input widget-9-check"
+                      type="checkbox"
+                      value="1"
+                    />-->
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="symbol symbol-45px me-5">
+                     <!-- <img src="./assets/media/avatars/300-14.jpg" alt="" />-->
+                      <img src="{{profilurl}}/{{user.url_image}}" alt="{{user.url_image}}" />
+                    </div>
+
+                      <!--
+                                          <div class="d-flex justify-content-start flex-column">
+                      <a routerLink="/apps/chat/update-user/{{user.id}}" class="text-dark fw-bolder text-hover-primary fs-6">
+                        {{user.name}}
+                      </a>
+                      <span class="text-muted fw-bold text-muted d-block fs-7">
+                        {{user.role}}
+                      </span>
+                    </div>
+                      -->
+
+
+
+                  </div>
+                </td>
+                <td>
+                  <a
+
+                    class="text-dark fw-bolder text-hover-primary d-block fs-6"
+                  >
+                  {{user.libelle}}
+                  </a>
+
+                  <!-- <span class="text-muted fw-bold text-muted d-block fs-7">
+                    {{user.cate}}
+                  </span> -->
+
+                </td>
+                <!-- <td class="text-end">
+                  <div class="d-flex flex-column w-100 me-2">
+                    <div class="d-flex flex-stack mb-2">
+                      <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.description}}</a>
+                    </div>
+                  </div>
+                </td> -->
+                <!-- <td class="text-end">
+                  <div class="d-flex flex-column w-100 me-2">
+                    <div class="d-flex flex-stack mb-2">
+                      <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.Type_conseil}}</a>
+                    </div>
+                  </div>
+                </td> -->
+                <td class="text-end">
+                  <div class="d-flex flex-column w-100 me-2">
+                    <div class="d-flex flex-stack mb-2">
+                      <a  class="text-dark fw-bolder text-hover-primary fs-6">{{user.created_at.split('T')[0]}}</a>
+                    </div>
+                    <!-- begin::Table body
+                    <div class="progress h-6px w-100">
+                      <div
+                        class="progress-bar bg-primary"
+                        role="progressbar"
+                        [style.width]="'50%'"
+                      ></div>
+                    </div>-->
+                  </div>
+                </td>
+                <td *ngIf="users.data.role==='admin'||users.data.role==='adminfafa'">
+                  <div class="d-flex justify-content-end flex-shrink-0">
+                   <!-- <a
+                      href="#"
+                      class="
+                        btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                        me-1
+                      "
+                    >
+                      <span
+                        [inlineSVG]="
+                          './assets/media/icons/duotune/general/gen019.svg'
+                        "
+                        class="svg-icon svg-icon-3"
+                      ></span>
+                    </a>-->
+                    <a
+                      (click)="Delete(user.id)"
+                      class="
+                        btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                      "
+                    >
+                      <span
+                        [inlineSVG]="
+                          './assets/media/icons/duotune/general/gen027.svg'
+                        "
+                        class="svg-icon svg-icon-3"
+                      ></span>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            
+            <!-- end::Table body -->
+          </table>
+          <div>
+            <pagination-controls previousLabel="Prev" nextLabel="Next"(pageChange)="onTableDataChange($event)" ></pagination-controls>
+          </div>
+          <!-- end::Table -->
+        </div>
+      </div>
+  </div>
+</div>
 

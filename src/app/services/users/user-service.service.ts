@@ -48,6 +48,28 @@ public GetAllproduit() {
   return this.http.get(GlobalConstants.apiURL+'/produitventes/listProduitventes.json',{headers: headers})
 }
 
+public GetAllproduitConseil() {
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+   const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+     'Content-Type': 'application/json',
+     'Authorization': `Bearer ${user.token}`
+ })
+// console.log("user token: " + user.token);
+  return this.http.get(GlobalConstants.apiURL+'/produitconseils/listProduitconseil.json',{headers: headers})
+}
+
+
+public DeleteproduitConseil(id:any) {
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+   const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+     'Content-Type': 'application/json',
+     'Authorization': `Bearer ${user.token}`
+ })
+// console.log("user token: " + user.token);
+  return this.http.post(GlobalConstants.apiURL+'/produitconseils/deleteproduitconseils/'+id+'.json?espace=ecommerce',{headers: headers})
+}
 
 public GetAllchauffeur() {
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
@@ -430,6 +452,27 @@ console.log("conseil json :",t)
 const body =JSON.stringify(t);
 return this.http.post(GlobalConstants.apiURL+'/guideproduction/addGuideproduction.json',body,{headers: headers})
 }
+
+
+AddProductConseil(datauser:any,img:any){
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+  const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${user.token}`,
+  })
+
+
+var t = {
+  "libelle":datauser.culture.value,
+  "url_image": img,
+}
+console.log("conseil json :",t)
+const body =JSON.stringify(t);
+return this.http.post(GlobalConstants.apiURL+'/produitconseils/addproduitconseil.json',body,{headers: headers})
+}
+
+
 
 AddVente(datauser:any,img:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)

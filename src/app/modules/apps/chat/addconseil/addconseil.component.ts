@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { GlobalConstants } from 'src/app/common/global-constants';
 import { AuthService } from 'src/app/modules/auth';
 import { UserServiceService } from 'src/app/services/users/user-service.service';
 
@@ -32,6 +33,7 @@ export class AddconseilComponent implements OnInit {
         loc:new FormControl(),
         montant:new FormControl(),
         enlevement:new FormControl(),
+        culture:new FormControl(''),
 
     })
     this.AddAutorisationForm = new FormGroup({
@@ -115,8 +117,56 @@ export class AddconseilComponent implements OnInit {
     })
   }
 
+  view:string ='conseil1';
+  changeView(goto:string){
+    this.view = goto;
+    this.cdr.detectChanges();
+  }
+
+  users:any
+  getUser() {
+    this.users = JSON.parse(this.userService.GetUserData()!)
+    this.cdr.detectChanges()
+    console.log(this.users)
+ }
+
+ page = 1;
+ count:number =0
+ tableSize:number = 10
+ tableSizes:any =[5,10,15,20]
+ onTableDataChange(event:any){
+   this.page=event
+ //  this.GetCommande()
+ }
+ onTableSizeChange(event:any):void{
+   this.tableSize = event.target.value
+   this.page=1
+   this.GetAllUser()
+   //this.GetAllUser()
+ }
+
+ Delete(data:any){
+  this.userService.DeleteproduitConseil(data).subscribe((user:any) =>{
+    console.log(user)
+    this.cdr.detectChanges()
+    this.GetAllUser()
+    // this.router.navigate(['/apps/conseil/listconseil'])
+  },error =>{
+
+  },()=>{
+    console.log(this.User)
+   //       this.AddUserForm.controls['produit'].setValue(this.User[0].id, {onlySelf: true});
+
+   // this.GetAllVente()
+  })
+ }
+
+ profilurl = GlobalConstants.imagurl
+ 
   GetAllUser(){
-    this.userService.GetAllproduit().subscribe((user:any) =>{
+    this.getUser()
+    this.User = [];
+    this.userService.GetAllproduitConseil().subscribe((user:any) =>{
       user.data.forEach((element:any) => {
          //console.log(element)
          this.User.push(element)
@@ -241,6 +291,48 @@ onChangeValue(event:any)
       }
     }
   }
+
+
+  onFileChange2(event:any) {
+
+    if (event.target.files.length > 0) {
+      const image = event.target.files[0];
+      console.log('finfo',image.type," : ",image.size);
+
+      //if(image.size > 1000000)
+      if(image.type.startsWith("image/")){
+        this.file = image;
+       // console.log('finfo',image.type); image.type ==="video/mp4" || image.type === "video/avi" ||
+        this.namefile = event.target.files[0].name;
+
+        let formData = new FormData();
+        let info={id:2,name:'raja'}
+        formData.append('image', image, image.name);
+        formData.append('id','2');
+        formData.append('tz',new Date().toISOString())
+        formData.append('update','2')
+        formData.append('image',JSON.stringify(info))
+        this.file_data=formData
+
+
+      // console.log(this.file_data)
+
+        this.cdr.detectChanges()
+        this.AddUserForm.patchValue({
+          fileSource: image
+        });
+      this.cdr.markForCheck();
+      this.errorfeildfile = false
+      this.cdr.detectChanges();
+      }else{
+        console.log("je suis ici");
+        this.errorfeildfile = true
+        this.msg = 'Veuillez choisir une image'
+        this.cdr.detectChanges();
+      }
+    }
+  }
+  msg:string = 'Ajouter un fichier';
 
   userved:any;
   user:any
@@ -458,6 +550,203 @@ var isdone=  false
  }
 
  }
+
+
+
+ saveCulture() {
+  var statework = true;
+
+
+   if(this.filevideopdf == true){
+     if(this.namefile == ""){
+       statework= false
+       this.errorfeildfile = true
+       this.msg = 'Ajouter un fichier';
+       this.isLoading$.next(false);
+     }else{
+       statework= true
+       this.errorfeildfile = false
+     }
+   }
+  //  if(this.f.description.value  == null||this.f.description.value ==""){
+  //    statework= false
+  //    this.errorfeildescription = true
+  //    this.isLoading$.next(false);
+  //  }else{
+  //    statework= true
+  //    this.errorfeildescription = false
+  //  }
+  //  if(this.linkpdf == true){
+  //    if(this.f.pdflink.value == null || this.f.pdflink.value ==""){
+  //      statework= false
+  //      this.errorfeildlinkpdf = true
+  //      this.isLoading$.next(false);
+  //    }else{
+  //      statework= true
+  //      this.errorfeildlinkpdf = false
+  //    }
+  //  }
+  //  if(this.linkvideo == true){
+  //    if(this.f.videolink.value == null || this.f.videolink.value ==""){
+  //        statework= false
+  //        this.errorfeildlinkvideo = true
+  //        this.isLoading$.next(false);
+
+  //    }else{
+  //      if(this.f.videolink.value.includes("youtube")){
+  //        statework= true
+  //        this.errorfeildlinkvideo = false
+  //      }else{
+  //        console.log(this.f.videolink.value.includes("youtube"));
+  //        statework= false
+  //        this.errorfeildlinkvideo = true
+  //        this.isLoading$.next(false);
+  //      }
+  //    }
+  //  }
+   //console.log("this.f.culture.value :",this.f.culture.value)
+   if(this.f.culture.value == null || this.f.culture.value ==""){
+     statework= false
+     this.errorfeildprod = true
+     this.isLoading$.next(false);
+   }else{
+     statework= true
+     this.errorfeildprod = false
+   }
+if(!this.errorfeildfile
+   &&!this.errorfeildprod)
+  {
+ this.isLoading$.next(true);
+ this.cdr.detectChanges();
+   var linkdata =  this.namefile
+
+
+
+  // if(this.linkvideo == true){
+  //  linkdata = this.f.videolink.value
+  // }else if(this.linkpdf == true){
+  //  linkdata  =  this.f.pdflink.value
+  // }else{
+  //  linkdata  =  this.namefile
+  // }
+  // console.log("this.f.videolink.value :",this.f.videolink.value)
+  // console.log("this.f.pdflink.value",this.f.pdflink.value)
+  // console.log(linkdata);
+
+var isdone=  false
+ this.userService.AddProductConseil(this.f,this.namefile).subscribe((rep:any)=>{
+   //console.log(rep);
+   if(rep.response.code=="200"){
+     isdone = true
+   }else {
+     isdone = false
+     this.isLoading$.next(false);
+     this.message = "information non enregistré"
+     this.stateinfo  = true
+     this.cdr.detectChanges();
+   }
+ },error=>{
+
+},()=>{
+   console.log(this.file)
+   if(this.file ==null){
+
+     if(isdone == true){
+       this.isLoading$.next(false);
+       this.message = "information enregistré"
+       this.success = true
+       this.cdr.detectChanges();
+       setTimeout(() => {
+         this.success = false
+         this.stateinfo = false
+         this.cdr.detectChanges();
+         window.location.reload();
+         //this.view = 'conseil1'
+         //this.router.navigate(['/apps/chat/addconseil']);
+       }, 2500);
+     }else{
+       this.isLoading$.next(false);
+       this.message = "information non  enregistré"
+       this.stateinfo = true
+       this.cdr.detectChanges();
+       setTimeout(() => {
+         this.success = false
+         this.stateinfo = false
+         this.cdr.detectChanges();
+        }, 2500);
+     }
+
+   }else{
+     this.userService.UplaodIamge(this.file).subscribe((res:any)=>{
+         console.log(res)
+         if(res.message == 'authentication failed Token not valide'){
+         this.isLoading$.next(false);
+         this.message = "votre session est expiré reconnectez vous"
+         this.stateinfo = true
+         this.cdr.detectChanges();
+         this.userService.logoutGlobale();
+       }else if(res.response.code == '200'){
+           this.isLoading$.next(false);
+            this.message = "information enregistré"
+            this.success = true
+            this.cdr.detectChanges();
+            console.log(res)
+           // this.allreadyexiste = true;
+           setTimeout(() => {
+             this.success = false
+             this.stateinfo = false
+             this.cdr.detectChanges();
+             window.location.reload();
+            // this.router.navigate(['/apps/chat/conseil']);
+           }, 2500);
+         }
+         else{
+           this.message = "document non enregistré"
+           this.stateinfo = true
+           this.isLoading$.next(false);
+           this.cdr.detectChanges();
+         }
+     },error=>{
+
+     },()=>{
+      this.isLoading$.next(false);
+      this.cdr.detectChanges();
+     })
+   }
+
+ // this.userService.UplaodParseExel(this.file).subscribe((res:any)=>{
+ //   console.log(res.message)
+
+ //   if(res.message == 'authentication failed Token not valide'){
+ //     this.isLoading$.next(false);
+ //     this.message = "votre session est expiré reconnectez vous"
+ //     this.stateinfo = true
+ //     this.cdr.detectChanges();
+ //     this.authService.logout();
+ //     document.location.reload();
+ //   }else if(res.response.code == '200'){
+ //       this.isLoading$.next(false);
+ //        this.message = "information enregistré"
+ //        this.success = true
+ //        this.cdr.detectChanges();
+ //        console.log(res)
+ //       // this.allreadyexiste = true;
+ //       this.router.navigate(['/apps/chat/list-prix-du-marcher']);
+ //     }
+ //     else{
+ //       this.message = "information non enregistré"
+ //       this.success = true
+ //       this.isLoading$.next(false);
+ //       this.cdr.detectChanges();
+ //     }
+ // })
+
+});
+ console.log(this.namefile)
+}
+
+}
+
  autorisationListe:any[]=[]
  autorisationempty = false
  sussesauto = false
