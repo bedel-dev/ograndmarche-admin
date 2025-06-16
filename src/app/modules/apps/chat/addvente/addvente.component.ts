@@ -30,7 +30,8 @@ export class AddventeComponent implements OnInit {
       loc:new FormControl(),
       montant:new FormControl(),
       enlevement:new FormControl(),
-      unitmessure:new FormControl()
+      unitmessure:new FormControl(),
+      commercial_name: new FormControl(),
 
     })
     this.AddAutorisationForm = new FormGroup({
@@ -161,10 +162,21 @@ export class AddventeComponent implements OnInit {
 
 
   }
+  errorfeildfile_sise = false;
   onFileChange(event:any) {
 
     if (event.target.files.length > 0) {
       const image = event.target.files[0];
+
+      const fileSizeMB = image.size / (1024 * 1024);
+
+      if (fileSizeMB > 2) {
+        this.errorfeildfile_sise = true;
+        return;
+      } else{
+        this.errorfeildfile_sise = false;
+      }
+
       this.file = image;
       console.log('finfo',image.name,image.size,image.type);
       this.namefile = event.target.files[0].name;

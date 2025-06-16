@@ -29,6 +29,7 @@ export class UpdateproduitComponent implements OnInit {
       prenom: new FormControl(),
       loc:new FormControl(),
       montant:new FormControl(),
+      idcat:new FormControl(),
 
     })
     this.AddAutorisationForm = new FormGroup({
@@ -63,20 +64,31 @@ export class UpdateproduitComponent implements OnInit {
 
   Vente:any[]=[]
   User:any[]=[]
-  GetAllVente(id:any){
+  GetAllVente(id:any,user:any){
     this.userService.GetAllCategorie().subscribe((rep:any)=>{
-      rep.data.forEach((element:any) => {
-        // this.User.forEach((user:any) => {
-        //  // console.log(element.idUser,user.id.toString())
-        //     if(element.idUser==user.id.toString()){
-        //       element.prod = user.name
-        //       element.prodcontact = user.contact
-        //     }
+      // rep.data.forEach((element:any) => {
+      //   // this.User.forEach((user:any) => {
+      //   //  // console.log(element.idUser,user.id.toString())
+      //   //     if(element.idUser==user.id.toString()){
+      //   //       element.prod = user.name
+      //   //       element.prodcontact = user.contact
+      //   //     }
 
-        // })
-      //  this.defaultLocalisation = element.idUser
-        this.Vente.push(element)
-      });
+      //   // })
+      // //  this.defaultLocalisation = element.idUser
+      //   this.Vente.push(element)
+      // });
+      this.Vente = rep.data
+      var categorie = this.Vente.filter((item:any)=> {return item.id.toString()== user.response.data.categorie})
+      console.log(categorie)
+      this.namefile = user.response.data.urlimage;
+      this.AddUserForm.controls['email'].setValue(user.response.data.label, {onlySelf: true})
+      this.AddUserForm.controls['localisation'].setValue(categorie[0].type_produit, {onlySelf: true});
+      this.AddUserForm.controls['idcat'].setValue(user.response.data.categorie, {onlySelf: true});
+      console.log("this.f =>",this.f.idcat.value);
+      console.log("this.f =>",this.f.localisation.value);
+      console.log("this.f =>",this.f.email.value);
+      this.cdr.detectChanges()
       this.cdr.detectChanges()
     },error=>{
 
@@ -91,18 +103,14 @@ export class UpdateproduitComponent implements OnInit {
   GetAllUser(){
     this.userService.GetVenteProduitById(this.route.snapshot.params.id).subscribe((user:any) =>{
 
-          console.log(user)
+          console.log("ici",user)
+      this.GetAllVente(this.route.snapshot.params.id,user);
 
-
-      this.namefile = user.response.data.urlimage;
-      this.AddUserForm.controls['email'].setValue(user.response.data.label, {onlySelf: true})
-      this.AddUserForm.controls['localisation'].setValue(user.response.data.categorie, {onlySelf: true});
-      this.cdr.detectChanges()
     },error =>{
 
     },()=>{
       //this.GetAllVente()
-      this.GetAllVente(this.route.snapshot.params.id);
+      //this.GetAllVente(this.route.snapshot.params.id);
 
     })
   }
@@ -190,6 +198,7 @@ export class UpdateproduitComponent implements OnInit {
     //console.log("vente :"+this.f.loc.value)
    this.isLoading$.next(true);
    var statework = true;
+   this.namefile = '2.jpeg';
    if(this.namefile == ""){
      statework= false
      this.errorfeildfile = true
@@ -234,13 +243,13 @@ export class UpdateproduitComponent implements OnInit {
      this.cdr.detectChanges();
      }else if(rep.response.result==true){
 
-      if(this.file){
-        this.userService.UplaodIamge(this.file).subscribe((res)=>{
-          console.log(res)
-        })
-      }else{
-        this.errorfeildfile = true
-      }
+      // if(this.file){
+      //   this.userService.UplaodIamge(this.file).subscribe((res)=>{
+      //     console.log(res)
+      //   })
+      // }else{
+      //   this.errorfeildfile = true
+      // }
       //this.userved = rep.response.data.id;
        //console.log(this.userved)
       // this.accesautorisation= true;

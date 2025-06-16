@@ -37,30 +37,30 @@ export class ListconseilComponent implements OnInit {
     this.userService.getAllConseil().subscribe((res:any) =>{
      // console.log(res)
       for(const item of res.data){
-        console.log(item)
+        console.log("User",this.User)
         //console.log(item.prodID,item.idBenef,vente.id.toString())
-        this.Vente.forEach((vente:any) => {
-             if(item.idUser==vente.id.toString()){
-              item.prodID = vente.id;
-              item.prod = vente.name;
-              item.prodloc = vente.locality
-             }
-         })
+        // this.Vente.forEach((vente:any) => {
+        //      if(item.idUser==vente.id.toString()){
+        //       item.prodID = vente.id;
+        //       item.prod = vente.name;
+        //       item.prodloc = vente.locality
+        //      }
+        //  })
 
         this.User.forEach((res:any)=>{
           if(item.id_produitconseil==res.id.toString()){
-            item.cate = res.categorie
-            item.produit = res.label
-            item.urlimageProduit = res.urlimage
+           // item.cate = res.categorie
+            item.produit = res.libelle
+            item.urlimageProduit = res.url_image
           }
         })
         item.description = item.contenu_url.split("==")[0]
        // console.log(this.categorieProduit)
-        this.categorieProduit.forEach((cat:any)=>{
-          if(item.cate==cat.id.toString()){
-            item.cate  = cat.label
-          }
-        })
+        // this.categorieProduit.forEach((cat:any)=>{
+        //   if(item.cate==cat.id.toString()){
+        //     item.cate  = cat.label
+        //   }
+        // })
         var tmptime = item.created_at.split('T')
         item.created_at = tmptime[0]
         //  console.log(item['created_at'])
@@ -118,7 +118,7 @@ export class ListconseilComponent implements OnInit {
   }
 
   GetAllUser(){
-    this.userService.GetAllproduit().subscribe((user:any) =>{
+    this.userService.GetAllproduitConseil().subscribe((user:any) =>{
      // console.log("reponse:",user)
       user.data.forEach((element:any) => {
          //console.log(element)
@@ -129,8 +129,9 @@ export class ListconseilComponent implements OnInit {
     },error =>{
 
     },()=>{
-      this.GetAllCate()
-      this.GetAllVente()
+      //this.GetAllCate()
+     // this.GetAllVente()
+     this.getAllU();
     })
   }
   categorieProduit:any[]=[]

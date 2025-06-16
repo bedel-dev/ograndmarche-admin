@@ -36,16 +36,21 @@ export class CommandelistComponent implements OnInit {
     console.log("commande :",item)
     this.GetCommandeProduit(content,item)
   }
+  
 
   openLivraison(content: any, item: any) {
+    
+    this.todoLivraisonComptefaible = false;
+    this.AddUserForm.controls['trans'].setValue("null", {onlySelf: true});
+
    var localenlevement:any[]=[]; 
    var n = 1;
-   
+   console.log("take");
    this.ProduitCommande.forEach((element)=>{
     if(item.id.toString()==element.idcommande){
 
       this.v.forEach((vente:any)=>{
-        console.log("iitems",item,element,vente);
+        //console.log("iitems",item,element,vente);
         if(element.Idvendeur == vente.idUser &&element.idvente ==vente.id.toString() ){
           localenlevement.push(" enlevement ("+n+") => "+vente.enlevement)
           n = n+1;
@@ -60,6 +65,32 @@ export class CommandelistComponent implements OnInit {
   this.modalContentLivre = item
   this.modalService.open(content, { centered: true, size: "lg", windowClass: 'andro_quick-view-modal p-0'});
   }
+
+  openLivraison2(content: any, item: any) {
+    var localenlevement:any[]=[]; 
+    var n = 1;
+    console.log(this.ProduitCommande);
+    console.log(item);
+    this.ProduitCommande.forEach((element)=>{
+      console.log("ici",item.id.toString()==element.idcommande);
+     if(item.id.toString()==element.idcommande){
+      console.log("ici");
+       this.v.forEach((vente:any)=>{
+         console.log("iitems",item,element,vente);
+         if(element.Idvendeur == vente.idUser &&element.idvente ==vente.id.toString() ){
+           localenlevement.push(" enlevement ("+n+") => "+vente.enlevement)
+           n = n+1;
+           console.log("localenlevement =>",localenlevement)
+         }
+       })
+     }
+    })
+   this.AddUserForm.controls['enlevement'].setValue(localenlevement, {onlySelf: true});
+   this.AddUserForm.controls['dechargement'].setValue(item.lieuLivraison, {onlySelf: true});
+   this.AddUserForm.controls['montant'].setValue(item.montantlivraison+" fr", {onlySelf: true});
+   this.modalContentLivre = item
+   this.modalService.open(content, { centered: true, size: "lg", windowClass: 'andro_quick-view-modal p-0'});
+   }
   form = new FormGroup({
     trans: new FormControl(null, Validators.required),
     montant:new FormControl({value: null, disabled: true}, Validators.required),
@@ -166,6 +197,7 @@ export class CommandelistComponent implements OnInit {
           console.log("coursecommande :",element)
 
           this.CommandeProd.push(element)
+          console.log("CommandeProd :",this.CommandeProd)
           this.InitialeVarDetaiCommande.push(element)
         }
       });
@@ -210,26 +242,33 @@ export class CommandelistComponent implements OnInit {
 //modal.close('Save click')
 
 todoLivraison:boolean=false
-todoLivraisonComptefaible:boolean;
-
+todoLivraisonComptefaible:boolean = true;
+isLoadingSuivi: boolean = false;
+selectecTransporteurContact:any = null;
 SuiviSold(data:any){
   console.log(data.target.value)
   var transporteurselected = this.Transporteur.filter((d:any) => {
     return d.id.toString() == data.target.value
   })
+  this.isLoadingSuivi = true;
+  this.changeDetector.detectChanges();
   this.livreurselect  = false
   this.todoLivraison = false;
   this.todoLivraisonComptefaible = false;
+  console.log("transporteurselected :",this.isLoadingSuivi)
    //console.log("Trans :",transporteurselected[0].contact.split(" ")[0]+transporteurselected[0].contact.split(" ")[1])
    //console.log("commande :",this.modalContentLivre) 
    //verification s'il est dans lidar +2250758854116
    var contact = transporteurselected[0].contact.split(" ")[0]+transporteurselected[0].contact.split(" ")[1]
+   this.selectecTransporteurContact = contact.replace(/^\+/, '')
+   console.log("contact :",this.selectecTransporteurContact);
     //var contact = "+2250708742553"
     this.userService.Getuserlidar(contact).subscribe((data:any) => {
     console.log(data)
     if(data.code == 500){
       this.todoLivraison = true;
       this.changeDetector.detectChanges()
+      
       // setTimeout(() => {
       //   this.todoLivraison = false;
 
@@ -240,23 +279,50 @@ SuiviSold(data:any){
     }else if(data.code ==0){
       console.log("modale => ",this.modalContentLivre.montantlivraison);
       this.livreurselect  = false
-      this.userService.Controlesole(data.beneficiaire.beneficiaire_carte.carte_id).subscribe((result:any) => {
-        if(result.code ==0){
+      // this.userService.Controlesole(data.beneficiaire.beneficiaire_carte.carte_id).subscribe((result:any) => {
+      //   if(result.code ==0){
+      //     var amount = parseInt(this.modalContentLivre.montant) + parseInt(this.modalContentLivre.montantlivraison);
+      //     console.log("amount g => ",amount);
+      //     if(result.solde<=amount){
+      //       console.log("is not possible to attribute")
+      //       this.todoLivraisonComptefaible = true;
+      //       this.changeDetector.detectChanges();
+      //     }else{
+      //       console.log(result.solde)
+      //       console.log("is possible to attribute")
+      //       //this.todoLivraisonComptefaible = false;
+      //       // this.changeDetector.detectChanges();
+      //     }
+      //     console.log("todoLivraisonComptefaible => ",this.todoLivraisonComptefaible);
+      //   }
+      // });
+
+      this.userService.ControlesoleGTP(data.beneficiaire.beneficiaire_carte.carte.reference).subscribe((result:any) => {
+        console.log("result => ",result);
+        if(result.data){
           var amount = parseInt(this.modalContentLivre.montant) + parseInt(this.modalContentLivre.montantlivraison);
-          console.log("amount g => ",amount);
-          if(result.solde<=amount){
-            
+          console.log("amount total commande => ",amount);
+          console.log("solde => ",result.data.balance);
+          if(result.data.balance<=amount){
+            console.log("is not possible to attribute")
             this.todoLivraisonComptefaible = true;
+            this.changeDetector.detectChanges();
           }else{
-            console.log(result.solde)
+            console.log(result.data.balance)
+            console.log("is possible to attribute")
+            //this.todoLivraisonComptefaible = false;
+            // this.changeDetector.detectChanges();
           }
+          
+          console.log("todoLivraisonComptefaible => ",this.todoLivraisonComptefaible);
         }
+        this.isLoadingSuivi = false;
       });
     }
   },error=>{
 
   },()=>{
-
+    this.changeDetector.detectChanges();
   })
 
 }
@@ -271,7 +337,9 @@ SuiviSold(data:any){
       this.changeDetector.detectChanges();
 
     }
-
+    console.log("livreurselect => ",this.livreurselect);
+    console.log("todoLivraison => ",this.todoLivraison);
+    console.log("todoLivraisonComptefaible => ",this.todoLivraisonComptefaible);
 
     if(!this.livreurselect&&!this.todoLivraison&&!this.todoLivraisonComptefaible){
       this.laodaddcourses = true;
@@ -281,7 +349,9 @@ SuiviSold(data:any){
       },error=>{
 
       },()=>{
-
+        this.userService.SendMailComfirmeSMS(this.selectecTransporteurContact).subscribe((res:any)=>{
+          console.log("response sms ",res)
+        });
         this.Updatecommande(this.modalContentLivre,"livraison")
         this.modalContentLivre.statut = "livraison"
         // this.Users.forEach(element => {
@@ -489,14 +559,17 @@ SuiviSold(data:any){
     this.userService.GetAlluser().subscribe((res:any) =>{
       res.data.forEach((r:any)=>{
         this.UserCommande.push(r)
+        console.log("")
+        //console.log("transporteur :",r.name)
         if(r.role ==="Transporteur"){
-          console.log(r.engin)
+          console.log("transporteurs: ",r.name)
          // this.Transporteur.push(r)
          //console.log("reponse demande :",this.demandefournisseur)
           
          cousertransporteur = this.Course.filter((item:any)=>{
             return item.transporteuridentifiant === r.id.toString()
          })
+         console.log("cousertransporteur :",cousertransporteur)
 
          if(cousertransporteur.length === 0){ 
          // if(r.engin=="moto"){
@@ -612,6 +685,8 @@ SuiviSold(data:any){
         element.numero_commande =item.numero_commande
       //  element.vendeurId =item.vendeurId
         this.CommandeProd.push(element)
+
+        console.log("CommandeProd",this.CommandeProd)
       });
       this.changeDetector.detectChanges()
 
@@ -856,7 +931,7 @@ state:any
       this.isLoading = true
     //    this.spinnerModale = true
     this.changeDetector.detectChanges();
-    console.log("data dans update :", data)
+    //console.log("data dans update :", data)
     this.userService.SendMailComfirme(data,state,"only").subscribe((re:any)=>{
       console.log(re)
       if(re.response.result==true){
@@ -865,7 +940,8 @@ state:any
 
 
       }
-    },error=>{},()=>{
+    },error=>{},
+    ()=>{
       this.userService.UpdateStateCommandeDetail(data.id,state).subscribe((rep:any)=>{
       //  this.Users = []
       //  console.log(rep.response);
@@ -882,15 +958,15 @@ state:any
       }
       this.GetAllCommandedetails(data)
       })
-
     })
   }
   isLoadingsecond:boolean
   UpdateCommandeforPrduct(data:any,state:string){
+    console.log("je suis ici");
       this.isLoadingsecond = true
     //    this.spinnerModale = true
     this.changeDetector.detectChanges();
-    console.log("commande", this.modalContent)
+    console.log("data dans update UpdateCommandeforPrduct:", data)
     this.userService.SendMailComfirme(data,state,"only").subscribe((re:any)=>{
       console.log(re)
       if(re.response.result==true){
@@ -918,7 +994,7 @@ state:any
       this.isLoadingsecond = false;
       this.changeDetector.detectChanges();  
     })
-}
+  }
   GetAllCommandedetails(cID:any) {
     console.log("data dans GetAllCommandedetails :", cID)
 
@@ -944,13 +1020,15 @@ state:any
         console.log(element)
         this.UserCommande.forEach((user:any)=>{
           //  console.log()
-                  if(cID.userId.toString()==user.id.toString()){
-                    element.client = user.name
-                    element.numero = user.contact
-                    element.locality = user.locality
-                    element.email = user.email
-                    element.userId = user.id
-
+                  if(cID.userId != null){
+                    if(cID.userId.toString()==user.id.toString()){
+                      element.client = user.name
+                      element.numero = user.contact
+                      element.locality = user.locality
+                      element.email = user.email
+                      element.userId = user.id
+  
+                    }
                   }
             if(element.Idvendeur.toString()==user.id.toString()){
               element.vendeur = user.name
@@ -995,14 +1073,14 @@ state:any
             this.InitialeVarDetaiCommande.push(element)
           }
         }
-        console.log("dataof : ",this.CommandeProd)
+        
 
       });
       this.changeDetector.detectChanges()
-
+      console.log("dataof : ",this.CommandeProd)
     //  console.log(test)
     },error =>{
-
+      console.log(error)
     },
     ()=>{
     //  this.updateCommandeDetail=true
@@ -1015,6 +1093,7 @@ state:any
       })
       cID.numero_commande = com[0].numero_commande
       cID.lieuLivraison = com[0].lieuLivraison
+      cID.email = com[0].email
       console.log("testxxx : ",com[0])
       this.CommadeTotals = this.CommandeProd.length
       this.spinnerModale = false
@@ -1029,7 +1108,7 @@ state:any
       if(commandeTotale == prduitaccepte.length){
         console.log(' je peux faire la mise a jour de la commande globle avec state accepter')
         this.AccepteDemandeGlobal(cID,"accepter")
-        this.modalContent.statut = "accepter";
+        //this.modalContent['statut'] = "accepter";
       }
       else if(commandeTotale < prduitaccepte.length ||commandeTotale > prduitaccepte.length){
         var prduitannuler =  newcommandeproduit.filter((dc:any)=>{
@@ -1038,7 +1117,7 @@ state:any
         if(prduitannuler.length==commandeTotale){
           console.log('je peux faire la mise a jour de la commande globle avec state annuler')
               this.AccepteDemandeGlobal(cID,"annuler")
-              this.modalContent.statut = "annuler";
+              //this.modalContent['statut'] = "annuler";
         }else{
           console.log("je suis dans 1")
           this.updateCommandeDetail = true
@@ -1072,11 +1151,8 @@ state:any
         }
         
         this.changeDetector.detectChanges()
-        
-
-
       }
-
+      window.location.reload();
       // this.modalContent = item
       // this.modalService.open(content, { centered: true, size: "lg", windowClass: 'andro_quick-view-modal p-0'});
     })

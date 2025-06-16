@@ -48,6 +48,28 @@ public GetAllproduit() {
   return this.http.get(GlobalConstants.apiURL+'/produitventes/listProduitventes.json',{headers: headers})
 }
 
+public GetAllproduitConseil() {
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+   const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+     'Content-Type': 'application/json',
+     'Authorization': `Bearer ${user.token}`
+ })
+// console.log("user token: " + user.token);
+  return this.http.get(GlobalConstants.apiURL+'/produitconseils/listProduitconseil.json',{headers: headers})
+}
+
+
+public DeleteproduitConseil(id:any) {
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+   const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+     'Content-Type': 'application/json',
+     'Authorization': `Bearer ${user.token}`
+ })
+// console.log("user token: " + user.token);
+  return this.http.post(GlobalConstants.apiURL+'/produitconseils/deleteproduitconseils/'+id+'.json?espace=ecommerce',{headers: headers})
+}
 
 public GetAllchauffeur() {
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
@@ -197,6 +219,21 @@ GetCommandeByuser(){
   const body =JSON.stringify(user);
   return this.http.post(GlobalConstants.lidarppai+"/v1.4/operations/solde.json",body,{headers:headers});  
 }
+
+ControlesoleGTP(data:any){
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+ // const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+   // 'Authorization': `Bearer ${user.token}`,
+  })
+  var user = {
+    "accompteID": data 
+  }
+  const body =JSON.stringify(user);
+  return this.http.post(GlobalConstants.hostapigetway+"/gtp/checkbalance.json",body,{headers:headers});  
+}
+
 Getuserlidar(data:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
   //const user = JSON.parse(hauth!)
@@ -416,6 +453,27 @@ const body =JSON.stringify(t);
 return this.http.post(GlobalConstants.apiURL+'/guideproduction/addGuideproduction.json',body,{headers: headers})
 }
 
+
+AddProductConseil(datauser:any,img:any){
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+  const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${user.token}`,
+  })
+
+
+var t = {
+  "libelle":datauser.culture.value,
+  "url_image": img,
+}
+console.log("conseil json :",t)
+const body =JSON.stringify(t);
+return this.http.post(GlobalConstants.apiURL+'/produitconseils/addproduitconseil.json',body,{headers: headers})
+}
+
+
+
 AddVente(datauser:any,img:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
   const user = JSON.parse(hauth!)
@@ -428,7 +486,7 @@ AddVente(datauser:any,img:any){
     "idUser": datauser.producteur.value,
     "idProduit": datauser.produit.value,
     "typeVente": datauser.typevente.value,
-    "description": datauser.description.value,
+    "description": datauser.description.value+" <=:=> "+datauser.commercial_name.value,
     "prix": parseInt(datauser.montant.value),
     "quantite":  parseInt(datauser.quantite.value),
     "urlImageVente": img,
@@ -459,7 +517,7 @@ UpdateVente(datauser:any,img:any,idvent:any){
     "idUser": datauser.producteur.value,
     "idProduit": datauser.produit.value,
     "typeVente": datauser.typevente.value,
-    "description": datauser.description.value,
+    "description": datauser.description.value+" <=:=> "+datauser.commercial_name.value,
     "prix": parseInt(datauser.montant.value),
     "quantite":  parseInt(datauser.quantite.value),
     "urlImageVente": img,
@@ -488,7 +546,8 @@ UpdateProduitVente(datauser:any,img:any,idprod:any){
 var t = {
   "label":datauser.email.value,
   "categorie": datauser.localisation.value,
-  "urlimage": img
+  "urlimage": img,
+  "idcat":datauser.idcat.value
 }
 console.log(t)
 const body =JSON.stringify(t);
@@ -1048,6 +1107,21 @@ return this.http.get(GlobalConstants.apiURL+"/categorieproduits/getAllgorieprodu
 }
 
 
+addCategorie(data:any){
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+  const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+    'Authorization': `Bearer ${user.token}`,
+  //  'Content-Type': 'multipart/form-data'
+})
+var datas = {
+    "label":data.email.value,
+    "type_produit":data.localisation.value,
+  }
+return this.http.post(GlobalConstants.apiURL+"/categorieproduits/addcategorieproduit.json",datas,{headers: headers})
+}
+
+
 SendMail(users_fournisseur:any,statut:any){
   var hauth =  localStorage.getItem(this.authLocalStorageToken)
   const user = JSON.parse(hauth!)
@@ -1122,7 +1196,29 @@ var datas = {
 }
 //users_fournisseur.linkcreate = GlobalConstants.linkfrontInscription
 console.log("data mail: ",data)
-console.log("datas mail: ",datas)
+console.log("users_fournisseur: ",users_fournisseur)
+
+const body =JSON.stringify(data);
+return this.http.post(GlobalConstants.api_auth_host+"users/sendmailConfirme.json",data,{headers: headers})
+}
+
+
+SendMailComfirmeSMS(contact:any){
+
+  var hauth =  localStorage.getItem(this.authLocalStorageToken)
+  const user = JSON.parse(hauth!)
+   const headers = new HttpHeaders({
+    'Authorization': `Bearer ${user.token}`,
+  //  'Content-Type': 'multipart/form-data'
+})
+
+var data = {
+    "contact":contact,
+    "type":"sms_alert"
+}
+//users_fournisseur.linkcreate = GlobalConstants.linkfrontInscription
+console.log("data mail: ",data)
+console.log("contact: ",contact)
 
 const body =JSON.stringify(data);
 return this.http.post(GlobalConstants.api_auth_host+"users/sendmailConfirme.json",data,{headers: headers})
