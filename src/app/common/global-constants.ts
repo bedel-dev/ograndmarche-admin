@@ -27,6 +27,7 @@ export class GlobalConstants {
     public static api_auth_host: string = "https://ogrand-marchez-api-auth.azurewebsites.net/app_auth/";
     public static admainMail: string = "serviceclient@lidar.ci"
     public static linkfrontInscription: string = "https://admin.ograndmarche.com/#/auth/createuser"
+    public static  hostapigetway = 'https://gateway.lidar-platform.com/api';
 }
 
 
