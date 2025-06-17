@@ -78,7 +78,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   validate(){
     console.log("go")
-    if(this.code ===this.f.code.value){
+    console.log("code", this.f.code.value,this.code)
+    if(this.code.toString() == this.f.code.value.toString()){
       this.message = "code validé"
       this.ErrorSubmitted = "valide"
       this.cdr.detectChanges()
