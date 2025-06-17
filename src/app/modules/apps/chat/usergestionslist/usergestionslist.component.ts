@@ -53,7 +53,7 @@ export class UsergestionslistComponent implements OnInit {
         this.initiateUser.push(item)
         var tmptime = item.created_at.split('T')
         item.created_at = tmptime[0]
-        if(item.role == "conseiller" ||item.role == "fournisseur"||item.role == "Delegue" || item.role == "Producteur"|| item.role == "Transporteur"|| item.role == "Intrant"||item.role == "gpublic"||item.role == "Grossiste"){
+        if(item.role == "admin" || item.role == "conseiller" ||item.role == "fournisseur"||item.role == "Delegue" || item.role == "Producteur"|| item.role == "Transporteur"|| item.role == "Intrant"||item.role == "gpublic"||item.role == "Grossiste"){
           this.Users.push(item)
         }
         this.changeDetector.detectChanges();
@@ -150,12 +150,12 @@ export class UsergestionslistComponent implements OnInit {
 
 
         if(searchValue.target.value.toString().toLowerCase()=="all"){
-          if(item.role == "Grossiste" || item.role == "conseiller" ||item.role == "fournisseur" || item.role == "Producteur"|| item.role == "Transporteur"|| item.role == "Livreur"|| item.role == "Intrant"||item.role == "gpublic"||item.role == "Delegue"){
+          if(item.role == "admin"||item.role == "Grossiste" || item.role == "conseiller" ||item.role == "fournisseur" || item.role == "Producteur"|| item.role == "Transporteur"|| item.role == "Livreur"|| item.role == "Intrant"||item.role == "gpublic"||item.role == "Delegue"){
             this.Users.push(item)
             this.changeDetector.detectChanges();
           }
         }
-       else if(item.name.toString().toLowerCase().includes(searchValue.target.value.toString().toLowerCase())||item.role.toString().toLowerCase().includes(searchValue.target.value.toString().toLowerCase()) ){
+       else if(item.role == "admin"||item.name.toString().toLowerCase().includes(searchValue.target.value.toString().toLowerCase())||item.role.toString().toLowerCase().includes(searchValue.target.value.toString().toLowerCase()) ){
         if(item.role == "Grossiste" ||item.role == "conseiller" ||item.role == "fournisseur" || item.role == "Producteur"|| item.role == "Transporteur"||item.role == "Livreur"|| item.role == "Intrant"||item.role == "gpublic"||item.role == "Delegue"){
           this.Users.push(item)
           this.changeDetector.detectChanges();
