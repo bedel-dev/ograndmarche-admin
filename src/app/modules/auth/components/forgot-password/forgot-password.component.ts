@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+
 import { first } from 'rxjs/operators';
 import {
   CountryISO,
@@ -10,6 +11,7 @@ import {
   
 } from "ngx-intl-tel-input";
 import { UserServiceService } from 'src/app/services/users/user-service.service';
+import { Router } from '@angular/router';
 enum ErrorStates {
   NotSubmitted,
   HasError,
@@ -29,7 +31,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef,private authService: AuthService,public userServices:UserServiceService,) {
+  constructor(private router: Router, private fb: FormBuilder, private cdr: ChangeDetectorRef,private authService: AuthService,public userServices:UserServiceService,) {
     this.isLoading$ = this.authService.isLoading$;
   }
   selectedCountryISO:any
@@ -91,6 +93,14 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
   submit() {
+    this.ErrorSubmitted = "go_";
+    if(this.f.email.value == "" || this.f.email.value == null){
+      this.ErrorSubmitted = "go__v";
+      this.message  = "Veuillez saisir votre numéro de téléphone"
+      this.ErrorSubmitted = "true";
+      this.cdr.detectChanges();
+      return;
+    }
     this.code = String(Math.floor(100000 + Math.random() * 900000));
     var num =this.f.email.value.dialCode+" "+this.f.email.value.number;
     console.log(num);
@@ -98,9 +108,13 @@ export class ForgotPasswordComponent implements OnInit {
 
 
       if(data.response.code ==="200"){
-        this.ErrorSubmitted = "good";
+        this.ErrorSubmitted = "vgood";
         this.cdr.detectChanges();
+        setTimeout(() => {
+          this.router.navigate(["/auth/login"])
+        }, 7000);
       }else if(data.response.code =="404"){ 
+        this.ErrorSubmitted = "go__v";
         this.message  = data.response.message
         this.ErrorSubmitted = "true";
         this.cdr.detectChanges();
